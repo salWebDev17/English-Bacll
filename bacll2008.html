@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Practice Exam</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  :root{
+    --ink:#1e2a24;
+    --page:#f6f2e9;
+    --card:#ffffff;
+    --line:#d8cfba;
+    --moss:#2f5d4f;
+    --moss-dark:#203f36;
+    --gold:#b9862f;
+    --correct:#2f5d4f;
+    --wrong:#a4462d;
+    --muted:#6b6357;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--page);
+    color:var(--ink);
+    font-family: "Iowan Old Style","Palatino Linotype",Georgia,serif;
+    line-height:1.5;
+    padding-bottom:60px;
+  }
+  header{
+    background:var(--moss-dark);
+    color:#f6f2e9;
+    padding:28px 20px 24px;
+    text-align:center;
+  }
+  header h1{
+    font-size:1.5rem;
+    margin:0 0 6px;
+    letter-spacing:0.02em;
+    font-weight:600;
+  }
+  header p{
+    margin:0;
+    font-size:0.9rem;
+    color:#cfd8c9;
+  }
+  .wrap{
+    max-width:720px;
+    margin:0 auto;
+    padding:0 16px;
+  }
+  .part{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:2px;
+    margin-top:26px;
+    padding:20px 20px 24px;
+    position:relative;
+  }
+  .part::before{
+    content:attr(data-mark);
+    position:absolute;
+    top:-13px;
+    left:18px;
+    background:var(--gold);
+    color:#fff;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-size:0.68rem;
+    font-weight:700;
+    letter-spacing:0.04em;
+    padding:4px 10px;
+    border-radius:2px;
+  }
+  .part h2{
+    font-size:1.15rem;
+    margin:6px 0 4px;
+    color:var(--moss-dark);
+  }
+  .part .instructions{
+    font-size:0.92rem;
+    color:var(--muted);
+    margin-bottom:14px;
+    font-style:italic;
+  }
+  .word-bank{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:16px;
+    padding:12px;
+    background:var(--page);
+    border:1px dashed var(--line);
+  }
+  .word-bank span{
+    background:#fff;
+    border:1px solid var(--line);
+    padding:4px 10px;
+    font-size:0.9rem;
+    border-radius:2px;
+  }
+  .passage{
+    font-size:0.98rem;
+  }
+  select.gap{
+    font-family:inherit;
+    font-size:0.95rem;
+    padding:2px 6px;
+    border:none;
+    border-bottom:2px solid var(--gold);
+    background:#fbf8f1;
+    color:var(--ink);
+    margin:0 2px;
+  }
+  select.gap.correct{border-bottom-color:var(--correct); background:#e9f1ec;}
+  select.gap.wrong{border-bottom-color:var(--wrong); background:#f7e9e4;}
+
+  table.match{
+    width:100%;
+    border-collapse:collapse;
+    font-size:0.92rem;
+  }
+  table.match td, table.match th{
+    padding:7px 6px;
+    border-bottom:1px solid var(--line);
+    vertical-align:top;
+  }
+  table.match th{
+    text-align:left;
+    color:var(--moss-dark);
+    font-size:0.8rem;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  }
+  select.match-select{
+    font-family:inherit;
+    padding:3px 4px;
+    border:1px solid var(--line);
+    background:#fbf8f1;
+  }
+  select.match-select.correct{border-color:var(--correct); background:#e9f1ec;}
+  select.match-select.wrong{border-color:var(--wrong); background:#f7e9e4;}
+
+  .q-block{
+    margin-bottom:16px;
+    padding-bottom:14px;
+    border-bottom:1px solid var(--line);
+  }
+  .q-block:last-child{border-bottom:none; margin-bottom:0; padding-bottom:0;}
+  .q-text{
+    font-size:0.97rem;
+    margin-bottom:8px;
+  }
+  .q-text b{color:var(--moss-dark);}
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .opt-label{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:0.93rem;
+    padding:6px 8px;
+    border:1px solid var(--line);
+    border-radius:2px;
+    cursor:pointer;
+    background:#fbf8f1;
+    transition:background 0.15s;
+  }
+  .opt-label:hover{background:#f1ead9;}
+  .opt-label input{accent-color:var(--moss);}
+  .opt-label.correct{background:#e9f1ec; border-color:var(--correct);}
+  .opt-label.wrong{background:#f7e9e4; border-color:var(--wrong);}
+
+  button.check{
+    display:block;
+    margin:18px auto 0;
+    background:var(--moss);
+    color:#fff;
+    border:none;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-size:0.85rem;
+    font-weight:600;
+    letter-spacing:0.02em;
+    padding:10px 22px;
+    border-radius:3px;
+    cursor:pointer;
+  }
+  button.check:hover{background:var(--moss-dark);}
+  .score-line{
+    text-align:center;
+    font-size:0.88rem;
+    color:var(--moss-dark);
+    margin-top:10px;
+    min-height:1.2em;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  }
+
+  textarea.essay{
+    width:100%;
+    min-height:260px;
+    font-family:inherit;
+    font-size:0.97rem;
+    padding:14px;
+    border:1px solid var(--line);
+    background:#fbf8f1;
+    resize:vertical;
+    line-height:1.6;
+  }
+  .wordcount{
+    text-align:right;
+    font-size:0.8rem;
+    color:var(--muted);
+    margin-top:6px;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  }
+  .wordcount.ok{color:var(--correct);}
+
+  #summary{
+    max-width:720px;
+    margin:26px auto 0;
+    padding:18px 20px;
+    background:var(--moss-dark);
+    color:#f6f2e9;
+    text-align:center;
+    display:none;
+    border-radius:2px;
+  }
+  #summary .big{
+    font-size:1.8rem;
+    font-weight:700;
+    color:#e9d9ab;
+  }
+</style>
+</head>
+<body>
+<div class="m-0 p-3 font-sans bg-gray-100">
+  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
+  </div>
+<header>
+
+  <h1>English Practice Exam</h1>
+  <p>Grade 12 &middot; Duration 60 minutes &middot; Total 50 marks</p>
+</header>
+
+<div class="wrap">
+
+  <!-- PART 1: READING -->
+  <div class="part" data-mark="10 marks">
+    <h2>Part 1 &middot; Reading</h2>
+    <p class="instructions">Select the words from the box below to fill the gaps in the passage. Gap (1) has been done as an example.</p>
+    <div class="word-bank">
+      <span>between</span><span>in</span><span>a</span><span>but</span><span>the</span><span>with</span>
+      <span>Thailand</span><span>an</span><span>on</span><span>for</span><span>of</span>
+    </div>
+    <p class="passage" id="passage">
+      We own hotels and holiday centres in Cambodia,
+      <select class="gap" data-answer="Thailand" disabled><option selected>Thailand</option></select>
+      and Singapore. We are looking for a qualified person for the position of Leisure Planner. He or she is responsible
+      <select class="gap" id="g2" data-answer="for"><option value="">--</option></select>
+      planning and organizing leisure activities for guests and other clients. The post requires someone
+      <select class="gap" id="g3" data-answer="between"><option value="">--</option></select>
+      the age of 25 and 35 with an interest in encouraging people
+      <select class="gap" id="g4" data-answer="of"><option value="">--</option></select>
+      all ages to take part
+      <select class="gap" id="g5" data-answer="in"><option value="">--</option></select>
+      a wide range of leisure activities at our holiday centres. Fluency
+      <select class="gap" id="g6" data-answer="in"><option value="">--</option></select>
+      English, Thai, Cambodian or French is also essential. Although
+      <select class="gap" id="g7" data-answer="a"><option value="">--</option></select>
+      not essential, successful candidate for the post will be based in our Phnom Penh headquarter near National Museum, he or she will be required to travel frequently. Candidates must be capable of working
+      <select class="gap" id="g9" data-answer="on"><option value="">--</option></select>
+      their own but at the same time be able to cooperate
+      <select class="gap" id="g10" data-answer="with"><option value="">--</option></select>
+      other members of a busy team. In addition, the successful candidates must have
+      <select class="gap" id="g11" data-answer="an"><option value="">--</option></select>
+      international driving license.
+    </p>
+    <button class="check" onclick="checkPart1()">Check Part 1</button>
+    <div class="score-line" id="score1"></div>
+  </div>
+
+  <!-- PART 2: LANGUAGE USE -->
+  <div class="part" data-mark="14 marks">
+    <h2>Part 2 &middot; Language Use</h2>
+    <p class="instructions">Match the parts of the sentences in Section A with the most suitable ones in Section B. The first one has been done for you.</p>
+    <table class="match">
+      <tr><th>A</th><th>B</th><th>Answer</th></tr>
+      <tr><td>1. Do you know what time it is? <i>(example)</i></td><td>A. I can give you a lift.</td><td><select class="match-select" disabled><option selected>C</option></select></td></tr>
+      <tr><td>2. It was an enormous house.</td><td>B. I need to get it cut.</td><td><select class="match-select" id="m2" data-answer="F"><option value="">-</option></select></td></tr>
+      <tr><td>3. You look thirsty.</td><td>C. Sorry, I haven't got a watch.</td><td><select class="match-select" id="m3" data-answer="H"><option value="">-</option></select></td></tr>
+      <tr><td>4. It's a long way to town.</td><td>D. They're going to fall asleep.</td><td><select class="match-select" id="m4" data-answer="A"><option value="">-</option></select></td></tr>
+      <tr><td>5. My hair is too long.</td><td>E. Shall I open the window?</td><td><select class="match-select" id="m5" data-answer="B"><option value="">-</option></select></td></tr>
+      <tr><td>6. The kids are tired out.</td><td>F. It looked like a castle.</td><td><select class="match-select" id="m6" data-answer="D"><option value="">-</option></select></td></tr>
+      <tr><td>7. It's hot in here.</td><td>G. I think they're going to win.</td><td><select class="match-select" id="m7" data-answer="E"><option value="">-</option></select></td></tr>
+      <tr><td>8. They are playing really well.</td><td>H. Perhaps I can get you something to drink.</td><td><select class="match-select" id="m8" data-answer="G"><option value="">-</option></select></td></tr>
+    </table>
+    <button class="check" onclick="checkPart2()">Check Part 2</button>
+    <div class="score-line" id="score2"></div>
+  </div>
+
+  <!-- PART 3: GRAMMAR -->
+  <div class="part" data-mark="6 marks">
+    <h2>Part 3 &middot; Grammar</h2>
+    <p class="instructions">Tick the correct answer. Only one answer is correct.</p>
+    <div id="part3"></div>
+    <button class="check" onclick="checkMC('part3','score3')">Check Part 3</button>
+    <div class="score-line" id="score3"></div>
+  </div>
+
+  <!-- PART 4: VOCABULARY -->
+  <div class="part" data-mark="5 marks">
+    <h2>Part 4 &middot; Vocabulary</h2>
+    <p class="instructions">Tick the correct answer. Only one answer is correct.</p>
+    <div id="part4"></div>
+    <button class="check" onclick="checkMC('part4','score4')">Check Part 4</button>
+    <div class="score-line" id="score4"></div>
+  </div>
+
+  <!-- PART 5: WRITING -->
+  <div class="part" data-mark="15 marks">
+    <h2>Part 5 &middot; Writing</h2>
+    <p class="instructions">Write an essay about "A goal in your life". Your essay must be in English and at least 150 words.</p>
+    <textarea class="essay" id="essay" placeholder="Start writing your essay here..." oninput="updateWordCount()"></textarea>
+    <div class="wordcount" id="wordcount">0 words &middot; minimum 150</div>
+  </div>
+
+  <div class="part" data-mark="score">
+    <h2>Score everything</h2>
+    <p class="instructions">Check each part above individually, or press this once you've answered everything.</p>
+    <button class="check" onclick="checkAll()">Check All Answers</button>
+  </div>
+
+</div>
+
+<div id="summary">
+  <div>Your total score</div>
+  <div class="big" id="totalScore">0 / 35</div>
+  <div id="totalNote" style="font-size:0.85rem;margin-top:6px;color:#cfd8c9;">(Part 5 writing is not auto-scored — review it yourself)</div>
+</div>
+
+<script>
+const gapOptions = ["between","in","a","but","the","with","Thailand","an","on","for","of"];
+document.querySelectorAll('select.gap:not([disabled])').forEach(sel=>{
+  gapOptions.forEach(w=>{
+    const o=document.createElement('option');
+    o.value=w; o.textContent=w;
+    sel.appendChild(o);
+  });
+});
+
+function checkPart1(){
+  let correct=0, total=0;
+  document.querySelectorAll('select.gap:not([disabled])').forEach(sel=>{
+    total++;
+    sel.classList.remove('correct','wrong');
+    if(sel.value === sel.dataset.answer){ sel.classList.add('correct'); correct++; }
+    else { sel.classList.add('wrong'); }
+  });
+  document.getElementById('score1').textContent = `Score: ${correct+1} / ${total+1} (example gap counted free)`;
+  return correct+1;
+}
+
+const matchOptions = ["A","B","C","D","E","F","G","H"];
+document.querySelectorAll('select.match-select:not([disabled])').forEach(sel=>{
+  matchOptions.forEach(l=>{
+    const o=document.createElement('option');
+    o.value=l; o.textContent=l;
+    sel.appendChild(o);
+  });
+});
+
+function checkPart2(){
+  let correct=0, total=0;
+  document.querySelectorAll('select.match-select:not([disabled])').forEach(sel=>{
+    total++;
+    sel.classList.remove('correct','wrong');
+    if(sel.value === sel.dataset.answer){ sel.classList.add('correct'); correct++; }
+    else { sel.classList.add('wrong'); }
+  });
+  document.getElementById('score2').textContent = `Score: ${correct+1} / ${total+1} (example item counted free)`;
+  return correct+1;
+}
+
+const part3Data = [
+  {q:"1. There was …… money left in my bank account.", opts:["more","no","some","any"], ans:1},
+  {q:"2. Their house is …… near the Unaloam Pagoda.", opts:["whereabouts","anywhere","somewhere","anyplace"], ans:2},
+  {q:"3. I'm sorry I …… your party. I was away at that time.", opts:["missed","failed","passed","lost"], ans:0},
+  {q:"4. You are …… who has been there.", opts:["the single","the only one","only one","the only"], ans:1},
+  {q:"5. The reason I left is …… I was bored.", opts:["why","for","while","that"], ans:3},
+  {q:"6. We are very proud …… our son's success.", opts:["for","of","on","at"], ans:1},
+  {q:"7. I have learnt all the irregular verbs ……", opts:["from memory","by the heart","in the memory","by heart"], ans:3},
+];
+
+const part4Data = [
+  {q:"1. He wanted to make a good impression at the …… as he was eager to get a job.", opts:["interrogation","meeting","briefing","interview"], ans:3},
+  {q:"2. It is a …… for the Chinese to visit their friends and relatives in New Year.", opts:["tradition","custom","task","routine"], ans:1},
+  {q:"3. Cambodian people follow ……", opts:["Hinduism","Buddhism","Islam","Protestantism"], ans:1},
+  {q:"4. That's the …… who has taken your coat.", opts:["dog","men","girls","boy"], ans:3},
+  {q:"5. Example: Ann and Peter phone …… everyday.", opts:["them","Themselves","themselves","each other"], ans:3},
+  {q:"6. Chinda is not only …… but also …… to discuss with.", opts:["good, wealth","wealthy, friendly","good, friends","well, friendly"], ans:1},
+];
+
+function renderMC(containerId, data){
+  const container = document.getElementById(containerId);
+  data.forEach((item, qi)=>{
+    const block = document.createElement('div');
+    block.className='q-block';
+    const qtext = document.createElement('div');
+    qtext.className='q-text';
+    qtext.innerHTML = item.q;
+    block.appendChild(qtext);
+    const optsDiv = document.createElement('div');
+    optsDiv.className='options';
+    item.opts.forEach((opt, oi)=>{
+      const label = document.createElement('label');
+      label.className='opt-label';
+      label.innerHTML = `<input type="radio" name="${containerId}-q${qi}" value="${oi}"> ${String.fromCharCode(65+oi)}. ${opt}`;
+      optsDiv.appendChild(label);
+    });
+    block.appendChild(optsDiv);
+    container.appendChild(block);
+  });
+}
+renderMC('part3', part3Data);
+renderMC('part4', part4Data);
+
+function checkMC(containerId, scoreId){
+  const data = containerId==='part3' ? part3Data : part4Data;
+  let correct=0;
+  data.forEach((item, qi)=>{
+    const labels = document.querySelectorAll(`input[name="${containerId}-q${qi}"]`);
+    labels.forEach(inp=>{
+      inp.parentElement.classList.remove('correct','wrong');
+    });
+    const checked = document.querySelector(`input[name="${containerId}-q${qi}"]:checked`);
+    labels[item.ans].parentElement.classList.add('correct');
+    if(checked){
+      if(parseInt(checked.value)===item.ans){ correct++; }
+      else { checked.parentElement.classList.add('wrong'); }
+    }
+  });
+  document.getElementById(scoreId).textContent = `Score: ${correct} / ${data.length}`;
+  return correct;
+}
+
+function updateWordCount(){
+  const text = document.getElementById('essay').value.trim();
+  const words = text.length ? text.split(/\s+/).length : 0;
+  const wc = document.getElementById('wordcount');
+  wc.textContent = `${words} words · minimum 150`;
+  wc.classList.toggle('ok', words>=150);
+}
+
+function checkAll(){
+  const s1 = checkPart1();
+  const s2 = checkPart2();
+  const s3 = checkMC('part3','score3');
+  const s4 = checkMC('part4','score4');
+  const total = s1 + s2 + s3 + s4;
+  const max = 11 + 8 + 7 + 6;
+  document.getElementById('summary').style.display='block';
+  document.getElementById('totalScore').textContent = `${total} / ${max}`;
+  document.getElementById('summary').scrollIntoView({behavior:'smooth', block:'center'});
+}
+</script>
+
+</body>
+</html>

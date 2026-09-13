@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Practice Exam</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #F6F1E4;
+    --paper-line: #E3D9BF;
+    --ink: #2B2620;
+    --ink-soft: #6B6152;
+    --pen-red: #B23A22;
+    --pen-red-soft: #EADAD2;
+    --pen-green: #3C6B4F;
+    --pen-green-soft: #DCE7DA;
+    --gold: #A9822F;
+    --card: #FFFDF7;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      linear-gradient(var(--paper-line) 1px, transparent 1px);
+    background-size: 100% 2.1em;
+    color:var(--ink);
+    font-family:'Public Sans', sans-serif;
+    line-height:1.55;
+    padding: 28px 14px 80px;
+  }
+  .sheet{
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  header.title-block{
+    text-align:left;
+    margin-bottom: 28px;
+    padding-bottom:18px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .khmer{
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+    margin-bottom: 6px;
+  }
+  h1{
+    font-family:'Source Serif 4', serif;
+    font-weight:700;
+    font-size: 1.9rem;
+    margin: 0 0 6px;
+  }
+  .subtitle{
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+  }
+  .marks-total{
+    display:inline-block;
+    margin-top:10px;
+    font-size:0.85rem;
+    color: var(--gold);
+    font-weight:600;
+  }
+
+  section.block{
+    margin-bottom: 40px;
+  }
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin-bottom: 14px;
+  }
+  .section-head h2{
+    font-family:'Source Serif 4', serif;
+    font-size: 1.25rem;
+    font-weight:600;
+    margin:0;
+  }
+  .section-head .marks{
+    font-size:0.8rem;
+    color: var(--ink-soft);
+  }
+  .instructions{
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    margin: 0 0 16px;
+  }
+
+  .wordbank{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    background: var(--card);
+    border: 1px solid var(--paper-line);
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin-bottom: 18px;
+  }
+  .wordbank span{
+    font-size:0.82rem;
+    padding: 3px 9px;
+    border: 1px solid var(--paper-line);
+    border-radius: 4px;
+    background: var(--paper);
+    white-space:nowrap;
+  }
+  .wordbank span b{ color: var(--gold); font-weight:700; }
+
+  .passage{
+    background: var(--card);
+    border: 1px solid var(--paper-line);
+    border-radius: 8px;
+    padding: 20px 20px 22px;
+    font-size: 0.98rem;
+  }
+  .passage p{ margin: 0 0 14px; text-indent: 1.4em; }
+
+  select.blank, select.match{
+    font-family:'Public Sans', sans-serif;
+    font-size: 0.92rem;
+    padding: 3px 22px 3px 8px;
+    border: none;
+    border-bottom: 2px solid var(--ink);
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 0;
+    appearance: none;
+    -webkit-appearance:none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%232B2620'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 6px center;
+    min-width: 108px;
+  }
+  select.blank:disabled{
+    color: var(--ink-soft);
+    border-bottom-color: var(--paper-line);
+    background-color: transparent;
+  }
+  .blank-wrap{
+    display:inline-flex;
+    align-items:baseline;
+    gap:4px;
+    margin: 0 2px;
+  }
+  .qnum{
+    font-weight:700;
+    color: var(--gold);
+    font-size:0.82rem;
+  }
+
+  .mcq{
+    background: var(--card);
+    border: 1px solid var(--paper-line);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .mcq.example{ opacity:0.6; }
+  .mcq .stem{
+    font-size:0.96rem;
+    margin-bottom:10px;
+    display:flex;
+    gap:8px;
+  }
+  .mcq .stem .num{ font-weight:700; color: var(--gold); flex-shrink:0; }
+  .options{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 10px;
+  }
+  .opt{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size:0.88rem;
+    padding: 6px 8px;
+    border: 1px solid var(--paper-line);
+    border-radius: 5px;
+    cursor:pointer;
+    background: var(--paper);
+  }
+  .opt input{ accent-color: var(--ink); flex-shrink:0; }
+  .opt.disabled{ pointer-events:none; }
+
+  .match-row{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    background: var(--card);
+    border: 1px solid var(--paper-line);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+  }
+  .match-row .num{ font-weight:700; color: var(--gold); font-size:0.82rem; flex-shrink:0; padding-top:2px;}
+  .match-row .def{ flex:1; font-size:0.9rem; font-style:italic; }
+  .match-row select{ flex-shrink:0; }
+
+  /* grading states */
+  .opt.correct, select.correct, .match-row.correct{
+    background: var(--pen-green-soft) !important;
+    border-color: var(--pen-green) !important;
+  }
+  .opt.wrong, select.wrong, .match-row.wrong{
+    background: var(--pen-red-soft) !important;
+    border-color: var(--pen-red) !important;
+  }
+  .mark{
+    font-size:0.78rem;
+    font-weight:700;
+    margin-left:6px;
+  }
+  .mark.correct-txt{ color: var(--pen-green); }
+  .mark.wrong-txt{ color: var(--pen-red); }
+  .answer-note{
+    font-size:0.8rem;
+    color: var(--pen-red);
+    margin-top:6px;
+  }
+
+  .grade-bar{
+    position: sticky;
+    bottom: 12px;
+    margin-top: 30px;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 10px;
+    padding: 14px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  }
+  .grade-bar .label{ font-size:0.85rem; color:#CFC6B0; }
+  .grade-bar .score{
+    font-family:'Source Serif 4', serif;
+    font-size:1.4rem;
+    font-weight:700;
+  }
+  .grade-bar button{
+    font-family:'Public Sans', sans-serif;
+    font-weight:600;
+    font-size:0.9rem;
+    background: var(--gold);
+    color: var(--ink);
+    border:none;
+    padding: 10px 18px;
+    border-radius: 7px;
+    cursor:pointer;
+  }
+  .grade-bar button.secondary{
+    background: transparent;
+    color: var(--paper);
+    border: 1px solid #555;
+  }
+  .grade-bar .actions{ display:flex; gap:8px; }
+
+  .section-score{
+    font-size:0.8rem;
+    color: var(--pen-green);
+    font-weight:600;
+  }
+
+  @media (max-width:420px){
+    .options{ grid-template-columns: 1fr; }
+    h1{ font-size:1.55rem; }
+  }
+</style>
+</head>
+<body>
+  <div class="m-0 p-3 font-sans bg-gray-100">
+  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
+
+<div class="sheet">
+
+  <header class="title-block">
+    <div class="khmer">សម្រង់ លេខ - English Practice Examination</div>
+    <h1>English Practice Exam</h1>
+    <div class="subtitle">Reading &middot; Grammar &middot; Language Use &middot; Vocabulary</div>
+    <div class="marks-total">36 marks total</div>
+  </header>
+
+  <!-- SECTION 1: READING -->
+  <section class="block" id="sec1">
+    <div class="section-head">
+      <h2>Section 1: Reading</h2>
+      <span class="marks">10 marks</span>
+      <span class="section-score" id="score1"></span>
+    </div>
+    <p class="instructions">Read the text and choose the correct word from the box for each blank. Number 1 is done for you.</p>
+
+    <div class="wordbank">
+      <span><b>A</b> develop</span><span><b>B</b> rid</span><span><b>C</b> world</span>
+      <span><b>D</b> consider</span><span><b>E</b> persuade</span><span><b>F</b> sign</span>
+      <span><b>G</b> having</span><span><b>H</b> validity</span><span><b>I</b> waste</span>
+      <span><b>J</b> produce</span><span><b>K</b> fighting</span><span><b>L</b> contain</span>
+    </div>
+
+    <div class="passage">
+      <p>The ability to weep is a uniquely human form of emotional response. We cry from the moment we enter this
+      <span class="blank-wrap"><span class="qnum">(1)</span> <select class="blank" disabled><option selected>C - world</option></select></span>
+      for a number of reasons. Helpless babies cry to
+      <span class="blank-wrap"><span class="qnum">(2)</span> <select class="blank" id="s1-2" data-answer="E"></select></span>
+      their parents that they are ill, hungry or uncomfortable. As they
+      <span class="blank-wrap"><span class="qnum">(3)</span> <select class="blank" id="s1-3" data-answer="A"></select></span>
+      they will also cry just to attract parental attention and will often stop when they got it.</p>
+
+      <p>The idea that
+      <span class="blank-wrap"><span class="qnum">(4)</span> <select class="blank" id="s1-4" data-answer="G"></select></span>
+      a good cry can do you good is a very old one and now it has scientific
+      <span class="blank-wrap"><span class="qnum">(5)</span> <select class="blank" id="s1-5" data-answer="H"></select></span>
+      since recent research into tears has shown that they
+      <span class="blank-wrap"><span class="qnum">(6)</span> <select class="blank" id="s1-6" data-answer="L"></select></span>
+      a natural painkiller called enkephalin. By
+      <span class="blank-wrap"><span class="qnum">(7)</span> <select class="blank" id="s1-7" data-answer="K"></select></span>
+      sorrow and pain this chemical helps you to feel better. Weeping can increase the qualities of enkephalin you
+      <span class="blank-wrap"><span class="qnum">(8)</span> <select class="blank" id="s1-8" data-answer="J"></select></span>.</p>
+
+      <p>Unfortunately, some people still regard it as a
+      <span class="blank-wrap"><span class="qnum">(9)</span> <select class="blank" id="s1-9" data-answer="F"></select></span>
+      of weakness, especially in men or boys, and it can only increase stress.</p>
+
+      <p>Tear of emotion also helps the body
+      <span class="blank-wrap"><span class="qnum">(10)</span> <select class="blank" id="s1-10" data-answer="B"></select></span>
+      itself of toxic chemical waste, for there is more protein in them than in tears resulting from cold winds or other irritants. Crying comforts, calms and can be very enjoyable
+      <span class="blank-wrap"><span class="qnum">(11)</span> <select class="blank" id="s1-11" data-answer="D"></select></span>
+      the popularity of the highly emotional films which are commonly called &lsquo;weepies&rsquo;. It seems that people enjoy crying together almost as much as laughing together.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 2: GRAMMAR -->
+  <section class="block" id="sec2">
+    <div class="section-head">
+      <h2>Section 2: Grammar</h2>
+      <span class="marks">11 marks</span>
+      <span class="section-score" id="score2"></span>
+    </div>
+    <p class="instructions">Choose the best answer (a, b, or c). Number 1 is done for you.</p>
+
+    <div id="grammar-list"></div>
+  </section>
+
+  <!-- SECTION 3: LANGUAGE USE -->
+  <section class="block" id="sec3">
+    <div class="section-head">
+      <h2>Section 3: Language Use</h2>
+      <span class="marks">8 marks</span>
+      <span class="section-score" id="score3"></span>
+    </div>
+    <p class="instructions">Match each meaning with its correct word. Number 1 is done for you.</p>
+
+    <div class="wordbank">
+      <span><b>a</b> footstep</span><span><b>b</b> peasant</span><span><b>c</b> moustache</span>
+      <span><b>d</b> tractor</span><span><b>e</b> museum</span><span><b>f</b> sculpture</span>
+      <span><b>g</b> statue</span><span><b>h</b> combine</span><span><b>i</b> starvation</span>
+    </div>
+
+    <div id="match-list"></div>
+  </section>
+
+  <!-- SECTION 4: VOCABULARY -->
+  <section class="block" id="sec4">
+    <div class="section-head">
+      <h2>Section 4: Vocabulary</h2>
+      <span class="marks">7 marks</span>
+      <span class="section-score" id="score4"></span>
+    </div>
+    <p class="instructions">Choose the word that best fills the gap. Number 1 is done for you.</p>
+
+    <div id="vocab-list"></div>
+  </section>
+
+  <div class="grade-bar">
+    <div>
+      <div class="label">Your score</div>
+      <div class="score" id="totalScore">— / 36</div>
+    </div>
+    <div class="actions">
+      <button class="secondary" id="resetBtn">Reset</button>
+      <button id="checkBtn">Check answers</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const wordbankMap = {A:"develop",B:"rid",C:"world",D:"consider",E:"persuade",F:"sign",G:"having",H:"validity",I:"waste",J:"produce",K:"fighting",L:"contain"};
+const matchMap = {a:"footstep",b:"peasant",c:"moustache",d:"tractor",e:"museum",f:"sculpture",g:"statue",h:"combine",i:"starvation"};
+
+// populate reading blanks
+document.querySelectorAll('select.blank[id^="s1-"]').forEach(sel=>{
+  let opt = document.createElement('option');
+  opt.value=''; opt.textContent='— choose —'; opt.selected=true;
+  sel.appendChild(opt);
+  Object.keys(wordbankMap).forEach(letter=>{
+    let o = document.createElement('option');
+    o.value = letter;
+    o.textContent = letter + " - " + wordbankMap[letter];
+    sel.appendChild(o);
+  });
+});
+
+// SECTION 2 data
+const grammarData = [
+  {n:1, stem:"I look forward ______ you as soon as possible.", opts:{a:"seeing",b:"to seeing",c:"to see"}, ans:"b", example:true},
+  {n:2, stem:"I ______ to America.", opts:{a:"have often been",b:"often have been",c:"have been often"}, ans:"a"},
+  {n:3, stem:"You look ______ a teacher.", opts:{a:"like",b:"as",c:"the same like"}, ans:"a"},
+  {n:4, stem:"How many brothers and sisters ______?", opts:{a:"has you got",b:"do you have",c:"are you having"}, ans:"b"},
+  {n:5, stem:"I knew that he ______ waiting for somebody.", opts:{a:"will",b:"was",c:"is"}, ans:"b"},
+  {n:6, stem:"We can't live very long without ______.", opts:{a:"to eat",b:"eating",c:"eat"}, ans:"b"},
+  {n:7, stem:"That's the man ______ took your coat.", opts:{a:"which",b:"that",c:"who"}, ans:"c"},
+  {n:8, stem:"My mother ______ my birthday.", opts:{a:"always forget",b:"forget always",c:"always forgets"}, ans:"c"},
+  {n:9, stem:"______ Sophanna doing this time yesterday?", opts:{a:"What was",b:"What is",c:"What are"}, ans:"a"},
+  {n:10, stem:"It's ______ if you take the train.", opts:{a:"the quicker",b:"quicker",c:"the most quicker"}, ans:"b"},
+  {n:11, stem:"This is the first time I ______ a sports car.", opts:{a:"'m driving",b:"drive",c:"'ve driven"}, ans:"c"},
+  {n:12, stem:"My wife will upset ______.", opts:{a:"if I don't get back",b:"if I didn't get back",c:"if I hadn't got back"}, ans:"a"},
+];
+
+const grammarList = document.getElementById('grammar-list');
+grammarData.forEach(q=>{
+  const div = document.createElement('div');
+  div.className = 'mcq' + (q.example ? ' example':'');
+  div.dataset.answer = q.ans;
+  div.dataset.qn = q.n;
+  let optsHtml = '';
+  Object.keys(q.opts).forEach(letter=>{
+    const disabled = q.example ? 'disabled' : '';
+    const checked = (q.example && letter===q.ans) ? 'checked' : '';
+    optsHtml += `<label class="opt ${q.example?'disabled':''}"><input type="radio" name="g${q.n}" value="${letter}" ${disabled} ${checked}> ${letter}. ${q.opts[letter]}</label>`;
+  });
+  div.innerHTML = `<div class="stem"><span class="num">${q.n}.</span><span>${q.stem}${q.example?' <span style="color:var(--ink-soft);font-size:0.78rem;">(example)</span>':''}</span></div>
+    <div class="options">${optsHtml}</div>`;
+  grammarList.appendChild(div);
+});
+
+// SECTION 3 data
+const matchData = [
+  {n:1, def:"powerful motor vehicle used for pulling farm machinery or other heavy equipment", ans:"d", example:true},
+  {n:2, def:"join or mix together to form a whole", ans:"h"},
+  {n:3, def:"suffering or death caused by lack of food", ans:"i"},
+  {n:4, def:"figure of a person, an animal, etc. in wood, stone, metal, etc. usually with life-size or larger", ans:"g"},
+  {n:5, def:"hair that grows on a man's upper lip", ans:"c"},
+  {n:6, def:"sound or mark of a step taken while walking", ans:"a"},
+  {n:7, def:"art of making figures or objects by carving wood or stone or shaping clay, etc.", ans:"f"},
+  {n:8, def:"building in which objects of artistic, cultural, historical or scientific importance and interest are displayed", ans:"e"},
+  {n:9, def:"farmer owning or renting a piece of land which he cultivates himself", ans:"b"},
+];
+
+const matchList = document.getElementById('match-list');
+matchData.forEach(q=>{
+  const row = document.createElement('div');
+  row.className = 'match-row';
+  row.dataset.answer = q.ans;
+  row.dataset.qn = q.n;
+  let selectHtml;
+  if(q.example){
+    selectHtml = `<select class="match" disabled><option selected>d - tractor</option></select>`;
+  } else {
+    let opts = '<option value="" selected>— choose —</option>';
+    Object.keys(matchMap).forEach(letter=>{
+      opts += `<option value="${letter}">${letter} - ${matchMap[letter]}</option>`;
+    });
+    selectHtml = `<select class="match" id="m${q.n}">${opts}</select>`;
+  }
+  row.innerHTML = `<span class="num">${q.n}.</span><span class="def">${q.def}</span>${selectHtml}`;
+  matchList.appendChild(row);
+});
+
+// SECTION 4 data
+const vocabData = [
+  {n:1, stem:"Despite very careful ______, the police have not been able to identify who the murderer is yet.", opts:{a:"undertaking",b:"searching",c:"enquiries",d:"surveys"}, ans:"c", example:true},
+  {n:2, stem:"Heavy snow ______ the train for several hours.", opts:{a:"cancelled",b:"delayed",c:"postponed",d:"changed"}, ans:"b"},
+  {n:3, stem:"I still really like a cigarette even though I ______ smoking two years ago.", opts:{a:"gave in",b:"gave up",c:"gave over",d:"completed"}, ans:"b"},
+  {n:4, stem:"Most parents find it is difficult to ______ their children nowadays.", opts:{a:"foster",b:"bring up",c:"develop",d:"grow up"}, ans:"b"},
+  {n:5, stem:"Vutha always arrives on time. He is ______.", opts:{a:"careful",b:"boring",c:"punctual",d:"timeless"}, ans:"c"},
+  {n:6, stem:"Because of the energy crisis, many people claim that there is no ______ to developing nuclear power.", opts:{a:"advantage",b:"reason",c:"alteration",d:"alternative"}, ans:"d"},
+  {n:7, stem:"The restoration of the library was considered a great ______ in view of the difficulty of raising money.", opts:{a:"architecture",b:"achievement",c:"building",d:"interest"}, ans:"b"},
+  {n:8, stem:"According to the weather ______, there will be rain tomorrow.", opts:{a:"programme",b:"forecast",c:"information",d:"survey"}, ans:"b"},
+];
+
+const vocabList = document.getElementById('vocab-list');
+vocabData.forEach(q=>{
+  const div = document.createElement('div');
+  div.className = 'mcq' + (q.example ? ' example':'');
+  div.dataset.answer = q.ans;
+  div.dataset.qn = q.n;
+  let optsHtml = '';
+  Object.keys(q.opts).forEach(letter=>{
+    const disabled = q.example ? 'disabled' : '';
+    const checked = (q.example && letter===q.ans) ? 'checked' : '';
+    optsHtml += `<label class="opt ${q.example?'disabled':''}"><input type="radio" name="v${q.n}" value="${letter}" ${disabled} ${checked}> ${letter}. ${q.opts[letter]}</label>`;
+  });
+  div.innerHTML = `<div class="stem"><span class="num">${q.n}.</span><span>${q.stem}${q.example?' <span style="color:var(--ink-soft);font-size:0.78rem;">(example)</span>':''}</span></div>
+    <div class="options">${optsHtml}</div>`;
+  vocabList.appendChild(div);
+});
+
+// ---- grading ----
+function clearMarks(){
+  document.querySelectorAll('.opt').forEach(o=>{o.classList.remove('correct','wrong');});
+  document.querySelectorAll('select.blank, select.match').forEach(s=>{s.classList.remove('correct','wrong');});
+  document.querySelectorAll('.match-row').forEach(r=>r.classList.remove('correct','wrong'));
+  document.querySelectorAll('.answer-note').forEach(n=>n.remove());
+  document.querySelectorAll('.mark').forEach(m=>m.remove());
+  ['score1','score2','score3','score4'].forEach(id=>document.getElementById(id).textContent='');
+}
+
+function checkAnswers(){
+  clearMarks();
+  let total=0, max=0;
+
+  // Section 1
+  let s1=0;
+  document.querySelectorAll('select.blank[id^="s1-"]').forEach(sel=>{
+    max++; total_add:{}
+    const correct = sel.dataset.answer;
+    const val = sel.value;
+    max_s1_increment(); // no-op placeholder
+    if(val === correct){ sel.classList.add('correct'); s1++; }
+    else { sel.classList.add('wrong'); addNote(sel.parentElement, correct); }
+  });
+  function max_s1_increment(){}
+  document.getElementById('score1').textContent = s1 + ' / 10 correct';
+  total += s1; max += 10;
+
+  // Section 2
+  let s2=0, s2max=0;
+  document.querySelectorAll('#grammar-list .mcq:not(.example)').forEach(div=>{
+    s2max++;
+    const correct = div.dataset.answer;
+    const checkedInput = div.querySelector('input:checked');
+    const val = checkedInput ? checkedInput.value : null;
+    div.querySelectorAll('.opt').forEach(opt=>{
+      const inp = opt.querySelector('input');
+      if(inp.value === correct) opt.classList.add(val===correct ? 'correct':'correct');
+    });
+    if(val === correct){
+      div.querySelector('.opt input[value="'+correct+'"]').closest('.opt').classList.add('correct');
+      s2++;
+    } else {
+      div.querySelectorAll('.opt').forEach(opt=>{
+        const inp = opt.querySelector('input');
+        if(inp.value===correct) opt.classList.add('correct');
+        if(val && inp.value===val) opt.classList.add('wrong');
+      });
+    }
+  });
+  document.getElementById('score2').textContent = s2 + ' / ' + s2max + ' correct';
+  total += s2; max += s2max;
+
+  // Section 3
+  let s3=0, s3max=0;
+  document.querySelectorAll('.match-row').forEach(row=>{
+    const sel = row.querySelector('select.match:not([disabled])');
+    if(!sel) return;
+    s3max++;
+    const correct = row.dataset.answer;
+    if(sel.value === correct){ row.classList.add('correct'); s3++; }
+    else { row.classList.add('wrong'); addNote(row, correct + ' - ' + matchMap[correct]); }
+  });
+  document.getElementById('score3').textContent = s3 + ' / ' + s3max + ' correct';
+  total += s3; max += s3max;
+
+  // Section 4
+  let s4=0, s4max=0;
+  document.querySelectorAll('#vocab-list .mcq:not(.example)').forEach(div=>{
+    s4max++;
+    const correct = div.dataset.answer;
+    const checkedInput = div.querySelector('input:checked');
+    const val = checkedInput ? checkedInput.value : null;
+    div.querySelectorAll('.opt').forEach(opt=>{
+      const inp = opt.querySelector('input');
+      if(inp.value===correct) opt.classList.add('correct');
+      if(val && inp.value===val && val!==correct) opt.classList.add('wrong');
+    });
+    if(val===correct) s4++;
+  });
+  document.getElementById('score4').textContent = s4 + ' / ' + s4max + ' correct';
+  total += s4; max += s4max;
+
+  document.getElementById('totalScore').textContent = total + ' / ' + max;
+}
+
+function addNote(afterEl, correctText){
+  const note = document.createElement('div');
+  note.className = 'answer-note';
+  note.textContent = 'Correct answer: ' + correctText;
+  afterEl.parentElement ? afterEl.insertAdjacentElement('afterend', note) : afterEl.appendChild(note);
+}
+
+document.getElementById('checkBtn').addEventListener('click', checkAnswers);
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  document.querySelectorAll('select.blank[id^="s1-"], select.match:not([disabled])').forEach(s=>s.value='');
+  document.querySelectorAll('.mcq:not(.example) input[type=radio]').forEach(r=>r.checked=false);
+  clearMarks();
+  document.getElementById('totalScore').textContent = '— / 36';
+});
+</script>
+</body>
+</html>

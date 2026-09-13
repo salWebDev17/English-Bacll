@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<title>A Working Life — English Practice</title>
+<style>
+  :root{
+    --ink:#1c2b3a;
+    --paper:#eef1f6;
+    --card:#ffffff;
+    --line:#c9d2df;
+    --gold:#a9821c;
+    --gold-bg:#fbf3de;
+    --wrong:#b8433a;
+    --wrong-bg:#fbe9e7;
+    --correct:#2f7a4f;
+    --correct-bg:#e7f5ec;
+    --muted:#5c6b7d;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;
+    line-height:1.55;
+    padding-bottom:60px;
+  }
+  header{
+    background:var(--ink);
+    color:var(--paper);
+    padding:28px 20px 24px;
+    position:sticky;
+    top:0;
+    z-index:10;
+  }
+  header h1{
+    font-family:Georgia,'Source Serif 4',serif;
+    font-size:1.4rem;
+    margin:0 0 4px;
+    letter-spacing:0.2px;
+  }
+  header p{
+    margin:0;
+    color:#aebdd1;
+    font-size:0.85rem;
+  }
+  #scorebar{
+    display:none;
+    margin-top:14px;
+    background:rgba(255,255,255,0.08);
+    border-radius:8px;
+    padding:10px 14px;
+    font-size:0.92rem;
+  }
+  #scorebar strong{ color:#f0d387; font-size:1.05rem; }
+
+  main{
+    max-width:640px;
+    margin:0 auto;
+    padding:20px 16px 0;
+  }
+  section.part{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:20px 18px;
+    margin-bottom:22px;
+  }
+  section.part > h2{
+    font-family:Georgia,'Source Serif 4',serif;
+    font-size:1.15rem;
+    margin:0 0 4px;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:8px;
+  }
+  .points{
+    color:var(--muted);
+    font-size:0.82rem;
+    margin:0 0 16px;
+  }
+  .instructions{
+    font-size:0.9rem;
+    color:var(--muted);
+    margin-bottom:14px;
+  }
+
+  .bank{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:18px;
+  }
+  .bank span{
+    border:1px solid var(--line);
+    background:var(--paper);
+    border-radius:20px;
+    padding:5px 12px;
+    font-size:0.82rem;
+    color:var(--ink);
+    transition:opacity .2s;
+  }
+  .bank span.used{ opacity:0.35; text-decoration:line-through; }
+
+  .story{
+    font-size:0.98rem;
+  }
+  .story select{
+    font-family:inherit;
+    font-size:0.95rem;
+    border:none;
+    border-bottom:2px solid var(--ink);
+    background:transparent;
+    padding:1px 4px;
+    color:var(--ink);
+    min-width:118px;
+    font-weight:600;
+  }
+  .story select.correct{ border-bottom-color:var(--correct); background:var(--correct-bg); border-radius:4px; }
+  .story select.wrong{ border-bottom-color:var(--wrong); background:var(--wrong-bg); border-radius:4px; }
+
+  .q{
+    margin-bottom:20px;
+    padding-bottom:18px;
+    border-bottom:1px solid var(--line);
+  }
+  .q:last-child{ border-bottom:none; margin-bottom:0; padding-bottom:0; }
+  .q-text{
+    font-weight:600;
+    margin-bottom:10px;
+    font-size:0.97rem;
+  }
+  .q-text .num{ color:var(--gold); margin-right:4px; }
+  .opts{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  .opt{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:9px 10px;
+    font-size:0.9rem;
+    cursor:pointer;
+    background:var(--paper);
+  }
+  .opt input{ accent-color:var(--ink); flex-shrink:0; }
+  .opt.correct{ background:var(--correct-bg); border-color:var(--correct); }
+  .opt.wrong{ background:var(--wrong-bg); border-color:var(--wrong); }
+  .opt.locked{ pointer-events:none; }
+
+  .essay{
+    width:100%;
+    min-height:140px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:12px;
+    font-family:inherit;
+    font-size:0.95rem;
+    resize:vertical;
+    background:var(--paper);
+  }
+  .word-count{
+    text-align:right;
+    font-size:0.8rem;
+    color:var(--muted);
+    margin-top:6px;
+  }
+
+  .actions{
+    max-width:640px;
+    margin:0 auto;
+    padding:0 16px 30px;
+    display:flex;
+    gap:10px;
+  }
+  button.primary{
+    flex:1;
+    background:var(--ink);
+    color:#fff;
+    border:none;
+    padding:14px;
+    border-radius:8px;
+    font-size:1rem;
+    font-weight:600;
+    cursor:pointer;
+  }
+  button.secondary{
+    background:none;
+    border:1px solid var(--line);
+    color:var(--muted);
+    padding:14px 18px;
+    border-radius:8px;
+    font-size:0.95rem;
+    cursor:pointer;
+  }
+  .part-score{
+    display:none;
+    font-size:0.85rem;
+    font-weight:600;
+    margin-bottom:14px;
+    padding:8px 12px;
+    border-radius:6px;
+  }
+</style>
+</head>
+<body>
+  <div class="m-0 p-3 font-sans bg-gray-100">
+  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
+
+<header>
+  <h1>A Working Life</h1>
+  <p>English practice · Reading, Grammar &amp; Vocabulary</p>
+  <div id="scorebar">Score so far: <strong id="scoreval">0 / 0</strong></div>
+</header>
+
+<main>
+
+  <!-- PART 1: READING -->
+  <section class="part" id="part1">
+    <h2>Part 1 · Reading</h2>
+    <p class="points">10 points</p>
+    <p class="instructions">Read the text and fill each gap with a word from the box below. Gap 0 is done for you as an example.</p>
+
+    <div class="bank" id="bank1"></div>
+    <div class="part-score" id="score1"></div>
+
+    <p class="story" id="story"></p>
+  </section>
+
+  <!-- PART 2: GRAMMAR -->
+  <section class="part" id="part2">
+    <h2>Part 2 · Grammar</h2>
+    <p class="points">15 points</p>
+    <p class="instructions">Choose the correct answer, <strong>a</strong>, <strong>b</strong>, <strong>c</strong> or <strong>d</strong>.</p>
+    <div class="part-score" id="score2"></div>
+    <div id="grammar"></div>
+  </section>
+
+  <!-- PART 3: VOCABULARY -->
+  <section class="part" id="part3">
+    <h2>Part 3 · Vocabulary</h2>
+    <p class="points">15 points</p>
+    <p class="instructions">Choose the correct answer, <strong>a</strong>, <strong>b</strong>, <strong>c</strong> or <strong>d</strong>.</p>
+    <div class="part-score" id="score3"></div>
+    <div id="vocab"></div>
+  </section>
+
+  <!-- PART 4: WRITING -->
+  <section class="part" id="part4">
+    <h2>Part 4 · Writing</h2>
+    <p class="points">10 points</p>
+    <p class="instructions">Write an essay of at least 80 words about <strong>"Your goal in the future."</strong> This part isn't auto-scored — use it to draft and count your words.</p>
+    <textarea class="essay" id="essay" placeholder="Start writing here..."></textarea>
+    <div class="word-count"><span id="wc">0</span> words</div>
+  </section>
+
+</main>
+
+<div class="actions">
+  <button class="secondary" id="resetBtn">Reset</button>
+  <button class="primary" id="checkBtn">Check my answers</button>
+</div>
+
+<script>
+// ---------- DATA ----------
+const bankWords = ["television","department","promoted","applied","money","waitress","job","was","few months","presenter"];
+
+const storyParts = [
+  "Well, I studied ", {gap:0, answer:"economics", given:true}, " at university, and then I was lucky because I got a ",
+  {gap:1, answer:"job"}, " very quickly as an accountant in a local ", {gap:2, answer:"department"},
+  " store. It wasn't exactly what I wanted, but you know, it was my very first job. I stayed there for four years altogether. After three years I was ",
+  {gap:3, answer:"promoted"}, " to accounts manager, and I stayed in that job for a year, but then I really got bored, so I decided to leave and I ",
+  {gap:4, answer:"applied"}, " for other jobs, but had no luck getting a second job at all, and I was very short of ",
+  {gap:5, answer:"money"}, ", so in the end I had to get a job working as a ", {gap:6, answer:"waitress"},
+  " in a restaurant. Well it wasn't very successful because I'm quite clumsy. You see? And I kept dropping things, so after a few weeks they gave me a sack. And then, just by chance an old friend who I ",
+  {gap:7, answer:"was"}, " at university with, and he was working in ", {gap:8, answer:"television"},
+  ". And he got me a job as a television researcher on a program called 'Business Today'. And after a ",
+  {gap:9, answer:"few months"}, " they decided that they wanted a young ", {gap:10, answer:"presenter"},
+  " of programme, and I got a job and I love it."
+];
+
+const grammarQs = [
+  { q:"Mr. Kimseng can't talk on phone because he …… dinner right now.", opts:["is eating","eats","has eaten","has been eating"], correct:0 },
+  { q:"That little girl …… for the last two days.", opts:["hasn't eaten","doesn't eat","isn't eating","has eaten"], correct:0 },
+  { q:"Several trees fell down last night …… the strong wind.", opts:["because","so","since","because of"], correct:3 },
+  { q:"I hope you …… us when you come here.", opts:["visited","would visit","visiting","will visit"], correct:3 },
+  { q:"If she doesn't do her homework, she …… punished.", opts:["is","would be","will be","will have"], correct:2 }
+];
+
+const vocabQs = [
+  { q:"I'm really …… of my child who got the first prize in art competition.", opts:["pleased","proud","happy","delighted"], correct:1 },
+  { q:"In recent years inflation has almost doubled the …… of living.", opts:["cost","expense","charge","price"], correct:0 },
+  { q:"The restaurant services are bad, so we should write a …… to the manager.", opts:["essay","message","complaint","information"], correct:2 },
+  { q:"The plane was delayed by fog, so I …… my connection.", opts:["lost","abandoned","forgot","missed"], correct:3 },
+  { q:"She went to the library to …… .", opts:["borrow a book","lend a book","let a book","hire a book"], correct:0 }
+];
+
+const letters = ["a","b","c","d"];
+
+// ---------- RENDER: word bank ----------
+const bankEl = document.getElementById("bank1");
+bankWords.forEach(w=>{
+  const s = document.createElement("span");
+  s.textContent = w;
+  s.dataset.word = w;
+  bankEl.appendChild(s);
+});
+
+function refreshBank(){
+  const used = new Set();
+  document.querySelectorAll("#story select").forEach(sel=>{
+    if(sel.value) used.add(sel.value);
+  });
+  bankEl.querySelectorAll("span").forEach(s=>{
+    s.classList.toggle("used", used.has(s.dataset.word));
+  });
+}
+
+// ---------- RENDER: story ----------
+const storyEl = document.getElementById("story");
+storyParts.forEach(part=>{
+  if(typeof part === "string"){
+    storyEl.appendChild(document.createTextNode(part));
+  } else if(part.given){
+    const b = document.createElement("b");
+    b.textContent = " " + part.answer + " ";
+    storyEl.appendChild(b);
+  } else {
+    const sel = document.createElement("select");
+    sel.dataset.gap = part.gap;
+    sel.dataset.answer = part.answer;
+    const blank = document.createElement("option");
+    blank.value = ""; blank.textContent = "( " + part.gap + " )";
+    sel.appendChild(blank);
+    bankWords.forEach(w=>{
+      const o = document.createElement("option");
+      o.value = w; o.textContent = w;
+      sel.appendChild(o);
+    });
+    sel.addEventListener("change", refreshBank);
+    storyEl.appendChild(sel);
+  }
+});
+
+// ---------- RENDER: MCQ helper ----------
+function renderMCQ(container, data, prefix){
+  data.forEach((item, qi)=>{
+    const q = document.createElement("div");
+    q.className = "q";
+
+    const qt = document.createElement("div");
+    qt.className = "q-text";
+    qt.innerHTML = `<span class="num">${qi+1}.</span>${item.q}`;
+    q.appendChild(qt);
+
+    const opts = document.createElement("div");
+    opts.className = "opts";
+    item.opts.forEach((optText, oi)=>{
+      const label = document.createElement("label");
+      label.className = "opt";
+      label.innerHTML = `<input type="radio" name="${prefix}-${qi}" value="${oi}"> <span>${letters[oi]}. ${optText}</span>`;
+      opts.appendChild(label);
+    });
+    q.appendChild(opts);
+    container.appendChild(q);
+  });
+}
+renderMCQ(document.getElementById("grammar"), grammarQs, "g");
+renderMCQ(document.getElementById("vocab"), vocabQs, "v");
+
+// ---------- word count ----------
+const essay = document.getElementById("essay");
+const wc = document.getElementById("wc");
+essay.addEventListener("input", ()=>{
+  const words = essay.value.trim().split(/\s+/).filter(Boolean);
+  wc.textContent = words.length;
+});
+
+// ---------- CHECK ANSWERS ----------
+function checkMCQ(container, data, prefix){
+  let correctCount = 0;
+  const qs = container.querySelectorAll(".q");
+  data.forEach((item, qi)=>{
+    const chosen = container.querySelector(`input[name="${prefix}-${qi}"]:checked`);
+    const opts = qs[qi].querySelectorAll(".opt");
+    opts.forEach((optEl, oi)=>{
+      optEl.classList.add("locked");
+      if(oi === item.correct) optEl.classList.add("correct");
+      if(chosen && parseInt(chosen.value) === oi && oi !== item.correct) optEl.classList.add("wrong");
+    });
+    if(chosen && parseInt(chosen.value) === item.correct) correctCount++;
+  });
+  return correctCount;
+}
+
+document.getElementById("checkBtn").addEventListener("click", ()=>{
+  // Part 1
+  let readingCorrect = 0;
+  const selects = document.querySelectorAll("#story select");
+  selects.forEach(sel=>{
+    sel.disabled = true;
+    if(sel.value === sel.dataset.answer){
+      sel.classList.add("correct");
+      readingCorrect++;
+    } else {
+      sel.classList.add("wrong");
+    }
+  });
+  const s1 = document.getElementById("score1");
+  s1.style.display = "block";
+  s1.style.background = readingCorrect === selects.length ? "var(--correct-bg)" : "var(--gold-bg)";
+  s1.style.color = readingCorrect === selects.length ? "var(--correct)" : "var(--gold)";
+  s1.textContent = `You got ${readingCorrect} / ${selects.length} gaps correct.`;
+
+  // Part 2
+  const grammarCorrect = checkMCQ(document.getElementById("grammar"), grammarQs, "g");
+  const s2 = document.getElementById("score2");
+  s2.style.display = "block";
+  s2.style.background = grammarCorrect === grammarQs.length ? "var(--correct-bg)" : "var(--gold-bg)";
+  s2.style.color = grammarCorrect === grammarQs.length ? "var(--correct)" : "var(--gold)";
+  s2.textContent = `You got ${grammarCorrect} / ${grammarQs.length} correct.`;
+
+  // Part 3
+  const vocabCorrect = checkMCQ(document.getElementById("vocab"), vocabQs, "v");
+  const s3 = document.getElementById("score3");
+  s3.style.display = "block";
+  s3.style.background = vocabCorrect === vocabQs.length ? "var(--correct-bg)" : "var(--gold-bg)";
+  s3.style.color = vocabCorrect === vocabQs.length ? "var(--correct)" : "var(--gold)";
+  s3.textContent = `You got ${vocabCorrect} / ${vocabQs.length} correct.`;
+
+  // total
+  const total = readingCorrect + grammarCorrect + vocabCorrect;
+  const outOf = selects.length + grammarQs.length + vocabQs.length;
+  const bar = document.getElementById("scorebar");
+  bar.style.display = "block";
+  document.getElementById("scoreval").textContent = `${total} / ${outOf}`;
+
+  document.getElementById("checkBtn").textContent = "Answers checked ✓";
+  document.getElementById("checkBtn").disabled = true;
+  window.scrollTo({top:0, behavior:"smooth"});
+});
+
+document.getElementById("resetBtn").addEventListener("click", ()=>{
+  location.reload();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Practice Test — Reading, Grammar, Vocabulary &amp; Writing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F1ECDA;
+    --paper-alt:#E8E1C9;
+    --ink:#232920;
+    --ink-soft:#5B6155;
+    --rule:#C9C0A0;
+    --stamp-red:#A9412E;
+    --stamp-red-soft:#F1DAD3;
+    --good:#3F6B4A;
+    --good-soft:#DCE7DB;
+    --gold:#B98E2F;
+    --gold-soft:#F0E2BC;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--gold-soft);}
+
+  a{color:inherit;}
+
+  .sheet{
+    max-width:760px;
+    margin:0 auto;
+    padding:28px 20px 90px;
+  }
+
+  header.title-block{
+    border-bottom:2px solid var(--ink);
+    padding-bottom:18px;
+    margin-bottom:26px;
+  }
+  header.title-block h1{
+    font-family:'Source Serif 4', serif;
+    font-weight:700;
+    font-size:1.7rem;
+    margin:0 0 6px;
+    letter-spacing:-0.01em;
+  }
+  header.title-block p{
+    margin:0;
+    color:var(--ink-soft);
+    font-size:0.92rem;
+  }
+
+  /* progress strip */
+  .progress{
+    display:flex;
+    gap:6px;
+    margin:18px 0 0;
+  }
+  .progress .seg{
+    flex:1;
+    height:5px;
+    background:var(--rule);
+    border-radius:2px;
+    overflow:hidden;
+  }
+  .progress .seg i{
+    display:block;
+    height:100%;
+    width:0%;
+    background:var(--gold);
+    transition:width .35s ease;
+  }
+
+  section.part{
+    margin-top:40px;
+  }
+  .part-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    border-bottom:1px solid var(--ink);
+    padding-bottom:8px;
+    margin-bottom:14px;
+    gap:10px;
+  }
+  .part-head h2{
+    font-family:'Source Serif 4', serif;
+    font-size:1.25rem;
+    font-weight:600;
+    margin:0;
+  }
+  .part-head .pts{
+    font-size:0.82rem;
+    color:var(--ink-soft);
+    white-space:nowrap;
+  }
+  .instructions{
+    font-size:0.9rem;
+    color:var(--ink-soft);
+    margin:0 0 16px;
+  }
+
+  /* word bank */
+  .wordbank{
+    border:1.5px solid var(--ink);
+    background:var(--paper-alt);
+    padding:12px 16px;
+    margin-bottom:20px;
+    font-size:0.92rem;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 18px;
+  }
+  .wordbank span{
+    white-space:nowrap;
+  }
+  .wordbank span.used{
+    text-decoration:line-through;
+    color:var(--ink-soft);
+  }
+  .wordbank .ex{
+    font-style:italic;
+    font-weight:600;
+  }
+
+  .passage-title{
+    text-align:center;
+    font-family:'Source Serif 4', serif;
+    font-weight:700;
+    font-size:1.05rem;
+    margin:0 0 14px;
+  }
+  .passage{
+    font-family:'Source Serif 4', serif;
+    font-size:1.02rem;
+    line-height:1.85;
+    text-indent:1.6em;
+  }
+  select.gap{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:0.92rem;
+    font-weight:600;
+    border:none;
+    border-bottom:2px solid var(--ink);
+    background:transparent;
+    color:var(--ink);
+    padding:1px 4px 2px;
+    margin:0 2px;
+    appearance:none;
+    -webkit-appearance:none;
+    border-radius:0;
+    cursor:pointer;
+    min-width:118px;
+    text-align:center;
+  }
+  select.gap:focus{outline:2px solid var(--gold); outline-offset:2px;}
+  select.gap.correct{border-bottom-color:var(--good); background:var(--good-soft); color:var(--good);}
+  select.gap.incorrect{border-bottom-color:var(--stamp-red); background:var(--stamp-red-soft); color:var(--stamp-red);}
+  .gap-num{
+    font-weight:700;
+    font-size:0.8rem;
+    vertical-align:super;
+    margin-right:1px;
+  }
+
+  /* MCQ items */
+  .q{
+    margin-bottom:22px;
+    padding-bottom:18px;
+    border-bottom:1px dashed var(--rule);
+  }
+  .q:last-child{border-bottom:none;}
+  .q .stem{
+    font-size:1rem;
+    margin:0 0 10px;
+  }
+  .q .stem b{font-weight:700;}
+  .q .qn{
+    display:inline-block;
+    font-weight:700;
+    margin-right:6px;
+  }
+  .options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px 14px;
+  }
+  @media (max-width:480px){
+    .options{grid-template-columns:1fr;}
+  }
+  .opt{
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+    padding:8px 10px;
+    border:1.5px solid var(--rule);
+    background:var(--paper-alt);
+    cursor:pointer;
+    font-size:0.92rem;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .opt:hover{border-color:var(--ink-soft);}
+  .opt input{margin-top:2px; accent-color:var(--ink);}
+  .opt.selected{border-color:var(--ink); background:#fff;}
+  .opt.correct{border-color:var(--good); background:var(--good-soft); color:var(--good);}
+  .opt.incorrect{border-color:var(--stamp-red); background:var(--stamp-red-soft); color:var(--stamp-red);}
+  .opt .letter{font-weight:700;}
+
+  .example-row{
+    font-size:0.86rem;
+    color:var(--ink-soft);
+    font-style:italic;
+    margin-bottom:16px;
+    padding-bottom:14px;
+    border-bottom:1px dashed var(--rule);
+  }
+  .example-row b{color:var(--ink); font-style:normal;}
+
+  /* writing */
+  textarea{
+    width:100%;
+    min-height:220px;
+    font-family:'Source Serif 4', serif;
+    font-size:1rem;
+    line-height:1.7;
+    padding:14px;
+    border:1.5px solid var(--ink);
+    background:#fff;
+    resize:vertical;
+  }
+  textarea:focus{outline:2px solid var(--gold); outline-offset:2px;}
+  .wordcount{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:8px;
+    font-size:0.85rem;
+    color:var(--ink-soft);
+  }
+  .wordcount .count.ok{color:var(--good); font-weight:600;}
+  .wordcount .count.low{color:var(--stamp-red); font-weight:600;}
+  .prompts{
+    margin-top:14px;
+    font-size:0.88rem;
+    color:var(--ink-soft);
+  }
+  .prompts summary{cursor:pointer; color:var(--ink); font-weight:600;}
+  .prompts ul{margin:8px 0 0; padding-left:20px;}
+
+  /* score + controls */
+  .score-line{
+    font-size:0.9rem;
+    color:var(--ink-soft);
+    margin-top:4px;
+  }
+  .part-score{
+    font-weight:700;
+    color:var(--ink);
+  }
+
+  .controls{
+    position:sticky;
+    bottom:0;
+    background:linear-gradient(to top, var(--paper) 70%, transparent);
+    padding:18px 0 4px;
+    margin-top:10px;
+    display:flex;
+    gap:10px;
+    justify-content:center;
+  }
+  button{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-weight:600;
+    font-size:0.95rem;
+    padding:12px 22px;
+    border:2px solid var(--ink);
+    background:var(--ink);
+    color:var(--paper);
+    cursor:pointer;
+    transition:transform .1s ease;
+  }
+  button:active{transform:translateY(1px);}
+  button.secondary{
+    background:transparent;
+    color:var(--ink);
+  }
+
+  .stamp{
+    display:none;
+    border:2.5px solid var(--stamp-red);
+    color:var(--stamp-red);
+    font-family:'Source Serif 4', serif;
+    font-weight:700;
+    text-align:center;
+    padding:16px;
+    margin:26px 0 -14px;
+    transform:rotate(-1.5deg);
+    letter-spacing:0.02em;
+  }
+  .stamp.show{display:block;}
+  .stamp .big{font-size:1.7rem; display:block;}
+  .stamp .small{font-size:0.85rem; font-weight:500; display:block; margin-top:4px; letter-spacing:0;}
+
+  footer{
+    text-align:center;
+    font-size:0.8rem;
+    color:var(--ink-soft);
+    margin-top:50px;
+  }
+</style>
+</head>
+<body>
+  <div class="m-0 p-3 font-sans bg-gray-100">
+  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
+
+<div class="sheet">
+
+  <header class="title-block">
+    <h1>English Practice Test</h1>
+    <p>Reading &middot; Grammar &middot; Vocabulary &middot; Writing — 45 points total</p>
+    <div class="progress">
+      <div class="seg"><i id="prog1"></i></div>
+      <div class="seg"><i id="prog2"></i></div>
+      <div class="seg"><i id="prog3"></i></div>
+      <div class="seg"><i id="prog4"></i></div>
+    </div>
+  </header>
+
+  <div class="stamp" id="stamp">
+    <span class="big" id="stampScore">—</span>
+    <span class="small" id="stampNote">Tap "Check my answers" when you're ready</span>
+  </div>
+
+  <!-- PART 1 : READING -->
+  <section class="part" id="part1">
+    <div class="part-head">
+      <h2>Part 1 — Reading</h2>
+      <span class="pts">10 points</span>
+    </div>
+    <p class="instructions">Read the text and fill each gap using a word from the box below. Gap 0 is done for you as an example. Each word is used once.</p>
+
+    <div class="wordbank" id="wordbank">
+      <span class="ex">(0) problem</span>
+      <span data-word="charging">charging</span>
+      <span data-word="pollute">pollute</span>
+      <span data-word="introduced">introduced</span>
+      <span data-word="environment">environment</span>
+      <span data-word="stop">stop</span>
+      <span data-word="reducing">reducing</span>
+      <span data-word="rubbish">rubbish</span>
+      <span data-word="recycling">recycling</span>
+      <span data-word="plastic">plastic</span>
+      <span data-word="encourage">encourage</span>
+    </div>
+
+    <p class="passage-title">Government gets involved in bag debate</p>
+    <p class="passage">
+      One of the biggest issues facing our society today is the
+      <b>problem</b> of how to dispose of our
+      <sel data-n="1"></sel>, and in particular, plastic bags, which cause serious damage to the
+      <sel data-n="2"></sel>. While these bags may last just an hour in your shopping basket, they take hundreds of years to break down.
+      <sel data-n="3"></sel> our water&#8209;ways. Some retailers have taken steps to
+      <sel data-n="4"></sel> this from happening by introducing incentives to shoppers. For instance, some supermarkets are
+      <sel data-n="5"></sel> 400 riels a bag to customers to
+      <sel data-n="6"></sel> them to bring their own bags. In some countries the government
+      <sel data-n="7"></sel> a bag tax and
+      <sel data-n="8"></sel> bag consumption went down by 90%. A study showed, however, that when they brought in this legislation, the sale of plastic bin liners immediately went up, which suggested that shoppers had been
+      <sel data-n="9"></sel> their bags before by using them to line their rubbish bins. The government and the retail industry are now looking at other ways of
+      <sel data-n="10"></sel> the use of plastic bags.
+    </p>
+    <p class="score-line">Score: <span class="part-score" id="score1">0</span> / 10</p>
+  </section>
+
+  <!-- PART 2 : GRAMMAR -->
+  <section class="part" id="part2">
+    <div class="part-head">
+      <h2>Part 2 — Grammar</h2>
+      <span class="pts">15 points</span>
+    </div>
+    <p class="instructions">Choose the letter — a, b, c or d — that best completes each sentence. Only one answer is correct.</p>
+    <div class="example-row">Example: I can't go out; I'm <b>making</b> dinner. &nbsp; (a &ndash; making)</div>
+    <div id="grammarQuestions"></div>
+    <p class="score-line">Score: <span class="part-score" id="score2">0</span> / 15</p>
+  </section>
+
+  <!-- PART 3 : VOCABULARY -->
+  <section class="part" id="part3">
+    <div class="part-head">
+      <h2>Part 3 — Vocabulary</h2>
+      <span class="pts">15 points</span>
+    </div>
+    <p class="instructions">Choose the letter — a, b, c or d — that best completes each sentence. Only one answer is correct.</p>
+    <div class="example-row">Example: At <b>harvest</b> time there is always plenty of work to do on a farm. &nbsp; (d &ndash; harvest)</div>
+    <div id="vocabQuestions"></div>
+    <p class="score-line">Score: <span class="part-score" id="score3">0</span> / 15</p>
+  </section>
+
+  <!-- PART 4 : WRITING -->
+  <section class="part" id="part4">
+    <div class="part-head">
+      <h2>Part 4 — Writing</h2>
+      <span class="pts">10 points</span>
+    </div>
+    <p class="instructions">Write an essay in English, at least 80 words, about: <b>"What are the advantages and disadvantages of mobile phones?"</b></p>
+    <textarea id="essay" placeholder="Start writing here..."></textarea>
+    <div class="wordcount">
+      <span id="wc">0 words</span>
+      <span id="wcStatus">need 80+ to meet the minimum</span>
+    </div>
+    <details class="prompts">
+      <summary>Need a starting point?</summary>
+      <ul>
+        <li>Open with one sentence on why mobile phones matter today.</li>
+        <li>Give 2–3 advantages: staying in touch, access to information, safety.</li>
+        <li>Give 2–3 disadvantages: distraction, cost, overuse, screen time.</li>
+        <li>Close with your own opinion on balancing the two.</li>
+      </ul>
+    </details>
+    <p class="score-line" style="margin-top:14px;">This section isn't auto-marked — read it back yourself, or ask a teacher to check it.</p>
+  </section>
+
+  <div class="controls">
+    <button id="checkBtn">Check my answers</button>
+    <button class="secondary" id="resetBtn">Start over</button>
+  </div>
+
+  <footer>Based on your uploaded practice paper &middot; made for self-study</footer>
+
+</div>
+
+<script>
+// ---------- DATA ----------
+const readingAnswers = {
+  1:"rubbish", 2:"environment", 3:"pollute", 4:"stop", 5:"charging",
+  6:"encourage", 7:"introduced", 8:"plastic", 9:"recycling", 10:"reducing"
+};
+const bankWords = ["charging","pollute","introduced","environment","stop","reducing","rubbish","recycling","plastic","encourage"];
+
+const grammarQs = [
+  { stem:"Parents ……………… a lot of patience with their children.", options:{a:"are having",b:"have",c:"has",d:"having"}, answer:"b" },
+  { stem:"The driver ……………… in the crash.", options:{a:"was injured",b:"injured",c:"injuring",d:"he injured"}, answer:"a" },
+  { stem:"Sophal plays tennis well, but he plays football ……………… .", options:{a:"very good",b:"much better",c:"too well",d:"best"}, answer:"b" },
+  { stem:"All the trees in the park ……………… recently.", options:{a:"have been planted",b:"have being planted",c:"are planting",d:"are being planted"}, answer:"a" },
+  { stem:"If pictures weren't so expensive, I ……………… many more.", options:{a:"would buy",b:"will buy",c:"bought",d:"may buy"}, answer:"a" }
+];
+
+const vocabQs = [
+  { stem:"Many areas are very dry, the villagers spent a lot of time to get water from the ……………… .", options:{a:"hill",b:"forest",c:"pond",d:"flood"}, answer:"c" },
+  { stem:"Why don't you become a teacher? There's a great ……………… of them at the moment.", options:{a:"shortage",b:"want",c:"requirement",d:"need"}, answer:"a" },
+  { stem:"When my father died, I had no ……………… but to leave school and get a job.", options:{a:"possibility",b:"choice",c:"hope",d:"chance"}, answer:"b" },
+  { stem:"Today's volleyball match has been ……………… because of bad weather. They will play next Thursday instead.", options:{a:"postponed",b:"cancelled",c:"decided",d:"put away"}, answer:"a" },
+  { stem:"He was given the ……………… to study abroad.", options:{a:"occasion",b:"possibility",c:"advantage",d:"opportunity"}, answer:"d" }
+];
+
+// ---------- BUILD READING GAPS ----------
+document.querySelectorAll('.passage sel').forEach(el=>{
+  const n = el.dataset.n;
+  const sel = document.createElement('select');
+  sel.className = 'gap';
+  sel.dataset.n = n;
+  sel.innerHTML = '<option value="">— choose —</option>' +
+    bankWords.map(w=>`<option value="${w}">${w}</option>`).join('');
+  sel.addEventListener('change', updateWordbank);
+  const wrap = document.createElement('span');
+  wrap.innerHTML = `<span class="gap-num">(${n})</span>`;
+  wrap.appendChild(sel);
+  el.replaceWith(wrap);
+});
+
+function updateWordbank(){
+  const chosen = new Set();
+  document.querySelectorAll('select.gap').forEach(s=>{ if(s.value) chosen.add(s.value); });
+  document.querySelectorAll('#wordbank span[data-word]').forEach(span=>{
+    span.classList.toggle('used', chosen.has(span.dataset.word));
+  });
+}
+
+// ---------- BUILD MCQ SECTIONS ----------
+function buildMCQ(container, list, prefix){
+  list.forEach((q, i)=>{
+    const num = i+1;
+    const block = document.createElement('div');
+    block.className = 'q';
+    block.dataset.answer = q.answer;
+    block.dataset.num = num;
+    const stem = document.createElement('p');
+    stem.className = 'stem';
+    stem.innerHTML = `<span class="qn">${num}.</span>${q.stem}`;
+    block.appendChild(stem);
+    const opts = document.createElement('div');
+    opts.className = 'options';
+    Object.entries(q.options).forEach(([letter, text])=>{
+      const label = document.createElement('label');
+      label.className = 'opt';
+      label.innerHTML = `<input type="radio" name="${prefix}${num}" value="${letter}"><span><span class="letter">${letter} -</span> ${text}</span>`;
+      label.addEventListener('click', ()=>{
+        opts.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
+        label.classList.add('selected');
+      });
+      opts.appendChild(label);
+    });
+    block.appendChild(opts);
+    container.appendChild(block);
+  });
+}
+buildMCQ(document.getElementById('grammarQuestions'), grammarQs, 'g');
+buildMCQ(document.getElementById('vocabQuestions'), vocabQs, 'v');
+
+// ---------- WORD COUNT ----------
+const essay = document.getElementById('essay');
+const wc = document.getElementById('wc');
+const wcStatus = document.getElementById('wcStatus');
+essay.addEventListener('input', ()=>{
+  const words = essay.value.trim().split(/\s+/).filter(Boolean);
+  const n = essay.value.trim() ? words.length : 0;
+  wc.textContent = n + (n===1 ? ' word' : ' words');
+  if(n >= 80){
+    wcStatus.textContent = "minimum met";
+    wcStatus.className = 'count ok';
+  } else {
+    wcStatus.textContent = `${80-n} more to reach 80`;
+    wcStatus.className = 'count low';
+  }
+});
+
+// ---------- SCORING ----------
+function checkAnswers(){
+  // Part 1
+  let s1 = 0;
+  document.querySelectorAll('select.gap').forEach(sel=>{
+    const correct = readingAnswers[sel.dataset.n];
+    sel.classList.remove('correct','incorrect');
+    if(sel.value === correct){ sel.classList.add('correct'); s1++; }
+    else if(sel.value){ sel.classList.add('incorrect'); }
+  });
+  document.getElementById('score1').textContent = s1;
+
+  // Parts 2 & 3
+  function scoreMCQ(container){
+    let s = 0;
+    container.querySelectorAll('.q').forEach(block=>{
+      const correct = block.dataset.answer;
+      const opts = block.querySelectorAll('.opt');
+      const checked = block.querySelector('input:checked');
+      opts.forEach(o=>o.classList.remove('correct','incorrect'));
+      opts.forEach(o=>{
+        const val = o.querySelector('input').value;
+        if(val === correct) o.classList.add('correct');
+      });
+      if(checked){
+        if(checked.value === correct) s += 3;
+        else checked.closest('.opt').classList.add('incorrect');
+      }
+    });
+    return s;
+  }
+  const s2 = scoreMCQ(document.getElementById('grammarQuestions'));
+  const s3 = scoreMCQ(document.getElementById('vocabQuestions'));
+  document.getElementById('score2').textContent = s2;
+  document.getElementById('score3').textContent = s3;
+
+  // progress bars
+  document.getElementById('prog1').style.width = (s1/10*100)+'%';
+  document.getElementById('prog2').style.width = (s2/15*100)+'%';
+  document.getElementById('prog3').style.width = (s3/15*100)+'%';
+  const words = essay.value.trim() ? essay.value.trim().split(/\s+/).filter(Boolean).length : 0;
+  document.getElementById('prog4').style.width = (words>=80 ? 100 : words/80*100)+'%';
+
+  // stamp
+  const total = s1+s2+s3;
+  const stamp = document.getElementById('stamp');
+  stamp.classList.add('show');
+  document.getElementById('stampScore').textContent = `${total} / 40`;
+  document.getElementById('stampNote').textContent = words>=80
+    ? "Writing task word count met — go back and re-read your essay too."
+    : "Don't forget Part 4: your essay is short of the 80-word minimum.";
+  stamp.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+document.getElementById('checkBtn').addEventListener('click', checkAnswers);
+
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  document.querySelectorAll('select.gap').forEach(s=>{ s.value=''; s.classList.remove('correct','incorrect'); });
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected','correct','incorrect'));
+  document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
+  document.querySelectorAll('.part-score').forEach(el=>el.textContent='0');
+  document.querySelectorAll('.progress i').forEach(i=>i.style.width='0%');
+  document.getElementById('stamp').classList.remove('show');
+  essay.value='';
+  wc.textContent='0 words';
+  wcStatus.textContent='need 80+ to meet the minimum';
+  wcStatus.className='';
+  updateWordbank();
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+updateWordbank();
+</script>
+
+</body>
+</html>

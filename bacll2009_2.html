@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Exam Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+:root{
+  --board: #F6F2E8;
+  --board-deep:#EFE9DA;
+  --chalk:#211C15;
+  --chalk-dim:#5B554A;
+  --chalk-faint:#8C2A33;
+  --yellow:#651E25;
+  --correct:#A9843F;
+  --wrong:#3E6E4F;
+  --rule:#F6E7E4;
+  --maxw:760px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--board);
+  color:var(--chalk);
+  font-family:'IBM Plex Sans', system-ui, sans-serif;
+  line-height:1.55;
+  position:relative;
+  min-height:100vh;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.05;
+  mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:28px 20px 80px; position:relative;}
+header.board-header{padding-bottom:18px; border-bottom:1px dashed var(--rule); margin-bottom:6px; animation:chalkIn .8s ease both;}
+@keyframes chalkIn{from{opacity:0; transform:translateY(-6px);} to{opacity:1; transform:none;}}
+@media (prefers-reduced-motion: reduce){ header.board-header, .part{animation:none !important;} }
+h1.title{font-family:'Kalam',cursive; font-weight:700; font-size:clamp(28px,7vw,40px); color:var(--yellow); margin:0 0 4px; letter-spacing:.5px;}
+.subtitle{color:var(--chalk-dim); margin:0 0 14px; font-size:14px;}
+.tags{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;}
+.tag{border:1px dashed var(--chalk-faint); padding:4px 10px; border-radius:3px; font-size:12.5px; color:var(--chalk-dim);}
+.name-row{display:flex; align-items:baseline; gap:8px; font-family:'Kalam',cursive; font-size:17px; color:var(--chalk-dim); margin-bottom:4px; flex-wrap:wrap;}
+.name-row input{background:transparent; border:none; border-bottom:1px solid var(--chalk-faint); color:var(--chalk); font-family:'Kalam',cursive; font-size:17px; padding:2px 4px; width:200px;}
+.name-row input:focus{outline:none; border-bottom-color:var(--yellow);}
+.progress-bar{position:sticky; top:0; z-index:5; background:var(--board); padding:10px 20px; border-bottom:1px dashed var(--rule); font-size:13px; color:var(--chalk-dim);}
+.progress-bar-inner{max-width:var(--maxw); margin:0 auto; display:flex; justify-content:space-between; gap:12px;}
+nav.tabs{display:flex; gap:8px; overflow-x:auto; padding:16px 0 14px; scrollbar-width:none;}
+nav.tabs::-webkit-scrollbar{display:none;}
+.tab-btn{flex:0 0 auto; border:2px dashed var(--chalk-faint); background:transparent; color:var(--chalk-dim); font-family:'IBM Plex Sans',sans-serif; font-size:13.5px; padding:8px 14px; border-radius:3px; cursor:pointer; white-space:nowrap; transition:border-color .15s, color .15s;}
+.tab-btn.active{border-style:solid; border-color:var(--yellow); color:var(--yellow);}
+.tab-btn .done{color:var(--correct); margin-left:4px;}
+.part{display:none; animation:fadeUp .35s ease both;}
+.part.active{display:block;}
+@keyframes fadeUp{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+.panel{border:1.5px dashed var(--chalk-faint); border-radius:4px; padding:20px; margin-bottom:16px;}
+.panel h2{font-family:'Kalam',cursive; font-size:22px; color:var(--yellow); margin:0 0 6px;}
+.panel .marks{font-size:12.5px; color:var(--chalk-dim); margin-bottom:14px;}
+.instructions{font-size:14px; color:var(--chalk-dim); margin-bottom:16px;}
+.passage{font-size:15px;}
+.passage select{background:var(--board-deep); color:var(--chalk); border:1px solid var(--chalk-faint); border-radius:3px; padding:2px 6px; font-size:14px; font-family:inherit; margin:0 2px;}
+.passage select.correct{border-color:var(--correct); color:var(--correct);}
+.passage select.wrong{border-color:var(--wrong); color:var(--wrong);}
+.hint-answer{color:var(--correct); font-size:12.5px; margin-left:4px;}
+.match-row, .grammar-q, .vocab-q{border-top:1px dashed var(--rule); padding:14px 0;}
+.match-row:first-child, .grammar-q:first-child, .vocab-q:first-child{border-top:none; padding-top:0;}
+.match-row.example, .grammar-q.example, .vocab-q.example{opacity:.6;}
+.match-row select{background:var(--board-deep); color:var(--chalk); border:1px solid var(--chalk-faint); border-radius:3px; padding:6px 8px; font-family:inherit; font-size:14px; margin-top:6px;}
+.match-row select.correct{border-color:var(--correct);}
+.match-row select.wrong{border-color:var(--wrong);}
+.q-text{margin-bottom:8px;}
+.q-num{color:var(--yellow); font-family:'Kalam',cursive; margin-right:6px;}
+.options{display:flex; flex-direction:column; gap:6px;}
+.option-label{display:flex; gap:8px; align-items:baseline; font-size:14.5px; cursor:pointer; padding:4px 6px; border-radius:3px;}
+.option-label:hover{background:rgba(242,239,224,0.05);}
+.option-label input{accent-color:var(--yellow);}
+.option-label.correct{color:var(--correct);}
+.option-label.wrong{color:var(--wrong);}
+.chips, .vocab-words{display:flex; flex-wrap:wrap; gap:8px;}
+.chip{border:1.5px dashed var(--chalk-faint); background:transparent; color:var(--chalk); padding:8px 14px; border-radius:3px; font-size:14.5px; cursor:pointer; font-family:inherit;}
+.chip.selected{border-style:solid; border-color:var(--yellow); color:var(--yellow);}
+.chip.correct{border-style:solid; border-color:var(--correct); color:var(--correct);}
+.chip.wrong{border-style:solid; border-color:var(--wrong); color:var(--wrong);}
+.actions{display:flex; gap:10px; margin-top:16px; flex-wrap:wrap;}
+.btn{border:1.5px dashed var(--yellow); background:transparent; color:var(--yellow); padding:9px 18px; border-radius:3px; font-family:'Kalam',cursive; font-size:16px; cursor:pointer;}
+.btn:hover{border-style:solid;}
+.btn.secondary{border-color:var(--chalk-faint); color:var(--chalk-dim);}
+.btn:focus-visible, select:focus-visible, input:focus-visible, .chip:focus-visible, .tab-btn:focus-visible{outline:2px solid var(--yellow); outline-offset:2px;}
+.result-line{margin-top:14px; font-size:14.5px; color:var(--chalk-dim); min-height:1.2em;}
+.result-line strong{color:var(--yellow);}
+textarea#essay{width:100%; min-height:220px; background:var(--board-deep); color:var(--chalk); border:1px solid var(--chalk-faint); border-radius:4px; padding:12px; font-family:inherit; font-size:14.5px; line-height:1.6; resize:vertical;}
+.wordcount{font-size:13px; margin-top:8px; color:var(--chalk-dim);}
+.wordcount.ok{color:var(--correct);}
+.wordcount.off{color:var(--yellow);}
+details.helper{border:1px dashed var(--chalk-faint); border-radius:4px; padding:10px 14px; margin-bottom:16px; font-size:14px; color:var(--chalk-dim);}
+details.helper summary{cursor:pointer; font-family:'Kalam',cursive; color:var(--yellow); font-size:15.5px;}
+details.helper ul{margin:10px 0 0; padding-left:20px;}
+footer.credits{text-align:center; color:var(--chalk-faint); font-size:12px; margin-top:30px;}
+@media (max-width:480px){
+  .wrap{padding:20px 14px 70px;}
+  .panel{padding:16px;}
+  .name-row input{width:150px;}
+}
+</style>
+</head>
+<body>
+  <div class="m-0 p-3 font-sans bg-gray-100">
+  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
+  </div>
+<div class="progress-bar">
+  <div class="progress-bar-inner">
+    <span id="progressText">0 of 4 parts checked</span>
+    <span id="scoreText">Score: —</span>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="board-header">
+    <h1 class="title">English Exam Practice</h1>
+    <p class="subtitle" id="subtitleText">A practice version of the English subject exam, section by section.</p>
+    <div class="tags">
+      <span class="tag">Time: 90 minutes</span>
+      <span class="tag">Total: 62 marks</span>
+      <span class="tag">5 parts</span>
+    </div>
+    <div class="name-row">
+      <label for="studentName">Your name:</label>
+      <input id="studentName" type="text" placeholder="type it here">
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-btn active" data-part="1" onclick="showPart(1)">Reading <span class="done" id="doneMark1"></span></button>
+    <button class="tab-btn" data-part="2" onclick="showPart(2)">Language use <span class="done" id="doneMark2"></span></button>
+    <button class="tab-btn" data-part="3" onclick="showPart(3)">Grammar <span class="done" id="doneMark3"></span></button>
+    <button class="tab-btn" data-part="4" onclick="showPart(4)">Vocabulary <span class="done" id="doneMark4"></span></button>
+    <button class="tab-btn" data-part="5" onclick="showPart(5)">Writing <span class="done" id="doneMark5"></span></button>
+  </nav>
+
+  <!-- PART 1: READING -->
+  <section class="part active" id="part1">
+    <div class="panel">
+      <h2>Part 1 — Reading</h2>
+      <p class="marks">10 marks · choose a word from the box for each gap</p>
+      <p class="instructions">Read the text and fill each gap with the best word from the box. Gap (0) is done for you as an example.</p>
+      <div class="tags" id="wordbank"></div>
+      <p class="passage" id="passageText"></p>
+      <div class="actions">
+        <button class="btn" onclick="checkReading()">Check answers</button>
+        <button class="btn secondary" onclick="resetReading()">Try again</button>
+      </div>
+      <p class="result-line" id="resultReading"></p>
+    </div>
+  </section>
+
+  <!-- PART 2: LANGUAGE USE -->
+  <section class="part" id="part2">
+    <div class="panel">
+      <h2>Part 2 — Language use</h2>
+      <p class="marks">6 marks · match each sentence in A with the best reply in B</p>
+      <p class="instructions">Question 1 is done for you as an example.</p>
+      <div id="matchRows"></div>
+      <div class="actions">
+        <button class="btn" onclick="checkMatching()">Check answers</button>
+        <button class="btn secondary" onclick="resetMatching()">Try again</button>
+      </div>
+      <p class="result-line" id="resultMatching"></p>
+    </div>
+  </section>
+
+  <!-- PART 3: GRAMMAR -->
+  <section class="part" id="part3">
+    <div class="panel">
+      <h2>Part 3 — Grammar</h2>
+      <p class="marks">14 marks · only one answer is correct</p>
+      <p class="instructions">The example question is answered for you.</p>
+      <div id="grammarQs"></div>
+      <div class="actions">
+        <button class="btn" onclick="checkGrammar()">Check answers</button>
+        <button class="btn secondary" onclick="resetGrammar()">Try again</button>
+      </div>
+      <p class="result-line" id="resultGrammar"></p>
+    </div>
+  </section>
+
+  <!-- PART 4: VOCABULARY -->
+  <section class="part" id="part4">
+    <div class="panel">
+      <h2>Part 4 — Vocabulary</h2>
+      <p class="marks">17 marks · tap the word that doesn't belong in each group</p>
+      <p class="instructions">The example below shows how it works — "television" is the odd one out because the others are all printed media.</p>
+      <div id="vocabQs"></div>
+      <div class="actions">
+        <button class="btn" onclick="checkVocab()">Check answers</button>
+        <button class="btn secondary" onclick="resetVocab()">Try again</button>
+      </div>
+      <p class="result-line" id="resultVocab"></p>
+    </div>
+  </section>
+
+  <!-- PART 5: WRITING -->
+  <section class="part" id="part5">
+    <div class="panel">
+      <h2>Part 5 — Writing</h2>
+      <p class="marks">15 marks · 100–150 words</p>
+      <p class="instructions">Write about <em>"Traffic Accident Issues in Our Society."</em></p>
+      <details class="helper">
+        <summary>Need a starting point?</summary>
+        <ul>
+          <li>Say how common traffic accidents are where you live.</li>
+          <li>Give two or three causes — speeding, drink driving, poor roads, not wearing helmets.</li>
+          <li>Explain the effects on families and the community.</li>
+          <li>Suggest what drivers, pedestrians, or the government could do differently.</li>
+        </ul>
+      </details>
+      <textarea id="essay" placeholder="Start writing here..." oninput="updateWordCount()"></textarea>
+      <p class="wordcount" id="wordcount">0 words</p>
+    </div>
+  </section>
+
+  <footer class="credits">Practice paper adapted from a Basic Education English exam. Made for self-study.</footer>
+</div>
+
+<script>
+/* ---------- PART 1: READING ---------- */
+const READING_WORDS = ["pollute","introduced","environment","encourage","stop","reducing","rubbish","recycling"];
+const READING_ANSWERS = {1:"rubbish",2:"environment",3:"pollute",4:"stop",5:"encourage",6:"introduced",7:"recycling",8:"reducing"};
+
+function renderWordbank(){
+  const bank = document.getElementById('wordbank');
+  let html = '<span class="tag" style="border-style:solid;border-color:var(--yellow);color:var(--yellow);">problem ✓ (0)</span>';
+  html += READING_WORDS.map(w => '<span class="tag">'+w+'</span>').join('');
+  bank.innerHTML = html;
+}
+
+function selectHtml(n){
+  let opts = '<option value="">…</option>';
+  opts += READING_WORDS.map(w => '<option value="'+w+'">'+w+'</option>').join('');
+  return '<select id="b'+n+'">'+opts+'</select>';
+}
+
+function renderPassage(){
+  const html =
+    'One of the biggest issues facing in our society today is the (0) <strong>problem</strong> of how to dispose of our (1) ' + selectHtml(1) +
+    ', and in particular, plastic bags, which cause serious damage to the (2) ' + selectHtml(2) +
+    '. While these bags may last just an hour in your shopping basket, they take hundreds of years to break down. They choke up rivers and (3) ' + selectHtml(3) +
+    ' our waterways. Some retailers have taken steps to (4) ' + selectHtml(4) +
+    ' this from happening by introducing incentives to shoppers. For instance, one Champa Supper Market is charging 400 riels a bag to customers to (5) ' + selectHtml(5) +
+    ' them to bring their own bags. In some countries the government (6) ' + selectHtml(6) +
+    ' a bag tax and plastic bag consumption went down by 90%. A study showed, however, that when they brought in this legislation, the sale of plastic bin liners immediately went up, which suggested that shoppers had been (7) ' + selectHtml(7) +
+    ' their used bags by using them to line their rubbish bins. The government and retail industry are now looking at other ways of (8) ' + selectHtml(8) +
+    ' the use of plastic bags.';
+  document.getElementById('passageText').innerHTML = html;
+}
+
+function checkReading(){
+  let correct = 0;
+  for(let n=1; n<=8; n++){
+    const sel = document.getElementById('b'+n);
+    const old = document.querySelector('.hint-answer[data-for="b'+n+'"]');
+    if(old) old.remove();
+    if(sel.value === READING_ANSWERS[n]){
+      sel.classList.remove('wrong'); sel.classList.add('correct'); correct++;
+    } else {
+      sel.classList.remove('correct'); sel.classList.add('wrong');
+      const hint = document.createElement('span');
+      hint.className = 'hint-answer';
+      hint.setAttribute('data-for','b'+n);
+      hint.textContent = ' (' + READING_ANSWERS[n] + ')';
+      sel.after(hint);
+    }
+  }
+  document.getElementById('resultReading').innerHTML = '<strong>'+correct+' / 8</strong> correct.';
+  recordScore('reading', correct, 8);
+}
+
+function resetReading(){
+  for(let n=1; n<=8; n++){
+    const sel = document.getElementById('b'+n);
+    sel.value = '';
+    sel.classList.remove('correct','wrong');
+  }
+  document.querySelectorAll('.hint-answer').forEach(e => e.remove());
+  document.getElementById('resultReading').textContent = '';
+  recordScore('reading', null, 8);
+}
+
+/* ---------- PART 2: LANGUAGE USE ---------- */
+const MATCH_A = [
+  {n:1, text:"Do you know what the time is?", ans:'b', example:true},
+  {n:2, text:"What was the party like?", ans:'d'},
+  {n:3, text:"Could you pass me the book, please?", ans:'c'},
+  {n:4, text:"My father has just had a new job.", ans:'g'},
+  {n:5, text:"Shall I help you with that?", ans:'a'},
+  {n:6, text:"Have you got a lighter?", ans:'h'},
+  {n:7, text:"I didn't know Sopheap was married.", ans:'e'}
+];
+const MATCH_B = {a:"No, there's no need, thanks.", b:"Sorry, I haven't got a watch.", c:"Certainly. Here you are.", d:"It was great fun.", e:"Neither did I.", f:"At 9 o'clock tomorrow.", g:"Oh, I'm so pleased to hear that.", h:"Sorry, I don't smoke.", i:"Ah well! That's life."};
+
+function renderMatching(){
+  const container = document.getElementById('matchRows');
+  container.innerHTML = MATCH_A.map(q => {
+    if(q.example){
+      return '<div class="match-row example"><div class="q-text"><span class="q-num">'+q.n+'.</span>'+q.text+'</div><div style="font-size:14px;color:var(--chalk-dim)">&rarr; '+q.ans+'. '+MATCH_B[q.ans]+' (example)</div></div>';
+    }
+    let opts = '<option value="">choose…</option>';
+    opts += Object.keys(MATCH_B).map(k => '<option value="'+k+'">'+k+'. '+MATCH_B[k]+'</option>').join('');
+    return '<div class="match-row" id="mrow'+q.n+'"><div class="q-text"><span class="q-num">'+q.n+'.</span>'+q.text+'</div><select id="m'+q.n+'">'+opts+'</select><span class="hint-answer" id="mhint'+q.n+'"></span></div>';
+  }).join('');
+}
+
+function checkMatching(){
+  let correct = 0, total = 0;
+  MATCH_A.filter(q => !q.example).forEach(q => {
+    total++;
+    const sel = document.getElementById('m'+q.n);
+    const hint = document.getElementById('mhint'+q.n);
+    if(sel.value === q.ans){
+      sel.classList.add('correct'); sel.classList.remove('wrong'); correct++; hint.textContent = '';
+    } else {
+      sel.classList.add('wrong'); sel.classList.remove('correct');
+      hint.textContent = ' (correct: ' + q.ans + ')';
+    }
+  });
+  document.getElementById('resultMatching').innerHTML = '<strong>'+correct+' / '+total+'</strong> correct.';
+  recordScore('language', correct, total);
+}
+
+function resetMatching(){
+  MATCH_A.filter(q => !q.example).forEach(q => {
+    const sel = document.getElementById('m'+q.n);
+    sel.value = '';
+    sel.classList.remove('correct','wrong');
+    document.getElementById('mhint'+q.n).textContent = '';
+  });
+  document.getElementById('resultMatching').textContent = '';
+  recordScore('language', null, 6);
+}
+
+/* ---------- PART 3: GRAMMAR ---------- */
+const GRAMMAR = [
+  {n:0, text:"Yesterday I ……… to Siem Reap.", opts:["go","went","am going","been"], ans:1, example:true},
+  {n:1, text:"The man ……… hat blew off in the wind chased it across the park.", opts:["his","who","whose","that"], ans:2},
+  {n:2, text:"If anyone phone me, tell them that I ……… to the airport.", opts:["have gone","go","have been","was going"], ans:0},
+  {n:3, text:"If it ……… rain, we'll have the party outside.", opts:["doesn't","couldn't","didn't","don't"], ans:0},
+  {n:4, text:"A company cannot survive if losses are always ……… profits.", opts:["great than","greater than","the greatest","great as"], ans:1},
+  {n:5, text:"Our flight from Koh Kong to Ratanakiri was delayed ……… the heavy rain.", opts:["because of","because","on account","as result"], ans:0},
+  {n:6, text:"Your mother used to visit you quite often, ………?", opts:["didn't she","doesn't she","wouldn't she","hadn't she"], ans:0},
+  {n:7, text:"The magnificent ……… temple was constructed by the Chinese.", opts:["8-centuries-old","8-century's old","old-8-centuries","8-century-old"], ans:3},
+  {n:8, text:"If he ………, he would have been able to pass the exam.", opts:["studies hard","were studying hard","studying hard","had studied hard"], ans:3},
+  {n:9, text:"If Kimseng ……… with us, he would have had a great time.", opts:["had come","came","would have come","would come"], ans:0},
+  {n:10, text:"Are you sure that your brother ……… use the new equipment?", opts:["knows to","knows the","knows how","knows how to"], ans:3},
+  {n:11, text:"It was not until she had arrived home ……… remembered her appointment with the doctor.", opts:["when she","that she","she","did she"], ans:1},
+{n:12, text:"Her grades have improved, but only ……… .", opts:["in a small amount","very slightly","minimum","some"], ans:1},
+  {n:13, text:"The changes in this city have occurred ……… .", opts:["with swiftness","rapidly","fast","in rapid ways"], ans:1},
+  {n:14, text:"There has not been a great response to the sale, ………?", opts:["does there","hasn't there","hasn't it","has there"], ans:3}
+];
+
+function renderGrammar(){
+  const letters = ['a','b','c','d'];
+  const container = document.getElementById('grammarQs');
+  container.innerHTML = GRAMMAR.map(q => {
+    if(q.example){
+      return '<div class="grammar-q example"><div class="q-text"><span class="q-num">Example.</span>'+q.text+'</div><div style="font-size:14px;color:var(--chalk-dim)">&rarr; '+letters[q.ans]+'. '+q.opts[q.ans]+' (example)</div></div>';
+    }
+    const opts = q.opts.map((o,i) => '<label class="option-label"><input type="radio" name="g'+q.n+'" value="'+i+'"> '+letters[i]+'. '+o+'</label>').join('');
+    return '<div class="grammar-q" id="grow'+q.n+'"><div class="q-text"><span class="q-num">'+q.n+'.</span>'+q.text+'</div><div class="options">'+opts+'</div></div>';
+  }).join('');
+}
+
+function checkGrammar(){
+  let correct = 0, total = 0;
+  GRAMMAR.filter(q => !q.example).forEach(q => {
+    total++;
+    const radios = document.getElementsByName('g'+q.n);
+    let chosen = -1;
+    radios.forEach((r,i) => { if(r.checked) chosen = i; });
+    const labels = document.querySelectorAll('#grow'+q.n+' .option-label');
+    labels.forEach((lab,i) => {
+      lab.classList.remove('correct','wrong');
+      if(i === q.ans) lab.classList.add('correct');
+      else if(i === chosen) lab.classList.add('wrong');
+    });
+    if(chosen === q.ans) correct++;
+  });
+  document.getElementById('resultGrammar').innerHTML = '<strong>'+correct+' / '+total+'</strong> correct.';
+  recordScore('grammar', correct, total);
+}
+
+function resetGrammar(){
+  GRAMMAR.filter(q => !q.example).forEach(q => {
+    document.getElementsByName('g'+q.n).forEach(r => r.checked = false);
+    document.querySelectorAll('#grow'+q.n+' .option-label').forEach(l => l.classList.remove('correct','wrong'));
+  });
+  document.getElementById('resultGrammar').textContent = '';
+  recordScore('grammar', null, 14);
+}
+
+/* ---------- PART 4: VOCABULARY ---------- */
+const VOCAB = [
+  {n:0, words:["book","magazine","television","newspaper"], odd:2, example:true},
+  {n:1, words:["huge","enormous","immense","tiny"], odd:3},
+  {n:2, words:["pretty","ugly","handsome","graceful"], odd:1},
+  {n:3, words:["reduced","costly","unreasonable","dear"], odd:0},
+  {n:4, words:["glad","sad","merry","cheerful"], odd:1},
+  {n:5, words:["rusty","dusty","strained","spotless"], odd:3},
+  {n:6, words:["scared","frightened","bold","cowardly"], odd:2},
+  {n:7, words:["sickly","healthy","sound","fit"], odd:0}
+];
+const vocabSel = {};
+
+function renderVocab(){
+  const container = document.getElementById('vocabQs');
+  container.innerHTML = VOCAB.map(q => {
+    if(q.example){
+      const chips = q.words.map((w,i) => '<span class="chip '+(i===q.odd?'correct':'')+'">'+w+'</span>').join('');
+      return '<div class="vocab-q example"><div class="q-text"><span class="q-num">Example.</span>which word does not belong?</div><div class="vocab-words">'+chips+'</div></div>';
+    }
+    const chips = q.words.map((w,i) => '<button type="button" class="chip" data-i="'+i+'" onclick="selectVocab('+q.n+','+i+')">'+w+'</button>').join('');
+    return '<div class="vocab-q" id="vrow'+q.n+'"><div class="q-text"><span class="q-num">'+q.n+'.</span>which word does not belong?</div><div class="vocab-words">'+chips+'</div></div>';
+  }).join('');
+}
+
+function selectVocab(n,i){
+  vocabSel[n] = i;
+  document.querySelectorAll('#vrow'+n+' .chip').forEach(c => c.classList.remove('selected'));
+  document.querySelector('#vrow'+n+' .chip[data-i="'+i+'"]').classList.add('selected');
+}
+
+function checkVocab(){
+  let correct = 0, total = 0;
+  VOCAB.filter(q => !q.example).forEach(q => {
+    total++;
+    const chosen = vocabSel[q.n];
+    document.querySelectorAll('#vrow'+q.n+' .chip').forEach((c,i) => {
+      c.classList.remove('selected','correct','wrong');
+      if(i === q.odd) c.classList.add('correct');
+      else if(i === chosen) c.classList.add('wrong');
+    });
+    if(chosen === q.odd) correct++;
+  });
+  document.getElementById('resultVocab').innerHTML = '<strong>'+correct+' / '+total+'</strong> correct.';
+  recordScore('vocab', correct, total);
+}
+
+function resetVocab(){
+  VOCAB.filter(q => !q.example).forEach(q => {
+    delete vocabSel[q.n];
+    document.querySelectorAll('#vrow'+q.n+' .chip').forEach(c => c.classList.remove('selected','correct','wrong'));
+  });
+  document.getElementById('resultVocab').textContent = '';
+  recordScore('vocab', null, 7);
+}
+
+/* ---------- PART 5: WRITING ---------- */
+function updateWordCount(){
+  const text = document.getElementById('essay').value.trim();
+  const words = text.length ? text.split(/\s+/).length : 0;
+  const el = document.getElementById('wordcount');
+  el.classList.remove('ok','off');
+  if(words === 0){
+    el.textContent = '0 words';
+  } else if(words >= 100 && words <= 150){
+    el.textContent = words + ' words — nice, that\'s within the target length.';
+    el.classList.add('ok');
+  } else {
+    el.textContent = words + ' words — aim for 100 to 150 words.';
+    el.classList.add('off');
+  }
+}
+
+/* ---------- SHARED: TABS + SCORE TRACKING ---------- */
+function showPart(n){
+  document.querySelectorAll('.part').forEach(p => p.classList.remove('active'));
+  document.getElementById('part'+n).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.tab-btn[data-part="'+n+'"]').classList.add('active');
+}
+
+const scores = {reading:null, language:null, grammar:null, vocab:null};
+const partIndex = {reading:1, language:2, grammar:3, vocab:4};
+
+function recordScore(key, correct, total){
+  scores[key] = (correct === null) ? null : {correct:correct, total:total};
+  updateProgress();
+}
+
+function updateProgress(){
+  let checked = 0, sumC = 0, sumT = 0;
+  Object.keys(scores).forEach(k => {
+    const mark = document.getElementById('doneMark'+partIndex[k]);
+    if(scores[k]){
+      checked++; sumC += scores[k].correct; sumT += scores[k].total;
+      if(mark) mark.textContent = '✓';
+    } else if(mark){
+      mark.textContent = '';
+    }
+  });
+  document.getElementById('progressText').textContent = checked + ' of 4 parts checked';
+  document.getElementById('scoreText').textContent = checked ? ('Score: ' + sumC + ' / ' + sumT) : 'Score: —';
+}
+
+document.getElementById('studentName').addEventListener('input', function(){
+  const v = this.value.trim();
+  document.getElementById('subtitleText').textContent = v ?
+    ('Good luck, ' + v + ' — work through each part below.') :
+    'A practice version of the English subject exam, section by section.';
+});
+
+renderWordbank();
+renderPassage();
+renderMatching();
+renderGrammar();
+renderVocab();
+updateProgress();
+</script>
+</body>
+</html>

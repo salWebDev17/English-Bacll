@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Champa Sport Centre — English Practice</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  :root{
+    --paper:#EFEAE0;
+    --ink:#22261F;
+    --rule:#3A3F33;
+    --field:#3F6B4A;
+    --field-dark:#2B4A33;
+    --correct:#3F6B4A;
+    --wrong:#A8412E;
+    --accent:#C08A2E;
+    --card:#F7F4EC;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    line-height:1.5;
+  }
+  .wrap{
+    max-width:760px;
+    margin:0 auto;
+    padding:32px 20px 80px;
+  }
+  header{
+    border-bottom:3px solid var(--rule);
+    padding-bottom:16px;
+    margin-bottom:28px;
+  }
+  header .kicker{
+    font-family:"Courier New",monospace;
+    font-size:13px;
+    letter-spacing:0.02em;
+    color:var(--field-dark);
+    margin:0 0 6px;
+  }
+  header h1{
+    font-size:30px;
+    margin:0 0 6px;
+    font-weight:600;
+    line-height:1.15;
+  }
+  header p{
+    margin:0;
+    font-size:14.5px;
+    color:#565b4c;
+  }
+  .progress-row{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    margin-top:16px;
+  }
+  .progress-track{
+    flex:1;
+    height:6px;
+    background:#DDD6C4;
+    border-radius:3px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--field);
+    width:0%;
+    transition:width .4s ease;
+  }
+  #score-label{
+    font-family:"Courier New",monospace;
+    font-size:13px;
+    color:var(--field-dark);
+    white-space:nowrap;
+  }
+  section.part{
+    margin-bottom:44px;
+  }
+  .part-title{
+    font-size:12.5px;
+    font-family:"Courier New",monospace;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--accent);
+    margin:0 0 4px;
+  }
+  .part h2{
+    font-size:22px;
+    margin:0 0 4px;
+    font-weight:600;
+  }
+  .part .instructions{
+    font-size:14.5px;
+    color:#565b4c;
+    margin:0 0 18px;
+  }
+  .storycard{
+    background:var(--card);
+    border:1px solid #D9D2BE;
+    border-radius:4px;
+    padding:22px 24px;
+    font-size:16.5px;
+  }
+  .storycard p{margin:0 0 12px;}
+  .bank{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:20px;
+    padding:14px;
+    background:#E3DECB;
+    border-radius:4px;
+  }
+  .bank span{
+    font-family:"Courier New",monospace;
+    font-size:13px;
+    background:var(--paper);
+    border:1px solid #C7BEA3;
+    border-radius:3px;
+    padding:3px 8px;
+  }
+  .bank span.used{
+    opacity:0.35;
+    text-decoration:line-through;
+  }
+  .gapselect{
+    font-family:inherit;
+    font-size:16px;
+    padding:2px 6px;
+    border:none;
+    border-bottom:2px solid var(--field);
+    background:transparent;
+    color:var(--field-dark);
+    font-weight:600;
+    min-width:110px;
+  }
+  .gapselect.correct{border-bottom-color:var(--correct); color:var(--correct);}
+  .gapselect.wrong{border-bottom-color:var(--wrong); color:var(--wrong);}
+  .gapselect:disabled{opacity:1;}
+
+  .q{
+    margin-bottom:22px;
+    padding-bottom:20px;
+    border-bottom:1px solid #DCD5C1;
+  }
+  .q:last-child{border-bottom:none;}
+  .qtext{
+    font-size:16.5px;
+    margin:0 0 12px;
+  }
+  .qtext .num{
+    font-family:"Courier New",monospace;
+    color:var(--accent);
+    margin-right:6px;
+  }
+  .options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  @media (max-width:480px){
+    .options{grid-template-columns:1fr;}
+  }
+  .opt{
+    text-align:left;
+    font-family:inherit;
+    font-size:15px;
+    background:var(--card);
+    border:1px solid #D2CAB2;
+    border-radius:4px;
+    padding:9px 12px;
+    cursor:pointer;
+    color:var(--ink);
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .opt:hover{border-color:var(--field);}
+  .opt.selected{border-color:var(--field-dark); background:#E5EEE1;}
+  .opt.correct{
+    border-color:var(--correct);
+    background:#E1EFE3;
+    color:var(--field-dark);
+    font-weight:600;
+  }
+  .opt.wrong{
+    border-color:var(--wrong);
+    background:#F4E4E0;
+    color:var(--wrong);
+  }
+  .opt:disabled{cursor:default;}
+  .letter{
+    font-family:"Courier New",monospace;
+    font-weight:700;
+    margin-right:8px;
+    color:var(--accent);
+  }
+
+  textarea{
+    width:100%;
+    min-height:220px;
+    font-family:inherit;
+    font-size:15.5px;
+    padding:16px;
+    border:1px solid #D2CAB2;
+    border-radius:4px;
+    background:var(--card);
+    color:var(--ink);
+    resize:vertical;
+  }
+  .wordcount{
+    font-family:"Courier New",monospace;
+    font-size:13px;
+    color:#7a7a6a;
+    margin-top:6px;
+    text-align:right;
+  }
+  .wordcount.ok{color:var(--correct);}
+
+  .check-btn{
+    font-family:"Courier New",monospace;
+    font-size:13.5px;
+    background:var(--field-dark);
+    color:var(--paper);
+    border:none;
+    border-radius:3px;
+    padding:9px 18px;
+    cursor:pointer;
+    letter-spacing:0.02em;
+  }
+  .check-btn:hover{background:var(--field);}
+  .check-btn:disabled{opacity:0.4; cursor:default;}
+
+  .part-score{
+    font-family:"Courier New",monospace;
+    font-size:13px;
+    color:var(--field-dark);
+    margin-top:14px;
+    min-height:18px;
+  }
+
+  footer{
+    text-align:center;
+    font-family:"Courier New",monospace;
+    font-size:12px;
+    color:#8a8a7a;
+    margin-top:50px;
+  }
+
+  .reset-row{
+    text-align:center;
+    margin-top:30px;
+  }
+  .reset-btn{
+    font-family:"Courier New",monospace;
+    font-size:12.5px;
+    background:none;
+    border:1px solid #B8AF95;
+    color:#565b4c;
+    padding:8px 16px;
+    border-radius:3px;
+    cursor:pointer;
+  }
+  .reset-btn:hover{border-color:var(--field-dark); color:var(--field-dark);}
+</style>
+</head>
+<body>
+  <div class="m-0 p-3 font-sans bg-gray-100">
+  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
+  </div>
+<div class="wrap">
+  <header>
+    <p class="kicker">Grade 9 English — Practice Session</p>
+    <h1>The Champa Sport Centre</h1>
+    <p>Reading · Grammar · Vocabulary · Writing — work through each part, then check your answers.</p>
+    <div class="progress-row">
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+      <div id="score-label">0 / 21 answered</div>
+    </div>
+  </header>
+
+  <!-- PART 1: READING -->
+  <section class="part" id="part1">
+    <p class="part-title">Part 1 · Reading</p>
+    <h2>Fill the gaps</h2>
+    <p class="instructions">Choose a word from the box for each gap. Gap 1 has been done for you.</p>
+    <div class="bank" id="bank">
+      <span data-word="discussion">discussion</span>
+      <span data-word="fire">fire</span>
+      <span data-word="to pay">to pay</span>
+      <span data-word="originally">originally</span>
+      <span data-word="sports">sports</span>
+      <span data-word="converted">converted</span>
+      <span data-word="rebuilt" class="used">rebuilt</span>
+      <span data-word="used">used</span>
+      <span data-word="businessman">businessman</span>
+      <span data-word="money">money</span>
+      <span data-word="indoors">indoors</span>
+    </div>
+    <div class="storycard">
+      <p>The Champa Sport Centre, which has been completely <strong>(1) rebuilt</strong>, was reopened yesterday by the Minister of Sport. The building was
+      <select class="gapselect" data-gap="2" data-answer="originally"></select>
+      used as a market, but was sold to Champa Council in 1981, and then
+      <select class="gapselect" data-gap="3" data-answer="converted"></select>
+      into a sport hall. Local schools played football and basketball
+      <select class="gapselect" data-gap="4" data-answer="indoors"></select>,
+      and keep fit classes were held there.</p>
+      <p>In 2001, the hall was damaged by a
+      <select class="gapselect" data-gap="5" data-answer="fire"></select>
+      which broke out in the heating system. The hall could not be used, and remained empty while
+      <select class="gapselect" data-gap="6" data-answer="discussion"></select>
+      continued about its future. It was then decided that the hall would be rebuilt, and an appeal for
+      <select class="gapselect" data-gap="7" data-answer="money"></select>
+      was launched.</p>
+      <p>Two years ago, a local
+      <select class="gapselect" data-gap="8" data-answer="businessman"></select>
+      offered
+      <select class="gapselect" data-gap="9" data-answer="to pay"></select>
+      for the building work, and plans were drawn up. The new hall includes a swimming pool, running track and other
+      <select class="gapselect" data-gap="10" data-answer="sports"></select>
+      facilities which can be
+      <select class="gapselect" data-gap="11" data-answer="used"></select>
+      by anyone in the Champa area. The Minister made a speech in which he congratulated everyone involved.</p>
+    </div>
+    <button class="check-btn" onclick="checkPart(1)">Check answers</button>
+    <p class="part-score" id="score1"></p>
+  </section>
+
+  <!-- PART 2: GRAMMAR -->
+  <section class="part" id="part2">
+    <p class="part-title">Part 2 · Grammar</p>
+    <h2>Choose the correct answer</h2>
+    <p class="instructions">Only one answer is correct in each question.</p>
+    <div id="grammar-questions"></div>
+    <button class="check-btn" onclick="checkPart(2)">Check answers</button>
+    <p class="part-score" id="score2"></p>
+  </section>
+
+  <!-- PART 3: VOCABULARY -->
+  <section class="part" id="part3">
+    <p class="part-title">Part 3 · Vocabulary</p>
+    <h2>Choose the correct word</h2>
+    <p class="instructions">Only one answer is correct in each question.</p>
+    <div id="vocab-questions"></div>
+    <button class="check-btn" onclick="checkPart(3)">Check answers</button>
+    <p class="part-score" id="score3"></p>
+  </section>
+
+  <!-- PART 4: WRITING -->
+  <section class="part" id="part4">
+    <p class="part-title">Part 4 · Writing</p>
+    <h2>Studying for Success</h2>
+    <p class="instructions">Write an essay of at least 80 words on this topic.</p>
+    <textarea id="essay" placeholder="Start writing here..." oninput="updateWordCount()"></textarea>
+    <p class="wordcount" id="wordcount">0 words</p>
+  </section>
+
+  <div class="reset-row">
+    <button class="reset-btn" onclick="resetAll()">Reset all answers</button>
+  </div>
+
+  <footer>Based on Grade 9 English exam, 19 August 2019</footer>
+</div>
+
+<script>
+const bankWords = ["discussion","fire","to pay","originally","sports","converted","used","businessman","money","indoors"];
+
+const grammarData = [
+  {q:"Samnang works in the Post Office, ……………?", opts:["is he","isn't he","works he","doesn't he"], answer:1},
+  {q:"My father …………… in that firm from 1975 to 1989. Now he's retired.", opts:["has worked","worked","is working","had worked"], answer:1},
+  {q:"Which sentence is the correct one?", opts:["I am a cold","I've catched a cold","I have cold","I have caught a cold"], answer:3},
+  {q:"I …………… on a bench in the park when they ran past me.", opts:["was sitting","have sat","sat","was sat"], answer:0},
+  {q:"Thida …………… to the cinema if you went with her.", opts:["will go","would go","goes","went"], answer:1}
+];
+
+const vocabData = [
+  {q:"At …………… time, there is always plenty of work to do on a farm.", opts:["production","profit","plant","harvest"], answer:3},
+  {q:"It is against the …………… not to wear seat belt in a plane.", opts:["rule","regulation","law","order"], answer:1},
+  {q:"Everything in the sale has been …………… to half price.", opts:["reduced","decreased","bargained","lowered"], answer:0},
+  {q:"I …………… to inform you that your grandmother died ten minutes ago.", opts:["apologise","sorry","pity","regret"], answer:3},
+  {q:"We were unable to reach an agreement because of the …………… between the two groups.", opts:["contact","concern","connection","conflict"], answer:3}
+];
+
+function buildMCQ(containerId, data, prefix){
+  const container = document.getElementById(containerId);
+  data.forEach((item, qi) => {
+    const qDiv = document.createElement('div');
+    qDiv.className = 'q';
+    qDiv.innerHTML = `<p class="qtext"><span class="num">${qi+1}.</span>${item.q}</p>
+      <div class="options" data-qi="${qi}"></div>`;
+    const optsDiv = qDiv.querySelector('.options');
+    const letters = ['a','b','c','d'];
+    item.opts.forEach((opt, oi) => {
+      const btn = document.createElement('button');
+      btn.className = 'opt';
+      btn.dataset.prefix = prefix;
+      btn.dataset.qi = qi;
+      btn.dataset.oi = oi;
+      btn.innerHTML = `<span class="letter">${letters[oi]}</span>${opt}`;
+      btn.onclick = () => selectOption(prefix, qi, oi);
+      optsDiv.appendChild(btn);
+    });
+    container.appendChild(qDiv);
+  });
+}
+
+const state = {
+  grammar: Array(grammarData.length).fill(null),
+  vocab: Array(vocabData.length).fill(null),
+  gaps: {}
+};
+
+function selectOption(prefix, qi, oi){
+  const arr = prefix === 'g' ? state.grammar : state.vocab;
+  arr[qi] = oi;
+  const container = document.querySelectorAll(`.opt[data-prefix="${prefix}"][data-qi="${qi}"]`);
+  container.forEach(b => b.classList.remove('selected'));
+  document.querySelector(`.opt[data-prefix="${prefix}"][data-qi="${qi}"][data-oi="${oi}"]`).classList.add('selected');
+  updateProgress();
+}
+
+function initGaps(){
+  document.querySelectorAll('.gapselect').forEach(sel => {
+    sel.innerHTML = '<option value="">— choose —</option>' + bankWords.map(w => `<option value="${w}">${w}</option>`).join('');
+    sel.addEventListener('change', () => {
+      state.gaps[sel.dataset.gap] = sel.value;
+      sel.classList.remove('correct','wrong');
+      updateProgress();
+    });
+  });
+}
+
+function checkPart(n){
+  if(n === 1){
+    let correct = 0, total = 0;
+    document.querySelectorAll('.gapselect').forEach(sel => {
+      total++;
+      sel.disabled = true;
+      if(sel.value === sel.dataset.answer){
+        sel.classList.add('correct');
+        sel.classList.remove('wrong');
+        correct++;
+      } else {
+        sel.classList.add('wrong');
+        sel.classList.remove('correct');
+      }
+    });
+    document.getElementById('score1').textContent = `Score: ${correct} / ${total} correct`;
+  }
+  if(n === 2){
+    let correct = 0;
+    grammarData.forEach((item, qi) => {
+      document.querySelectorAll(`.opt[data-prefix="g"][data-qi="${qi}"]`).forEach(btn => {
+        btn.disabled = true;
+        const oi = Number(btn.dataset.oi);
+        if(oi === item.answer) btn.classList.add('correct');
+        else if(state.grammar[qi] === oi) btn.classList.add('wrong');
+      });
+      if(state.grammar[qi] === item.answer) correct++;
+    });
+    document.getElementById('score2').textContent = `Score: ${correct} / ${grammarData.length} correct`;
+  }
+  if(n === 3){
+    let correct = 0;
+    vocabData.forEach((item, qi) => {
+      document.querySelectorAll(`.opt[data-prefix="v"][data-qi="${qi}"]`).forEach(btn => {
+        btn.disabled = true;
+        const oi = Number(btn.dataset.oi);
+        if(oi === item.answer) btn.classList.add('correct');
+        else if(state.vocab[qi] === oi) btn.classList.add('wrong');
+      });
+      if(state.vocab[qi] === item.answer) correct++;
+    });
+    document.getElementById('score3').textContent = `Score: ${correct} / ${vocabData.length} correct`;
+  }
+}
+
+function updateWordCount(){
+  const text = document.getElementById('essay').value.trim();
+  const words = text.length ? text.split(/\s+/).length : 0;
+  const wc = document.getElementById('wordcount');
+  wc.textContent = `${words} words${words >= 80 ? ' — nice, you\'ve reached 80!' : ' (aim for at least 80)'}`;
+  wc.classList.toggle('ok', words >= 80);
+  updateProgress();
+}
+
+function updateProgress(){
+  const gapsAnswered = Object.values(state.gaps).filter(v => v).length;
+  const grammarAnswered = state.grammar.filter(v => v !== null).length;
+  const vocabAnswered = state.vocab.filter(v => v !== null).length;
+  const essayDone = document.getElementById('essay').value.trim().split(/\s+/).filter(Boolean).length >= 80 ? 1 : 0;
+  const total = 10 + grammarData.length + vocabData.length + 1;
+  const done = gapsAnswered + grammarAnswered + vocabAnswered + essayDone;
+  document.getElementById('progress-fill').style.width = `${(done/total)*100}%`;
+  document.getElementById('score-label').textContent = `${done} / ${total} answered`;
+}
+
+function resetAll(){
+  document.querySelectorAll('.gapselect').forEach(sel => {
+    sel.disabled = false;
+    sel.value = '';
+    sel.classList.remove('correct','wrong');
+  });
+  state.gaps = {};
+  document.getElementById('score1').textContent = '';
+
+  document.querySelectorAll('.opt').forEach(btn => {
+    btn.disabled = false;
+    btn.classList.remove('correct','wrong','selected');
+  });
+  state.grammar = Array(grammarData.length).fill(null);
+  state.vocab = Array(vocabData.length).fill(null);
+  document.getElementById('score2').textContent = '';
+  document.getElementById('score3').textContent = '';
+
+  document.getElementById('essay').value = '';
+  updateWordCount();
+  updateProgress();
+}
+
+buildMCQ('grammar-questions', grammarData, 'g');
+buildMCQ('vocab-questions', vocabData, 'v');
+initGaps();
+updateProgress();
+</script>
+</body>
+</html>

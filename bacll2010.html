@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>English Exam Practice — Test 12</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap');
+
+:root{
+  --paper:#FAF7EF;
+  --ink:#1E2A38;
+  --navy:#1F3A5F;
+  --navy-deep:#152943;
+  --gold:#C79A2B;
+  --good:#3D7A5C;
+  --bad:#B3452C;
+  --line:#DCD5C4;
+  --card:#FFFFFF;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  line-height:1.5;
+  padding:0 0 60px 0;
+}
+
+.masthead{
+  background:var(--navy);
+  color:var(--paper);
+  padding:28px 20px 22px;
+  border-bottom:5px solid var(--gold);
+}
+.masthead .kicker{
+  font-family:'Lora',serif;
+  font-style:italic;
+  font-size:0.85rem;
+  color:#C9D3DE;
+  margin:0 0 4px 0;
+}
+.masthead h1{
+  font-family:'Lora',serif;
+  font-weight:700;
+  font-size:1.6rem;
+  margin:0 0 6px 0;
+}
+.masthead .meta{
+  font-size:0.8rem;
+  color:#B9C6D4;
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+.wrap{max-width:720px;margin:0 auto;padding:0 18px;}
+
+.tabbar{
+  display:flex;
+  gap:2px;
+  margin:22px 0 0 0;
+  border-bottom:2px solid var(--line);
+  overflow-x:auto;
+}
+.tab{
+  flex:1;
+  min-width:80px;
+  background:none;
+  border:none;
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:0.78rem;
+  color:#7A7261;
+  padding:10px 4px;
+  cursor:pointer;
+  border-bottom:3px solid transparent;
+  transition:color .15s, border-color .15s;
+  white-space:nowrap;
+}
+.tab.active{color:var(--navy);border-bottom-color:var(--gold);}
+.tab:hover{color:var(--navy);}
+
+.section{display:none;padding-top:20px;}
+.section.active{display:block;}
+
+.section-title{
+  font-family:'Lora',serif;
+  font-weight:600;
+  font-size:1.15rem;
+  margin:0 0 2px 0;
+  color:var(--navy-deep);
+}
+.section-marks{
+  font-size:0.75rem;
+  color:#8B8368;
+  margin:0 0 16px 0;
+}
+.instructions{
+  font-size:0.88rem;
+  color:#4A4638;
+  background:#F1ECDD;
+  border-left:3px solid var(--gold);
+  padding:9px 13px;
+  margin-bottom:18px;
+  border-radius:2px;
+}
+
+/* Reading passage */
+.passage{
+  font-family:'Lora',serif;
+  font-size:0.95rem;
+  color:#2A2A2A;
+  background:var(--card);
+  border:1px solid var(--line);
+  padding:18px 20px;
+  border-radius:4px;
+  margin-bottom:20px;
+}
+.passage h3{
+  text-align:center;
+  font-size:1rem;
+  margin:0 0 12px 0;
+}
+.gap-select{
+  font-family:'Inter',sans-serif;
+  font-size:0.85rem;
+  font-weight:600;
+  border:none;
+  border-bottom:2px solid var(--navy);
+  background:#EEF2F6;
+  color:var(--navy-deep);
+  padding:1px 4px;
+  border-radius:2px;
+}
+.gap-select.correct{background:#E3F0E8;border-bottom-color:var(--good);color:var(--good);}
+.gap-select.incorrect{background:#F7E4DD;border-bottom-color:var(--bad);color:var(--bad);}
+.wordbank{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  font-size:0.8rem;
+  margin-bottom:18px;
+}
+.wordbank span{
+  background:var(--card);
+  border:1px solid var(--line);
+  padding:3px 9px;
+  border-radius:12px;
+  color:#6B6656;
+}
+
+/* Q blocks (vocab / grammar) */
+.qblock{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:4px;
+  padding:12px 16px;
+  margin-bottom:10px;
+}
+.qtext{font-size:0.9rem;margin-bottom:8px;}
+.qtext b{color:var(--navy-deep);}
+.options{display:flex;flex-wrap:wrap;gap:8px;}
+.opt-btn{
+  font-family:'Inter',sans-serif;
+  font-size:0.82rem;
+  background:#F5F2E8;
+  border:1px solid var(--line);
+  color:var(--ink);
+  padding:6px 12px;
+  border-radius:16px;
+  cursor:pointer;
+  transition:background .12s;
+}
+.opt-btn:hover{background:#ECE6D3;}
+.opt-btn.selected{background:var(--navy);color:#fff;border-color:var(--navy);}
+.opt-btn.correct{background:var(--good);color:#fff;border-color:var(--good);}
+.opt-btn.incorrect{background:var(--bad);color:#fff;border-color:var(--bad);}
+
+/* Matching */
+.match-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:4px;
+  padding:9px 14px;
+  margin-bottom:8px;
+  font-size:0.87rem;
+}
+.match-row .a-text{flex:1;}
+.match-row select{
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:0.82rem;
+  border:1px solid var(--line);
+  border-radius:4px;
+  padding:4px 6px;
+  background:#F5F2E8;
+  color:var(--navy-deep);
+}
+.match-row select.correct{background:#E3F0E8;border-color:var(--good);color:var(--good);}
+.match-row select.incorrect{background:#F7E4DD;border-color:var(--bad);color:var(--bad);}
+.bbank{
+  font-size:0.8rem;
+  background:#F1ECDD;
+  border-radius:4px;
+  padding:10px 14px;
+  margin-bottom:16px;
+}
+.bbank div{margin-bottom:3px;}
+
+/* Writing */
+textarea{
+  width:100%;
+  min-height:220px;
+  font-family:'Inter',sans-serif;
+  font-size:0.9rem;
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:4px;
+  resize:vertical;
+  background:var(--card);
+  color:var(--ink);
+}
+.wordcount{font-size:0.78rem;color:#8B8368;margin-top:6px;text-align:right;}
+.prompt-card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-left:3px solid var(--navy);
+  padding:14px 18px;
+  border-radius:4px;
+  margin-bottom:16px;
+  font-size:0.9rem;
+}
+.tips{
+  margin-top:18px;
+  font-size:0.83rem;
+  background:#F1ECDD;
+  border-radius:4px;
+  padding:12px 16px;
+}
+.tips h4{margin:0 0 6px 0;font-family:'Lora',serif;font-size:0.95rem;color:var(--navy-deep);}
+.tips ul{margin:0;padding-left:18px;}
+.tips li{margin-bottom:4px;}
+
+/* Controls */
+.controls{
+  display:flex;
+  gap:10px;
+  margin-top:20px;
+  flex-wrap:wrap;
+}
+button.primary{
+  font-family:'Inter',sans-serif;
+  font-weight:700;
+  font-size:0.85rem;
+  background:var(--navy);
+  color:#fff;
+  border:none;
+  padding:10px 20px;
+  border-radius:4px;
+  cursor:pointer;
+}
+button.primary:hover{background:var(--navy-deep);}
+button.secondary{
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:0.85rem;
+  background:none;
+  color:var(--navy);
+  border:1px solid var(--navy);
+  padding:10px 20px;
+  border-radius:4px;
+  cursor:pointer;
+}
+.score-tag{
+  display:inline-block;
+  font-family:'Lora',serif;
+  font-weight:600;
+  font-size:0.85rem;
+  padding:8px 14px;
+  border-radius:4px;
+  background:#EEF2F6;
+  color:var(--navy-deep);
+  margin-top:16px;
+}
+.score-tag.done{background:#E3F0E8;color:var(--good);}
+
+.overall{
+  margin:22px 0 0 0;
+  padding:16px 18px;
+  background:var(--navy);
+  color:var(--paper);
+  border-radius:6px;
+  font-family:'Lora',serif;
+  font-size:1rem;
+  display:none;
+}
+.overall.show{display:block;}
+.overall .num{font-size:1.6rem;font-weight:700;color:var(--gold);}
+</style>
+</head>
+<body>
+  <div class="m-0 p-3 font-sans bg-gray-100">
+  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
+
+<div class="masthead">
+  <div class="wrap">
+    <p class="kicker">English Practice Paper</p>
+    <h1>Test 12 — Reading, Vocabulary, Language Use &amp; Grammar</h1>
+    <div class="meta">
+      <span>Time: 60 min</span>
+      <span>Total: 40 marks</span>
+      <span>Level: Upper-secondary</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="tabbar" id="tabbar">
+    <button class="tab active" data-tab="p1">Part 1</button>
+    <button class="tab" data-tab="p2">Part 2</button>
+    <button class="tab" data-tab="p3">Part 3</button>
+    <button class="tab" data-tab="p4">Part 4</button>
+    <button class="tab" data-tab="p5">Part 5</button>
+  </div>
+
+  <!-- PART 1: READING -->
+  <div class="section active" id="p1">
+    <p class="section-title">Part 1: Reading</p>
+    <p class="section-marks">10 marks</p>
+    <p class="instructions">Read the text and fill in each gap with the appropriate word from the box. Gap (1) is done for you as an example.</p>
+
+    <div class="wordbank">
+      <span>born ✓</span><span>but</span><span>invented</span><span>for</span><span>made</span><span>where</span>
+      <span>time</span><span>anyone</span><span>was</span><span>the</span><span>opportunities</span>
+    </div>
+
+    <div class="passage">
+      <h3>THE FIRST WOMAN SCIENTIST</h3>
+      <p>
+        Hypatia was (1) <b>born</b> in Alexandria, in Egypt, in 370 A.D. For many centuries she
+        <span id="g2"></span> the only woman scientist to have a place in the history books.
+        Hypatia's father was the director of Alexandria University, and he <span id="g3"></span>
+        sure his daughter had the best education available. This was unusual, as most women then had
+        few <span id="g4"></span> to study.
+      </p>
+      <p>
+        After studying in Athens and Rome, Hypatia returned to Alexandria <span id="g5"></span> she began
+        teaching mathematics. She soon became famous <span id="g6"></span> her knowledge of new ideas.
+      </p>
+      <p>
+        We have no copies of her books, <span id="g7"></span> we know that she wrote several important
+        mathematical works. Hypatia was also interested in technology and <span id="g8"></span> several
+        scientific tools to help with her work. At <span id="g9"></span> many rulers were afraid of science,
+        and <span id="g10"></span> connected with it was in danger. One day in March 415, Hypatia
+        was <span id="g11"></span> attacked and killed in the street.
+      </p>
+    </div>
+
+    <div class="controls">
+      <button class="primary" onclick="checkReading()">Check Part 1</button>
+      <button class="secondary" onclick="resetReading()">Reset</button>
+    </div>
+    <div id="p1-score"></div>
+  </div>
+
+  <!-- PART 2: VOCABULARY -->
+  <div class="section" id="p2">
+    <p class="section-title">Part 2: Vocabulary</p>
+    <p class="section-marks">7 marks</p>
+    <p class="instructions">Tap the word that best completes each sentence. Example: Sue came first in the 5000-meter <b>race</b> (done for you).</p>
+    <div id="p2-questions"></div>
+    <div class="controls">
+      <button class="primary" onclick="checkVocab()">Check Part 2</button>
+      <button class="secondary" onclick="resetVocab()">Reset</button>
+    </div>
+    <div id="p2-score"></div>
+  </div>
+
+  <!-- PART 3: MATCHING -->
+  <div class="section" id="p3">
+    <p class="section-title">Part 3: Language Use</p>
+    <p class="section-marks">8 marks</p>
+    <p class="instructions">Match each item in column A with the best response in column B. Item 1 is done for you.</p>
+
+    <div class="bbank">
+      <div><b>a.</b> At lunch time.</div>
+      <div><b>b.</b> Here, it's, Sir.</div>
+      <div><b>c.</b> It's awful, I don't like fat food.</div>
+      <div><b>d.</b> Thank you. It is your open mind.</div>
+      <div><b>e.</b> This is Mr. Sophal speaking.</div>
+      <div><b>f.</b> Sorry Madame, it is out of order.</div>
+      <div><b>g.</b> What room do you want?</div>
+      <div><b>h.</b> I have lost my car key.</div>
+      <div><b>i.</b> Where has she gone to?</div>
+      <div><b>j.</b> Job announcement.</div>
+    </div>
+
+    <div id="p3-questions"></div>
+
+    <div class="controls">
+      <button class="primary" onclick="checkMatch()">Check Part 3</button>
+      <button class="secondary" onclick="resetMatch()">Reset</button>
+    </div>
+    <div id="p3-score"></div>
+  </div>
+
+  <!-- PART 4: GRAMMAR -->
+  <div class="section" id="p4">
+    <p class="section-title">Part 4: Grammar</p>
+    <p class="section-marks">10 marks</p>
+    <p class="instructions">Tap the one correct answer for each sentence. The example is done for you: Can't you hear someone <b>knocking</b> at the door?</p>
+    <div id="p4-questions"></div>
+    <div class="controls">
+      <button class="primary" onclick="checkGrammar()">Check Part 4</button>
+      <button class="secondary" onclick="resetGrammar()">Reset</button>
+    </div>
+    <div id="p4-score"></div>
+  </div>
+
+  <!-- PART 5: WRITING -->
+  <div class="section" id="p5">
+    <p class="section-title">Part 5: Writing</p>
+    <p class="section-marks">15 marks</p>
+    <div class="prompt-card">
+      Write in English about <b>'Your School Environment'</b>. Write between 100–150 words.
+    </div>
+    <textarea id="writing" placeholder="Start writing here..." oninput="updateWordCount()"></textarea>
+    <div class="wordcount" id="wordcount">0 words</div>
+    <div class="tips">
+      <h4>Before you write, think about:</h4>
+      <ul>
+        <li>Where your school is and what the buildings and grounds look like</li>
+        <li>What facilities you have (library, playground, labs, canteen)</li>
+        <li>How clean, green, or well cared for the environment is</li>
+        <li>One thing you would improve, and why</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="overall" id="overall">
+    Overall score: <span class="num" id="overall-num">0</span> / 35
+  </div>
+
+</div>
+
+<script>
+// ---------- TAB SWITCHING ----------
+document.getElementById('tabbar').addEventListener('click', e=>{
+  const btn = e.target.closest('.tab');
+  if(!btn) return;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(btn.dataset.tab).classList.add('active');
+});
+
+let scores = {p1:null,p2:null,p3:null,p4:null};
+
+function updateOverall(){
+  const vals = Object.values(scores).filter(v=>v!==null);
+  if(vals.length===0) return;
+  const total = vals.reduce((a,b)=>a+b,0);
+  document.getElementById('overall-num').textContent = total;
+  document.getElementById('overall').classList.add('show');
+}
+
+// ---------- PART 1: READING ----------
+const readingAnswers = {
+  g2:'was', g3:'made', g4:'opportunities', g5:'where', g6:'for',
+  g7:'but', g8:'invented', g9:'time', g10:'anyone', g11:'was'
+};
+const wordbankOptions = ['born','but','invented','for','made','where','time','anyone','was','the','opportunities'];
+
+function buildReading(){
+  Object.keys(readingAnswers).forEach(id=>{
+    const sel = document.createElement('select');
+    sel.className='gap-select';
+    sel.id=id;
+    const blank = document.createElement('option');
+    blank.value=''; blank.textContent='…….';
+    sel.appendChild(blank);
+    wordbankOptions.forEach(w=>{
+      const o=document.createElement('option');
+      o.value=w; o.textContent=w;
+      sel.appendChild(o);
+    });
+    document.getElementById(id).appendChild(sel);
+  });
+}
+buildReading();
+
+function checkReading(){
+  let correct=0;
+  Object.keys(readingAnswers).forEach(id=>{
+    const sel=document.getElementById(id).querySelector('select');
+    sel.classList.remove('correct','incorrect');
+    if(sel.value===readingAnswers[id]){ sel.classList.add('correct'); correct++; }
+    else if(sel.value!==''){ sel.classList.add('incorrect'); }
+  });
+  scores.p1=correct;
+  document.getElementById('p1-score').innerHTML =
+    `<div class="score-tag ${correct===10?'done':''}">Score: ${correct} / 10</div>`;
+  updateOverall();
+}
+function resetReading(){
+  Object.keys(readingAnswers).forEach(id=>{
+    const sel=document.getElementById(id).querySelector('select');
+    sel.value=''; sel.classList.remove('correct','incorrect');
+  });
+  document.getElementById('p1-score').innerHTML='';
+  scores.p1=null; updateOverall();
+}
+
+// ---------- PART 2: VOCABULARY ----------
+const vocabQuestions = [
+  {q:"Jack and Eddie arranged to meet outside the football", opts:["ground","field","pitch"], answer:"pitch"},
+  {q:"Brenda goes jogging every morning to keep", opts:["exercised","fit","trained"], answer:"fit"},
+  {q:"Our team", opts:["beat","defeated","won"], answer:"beat", suffix:" the match by two goals to nil."},
+  {q:"The local stadium isn't large enough for so many", opts:["audience","viewers","spectators"], answer:"spectators"},
+  {q:"The final result was a/an", opts:["draw","equal","score"], answer:"draw", suffix:"."},
+  {q:"Norman won first", opts:["medal","prize","reward"], answer:"prize", suffix:" in the cookery competition."},
+  {q:"Collecting match boxes is Rebecca's favorite", opts:["leisure","occupation","pastime"], answer:"pastime", suffix:"."}
+];
+
+function buildVocab(){
+  const box=document.getElementById('p2-questions');
+  vocabQuestions.forEach((item,i)=>{
+    const div=document.createElement('div');
+    div.className='qblock';
+    div.innerHTML = `<div class="qtext"><b>${i+1}.</b> ${item.q} ${item.suffix?'':'____'}${item.suffix||''}</div>
+      <div class="options" data-idx="${i}"></div>`;
+    const opts = div.querySelector('.options');
+    item.opts.forEach(o=>{
+      const b=document.createElement('button');
+      b.className='opt-btn'; b.textContent=o; b.dataset.val=o;
+      b.onclick=()=>{
+        opts.querySelectorAll('.opt-btn').forEach(x=>x.classList.remove('selected'));
+        b.classList.add('selected');
+      };
+      opts.appendChild(b);
+    });
+    box.appendChild(div);
+  });
+}
+buildVocab();
+
+function checkVocab(){
+  let correct=0;
+  document.querySelectorAll('#p2-questions .options').forEach(opts=>{
+    const i=+opts.dataset.idx;
+    const item=vocabQuestions[i];
+    const sel=opts.querySelector('.selected');
+    opts.querySelectorAll('.opt-btn').forEach(b=>{
+      b.classList.remove('correct','incorrect');
+      if(b.dataset.val===item.answer) b.classList.add('correct');
+    });
+    if(sel && sel.dataset.val===item.answer) correct++;
+    else if(sel) sel.classList.add('incorrect');
+  });
+  scores.p2=correct;
+  document.getElementById('p2-score').innerHTML =
+    `<div class="score-tag ${correct===7?'done':''}">Score: ${correct} / 7</div>`;
+  updateOverall();
+}
+function resetVocab(){
+  document.querySelectorAll('#p2-questions .opt-btn').forEach(b=>b.classList.remove('selected','correct','incorrect'));
+  document.getElementById('p2-score').innerHTML='';
+  scores.p2=null; updateOverall();
+}
+
+// ---------- PART 3: MATCHING ----------
+const matchItems = [
+  {text:"Can I use your telephone?", answer:"f"},
+  {text:"Can I speak to Mr. Sophal?", answer:"e"},
+  {text:"Bopha's on holiday.", answer:"h"},
+  {text:"Do you have a room for the night?", answer:"g"},
+  {text:"What are you looking for?", answer:"i"},
+  {text:"Please, do not hesitate to ask me when you have problem.", answer:"d"},
+  {text:"Is wedding dinner delicious?", answer:"c"},
+  {text:"I want the menu, please.", answer:"b"}
+];
+const matchOptions = ['a','b','c','d','e','f','g','h','i','j'];
+
+function buildMatch(){
+  const box=document.getElementById('p3-questions');
+  matchItems.forEach((item,i)=>{
+    const row=document.createElement('div');
+    row.className='match-row';
+    row.innerHTML = `<span class="a-text"><b>${i+2}.</b> ${item.text}</span>`;
+    const sel=document.createElement('select');
+    sel.dataset.idx=i;
+    const blank=document.createElement('option'); blank.value=''; blank.textContent='—';
+    sel.appendChild(blank);
+    matchOptions.forEach(o=>{
+      const opt=document.createElement('option'); opt.value=o; opt.textContent=o;
+      sel.appendChild(opt);
+    });
+    row.appendChild(sel);
+    box.appendChild(row);
+  });
+}
+buildMatch();
+
+function checkMatch(){
+  let correct=0;
+  document.querySelectorAll('#p3-questions select').forEach(sel=>{
+    const i=+sel.dataset.idx;
+    sel.classList.remove('correct','incorrect');
+    if(sel.value===matchItems[i].answer){ sel.classList.add('correct'); correct++; }
+    else if(sel.value!==''){ sel.classList.add('incorrect'); }
+  });
+  scores.p3=correct;
+  document.getElementById('p3-score').innerHTML =
+    `<div class="score-tag ${correct===8?'done':''}">Score: ${correct} / 8</div>`;
+  updateOverall();
+}
+function resetMatch(){
+  document.querySelectorAll('#p3-questions select').forEach(sel=>{sel.value='';sel.classList.remove('correct','incorrect');});
+  document.getElementById('p3-score').innerHTML='';
+  scores.p3=null; updateOverall();
+}
+// ---------- PART 4: GRAMMAR ----------
+const grammarQuestions = [
+  {q:"Dara ____ son has been kidnapped is a police officer.", opts:["who","that","whose","whom"], answer:"whose"},
+  {q:"When I arrived at the airport, the plane ____.", opts:["had taken off","has taken of","will take off","will be taking off"], answer:"had taken off"},
+  {q:"She didn't invite anyone she knew, and ____.", opts:["neither did Sok","Sok didn't too","neither does Sok","Sok doesn't either"], answer:"neither did Sok"},
+  {q:"She wishes she ____ around the country.", opts:["can travel","travelled","has travelled","will travel"], answer:"travelled"},
+  {q:"It ____ all day. I wonder when it will stop.", opts:["has been snowing","was snowing","snowed","has snowed"], answer:"has been snowing"},
+  {q:"If it ____ tomorrow, we'll cancel the barbecue.", opts:["will rain","rain","rains","is raining"], answer:"rains"},
+  {q:"Sokha is capable ____ doing better job.", opts:["about","in","for","of"], answer:"of"},
+  {q:"Instead of ____ about good news, Bora seemed to be different.", opts:["exciting","being excited","to excited","to be excited"], answer:"being excited"},
+  {q:"A rabbit ran across the path in front of me as I ____ through the woods.", opts:["had been walking","am walking","had walked","was walking"], answer:"was walking"},
+  {q:"She said that she ____ the workshop on education.", opts:["has attended","will attend","had attended","is attending"], answer:"had attended"}
+];
+
+function buildGrammar(){
+  const box=document.getElementById('p4-questions');
+  grammarQuestions.forEach((item,i)=>{
+    const div=document.createElement('div');
+    div.className='qblock';
+    div.innerHTML = `<div class="qtext"><b>${i+1}.</b> ${item.q}</div>
+      <div class="options" data-idx="${i}"></div>`;
+    const opts = div.querySelector('.options');
+    item.opts.forEach(o=>{
+      const b=document.createElement('button');
+      b.className='opt-btn'; b.textContent=o; b.dataset.val=o;
+      b.onclick=()=>{
+        opts.querySelectorAll('.opt-btn').forEach(x=>x.classList.remove('selected'));
+        b.classList.add('selected');
+      };
+      opts.appendChild(b);
+    });
+    box.appendChild(div);
+  });
+}
+buildGrammar();
+
+function checkGrammar(){
+  let correct=0;
+  document.querySelectorAll('#p4-questions .options').forEach(opts=>{
+    const i=+opts.dataset.idx;
+    const item=grammarQuestions[i];
+    const sel=opts.querySelector('.selected');
+    opts.querySelectorAll('.opt-btn').forEach(b=>{
+      b.classList.remove('correct','incorrect');
+      if(b.dataset.val===item.answer) b.classList.add('correct');
+    });
+    if(sel && sel.dataset.val===item.answer) correct++;
+    else if(sel) sel.classList.add('incorrect');
+  });
+  scores.p4=correct;
+  document.getElementById('p4-score').innerHTML =
+    `<div class="score-tag ${correct===10?'done':''}">Score: ${correct} / 10</div>`;
+  updateOverall();
+}
+function resetGrammar(){
+  document.querySelectorAll('#p4-questions .opt-btn').forEach(b=>b.classList.remove('selected','correct','incorrect'));
+  document.getElementById('p4-score').innerHTML='';
+  scores.p4=null; updateOverall();
+}
+
+// ---------- PART 5: WORD COUNT ----------
+function updateWordCount(){
+  const text = document.getElementById('writing').value.trim();
+  const words = text.length ? text.split(/\s+/).length : 0;
+  document.getElementById('wordcount').textContent = words + ' words';
+}
+</script>
+</body>
+</html>

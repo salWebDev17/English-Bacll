@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Practice — Grade 12</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root{
+    --cream:#FAF5EA;
+    --paper:#FFFFFF;
+    --ink:#242018;
+    --ink-soft:#5B5548;
+    --teal:#1E4B43;
+    --teal-deep:#123430;
+    --gold:#C99A3C;
+    --gold-soft:#F2E2B8;
+    --line:#DFD5BE;
+    --good:#2E7D4F;
+    --bad:#B33A3A;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+    padding-bottom:60px;
+  }
+
+  header{
+    background:var(--teal);
+    color:var(--cream);
+    padding:28px 20px 22px;
+    position:relative;
+    overflow:hidden;
+  }
+  header::after{
+    content:"";
+    position:absolute;
+    right:-40px; top:-40px;
+    width:160px; height:160px;
+    border-radius:50%;
+    background:var(--gold);
+    opacity:0.14;
+  }
+  .kh{
+    font-size:12.5px;
+    color:var(--gold-soft);
+    letter-spacing:0.2px;
+    margin-bottom:6px;
+  }
+  h1{
+    font-family:'Lora',serif;
+    font-weight:600;
+    font-size:26px;
+    margin:0 0 4px;
+    position:relative;
+  }
+  .sub{
+    font-size:13.5px;
+    color:#CFE3DC;
+    position:relative;
+  }
+
+  nav{
+    display:flex;
+    gap:6px;
+    padding:14px 16px 0;
+    max-width:640px;
+    margin:0 auto;
+    overflow-x:auto;
+  }
+  .tab{
+    flex:1 0 auto;
+    text-align:center;
+    padding:10px 8px;
+    border-radius:10px 10px 0 0;
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--teal);
+    background:var(--gold-soft);
+    cursor:pointer;
+    border:1px solid var(--line);
+    border-bottom:none;
+    white-space:nowrap;
+    opacity:0.72;
+  }
+  .tab.active{
+    background:var(--paper);
+    opacity:1;
+  }
+
+  main{
+    max-width:640px;
+    margin:0 auto;
+    background:var(--paper);
+    padding:22px 20px 30px;
+    border:1px solid var(--line);
+    border-top:none;
+  }
+
+  .part{display:none;}
+  .part.active{display:block;}
+
+  .part-title{
+    font-family:'Lora',serif;
+    font-size:19px;
+    font-weight:600;
+    color:var(--teal-deep);
+    margin:0 0 4px;
+  }
+  .part-meta{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin-bottom:18px;
+    padding-bottom:14px;
+    border-bottom:1px solid var(--line);
+  }
+
+  .passage{
+    font-size:14.5px;
+    line-height:1.85;
+    color:var(--ink);
+  }
+  .passage h3{
+    font-family:'Lora',serif;
+    font-size:16px;
+    margin:0 0 10px;
+    color:var(--teal);
+  }
+
+  select.blank{
+    font-family:'Inter',sans-serif;
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--teal-deep);
+    background:var(--gold-soft);
+    border:1px solid var(--gold);
+    border-radius:6px;
+    padding:2px 6px;
+    margin:0 2px;
+  }
+  select.blank.correct{background:#DCEFE1;border-color:var(--good);color:var(--good);}
+  select.blank.incorrect{background:#F6DEDE;border-color:var(--bad);color:var(--bad);}
+
+  .bank{
+    margin-top:16px;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    background:var(--cream);
+    border:1px dashed var(--line);
+    border-radius:8px;
+    padding:10px 12px;
+  }
+  .bank b{color:var(--teal-deep);}
+
+  .match-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 0;
+    border-bottom:1px solid var(--line);
+    font-size:13.5px;
+  }
+  .match-row .num{
+    font-family:'Lora',serif;
+    font-weight:600;
+    color:var(--teal);
+    width:22px;
+  }
+  .match-row .txt{flex:1;}
+  .match-row select{
+    font-family:'Inter',sans-serif;
+    font-size:13.5px;
+    font-weight:600;
+    padding:5px 6px;
+    border-radius:6px;
+    border:1px solid var(--gold);
+    background:var(--gold-soft);
+    color:var(--teal-deep);
+    width:56px;
+  }
+  select.correct{background:#DCEFE1 !important;border-color:var(--good) !important;color:var(--good) !important;}
+  select.incorrect{background:#F6DEDE !important;border-color:var(--bad) !important;color:var(--bad) !important;}
+
+  .bank-b{
+    margin-top:14px;
+    font-size:12px;
+    color:var(--ink-soft);
+    line-height:1.7;
+  }
+
+  .mcq{
+    margin-bottom:20px;
+    padding-bottom:16px;
+    border-bottom:1px solid var(--line);
+  }
+  .mcq:last-child{border-bottom:none;}
+  .q-text{
+    font-size:14px;
+    font-weight:500;
+    margin-bottom:10px;
+  }
+  .q-num{
+    color:var(--teal);
+    font-family:'Lora',serif;
+    font-weight:600;
+  }
+  .opts{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  .opt{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    padding:8px 10px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    font-size:13px;
+    cursor:pointer;
+    background:var(--cream);
+  }
+  .opt.selected{
+    border-color:var(--teal);
+    background:var(--gold-soft);
+  }
+  .opt.correct{border-color:var(--good);background:#DCEFE1;}
+  .opt.incorrect{border-color:var(--bad);background:#F6DEDE;}
+  .opt input{accent-color:var(--teal);}
+
+  .check-btn{
+    margin-top:6px;
+    background:var(--teal);
+    color:var(--cream);
+    border:none;
+    padding:12px 18px;
+    border-radius:9px;
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+    width:100%;
+  }
+  .check-btn:active{background:var(--teal-deep);}
+
+  .score-banner{
+    margin-top:14px;
+    padding:12px 14px;
+    border-radius:9px;
+    font-size:13.5px;
+    font-weight:600;
+    display:none;
+  }
+  .score-banner.show{display:block;}
+  .score-banner.ok{background:#DCEFE1;color:var(--good);}
+  .score-banner.mid{background:#FCEFD0;color:#8A6412;}
+  .score-banner.low{background:#F6DEDE;color:var(--bad);}
+
+  .writing-prompt{
+    font-size:14px;
+    background:var(--cream);
+    border-left:3px solid var(--gold);
+    padding:12px 14px;
+    border-radius:6px;
+    margin-bottom:14px;
+  }
+  textarea{
+    width:100%;
+    min-height:220px;
+    font-family:'Inter',sans-serif;
+    font-size:14px;
+    padding:12px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    resize:vertical;
+    background:var(--cream);
+  }
+  .wc{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin-top:6px;
+    text-align:right;
+  }
+  .wc.enough{color:var(--good); font-weight:600;}
+
+  .toggle-link{
+    display:inline-block;
+    margin-top:14px;
+    font-size:13px;
+    color:var(--teal);
+    font-weight:600;
+    cursor:pointer;
+    text-decoration:underline;
+  }
+  .sample-box{
+    display:none;
+    margin-top:12px;
+    font-size:13.5px;
+    line-height:1.7;
+    background:var(--cream);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:12px 14px;
+  }
+  .sample-box.show{display:block;}
+  .checklist{
+    margin-top:14px;
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+  .checklist ul{margin:6px 0 0; padding-left:18px;}
+
+  .nav-btns{
+    display:flex;
+    justify-content:space-between;
+    margin-top:22px;
+  }
+  .nav-btns button{
+    background:none;
+    border:1px solid var(--teal);
+    color:var(--teal);
+    padding:9px 16px;
+    border-radius:8px;
+    font-weight:600;
+    font-size:13px;
+    cursor:pointer;
+  }
+  .nav-btns button:disabled{opacity:0.35;cursor:default;}
+
+  .total-bar{
+    max-width:640px;
+    margin:0 auto;
+    padding:10px 20px;
+    background:var(--teal-deep);
+    color:var(--gold-soft);
+    font-size:12.5px;
+    text-align:center;
+    font-weight:600;
+  }
+</style>
+</head>
+<body>
+  <div class="m-0 p-3 font-sans bg-gray-100">
+  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
+
+<header>
+  <div class="kh">ត្រៀមប្រឡង • English Practice</div>
+  <h1>English Practice Exam</h1>
+  <div class="sub">Grade 12 — Reading, Language Use, Grammar, Vocabulary &amp; Writing</div>
+</header>
+
+<div class="total-bar" id="totalBar">Score so far: 0 / 40</div>
+
+<nav id="tabs"></nav>
+<main>
+
+  <!-- PART 1 -->
+  <section class="part active" id="part1">
+    <div class="part-title">Part 1 · Reading</div>
+    <div class="part-meta">Fill each gap with the best word from the box. (10 marks)</div>
+    <div class="passage" id="p1passage"></div>
+    <div class="bank"><b>Word box:</b> into · what · for · any · at · enough · it · when · as · make <span style="opacity:0.6">(of — used in the example)</span></div>
+    <button class="check-btn" onclick="checkPart(1)">Check Part 1</button>
+    <div class="score-banner" id="banner1"></div>
+  </section>
+
+  <!-- PART 2 -->
+  <section class="part" id="part2">
+    <div class="part-title">Part 2 · Language Use</div>
+    <div class="part-meta">Match each situation in Section A with the reason in Section B. (10 marks)</div>
+    <div id="p2rows"></div>
+    <div class="bank-b">
+      <b>Section B:</b> A. you've eaten some undercooked meat &nbsp;·&nbsp; B. you're just recovering from flu &nbsp;·&nbsp; C. you've been wearing new shoes &nbsp;·&nbsp; D. you've been making some bookshelves &nbsp;·&nbsp; E. waiting for a bus &nbsp;·&nbsp; F. you've spent too long lying on the beach &nbsp;·&nbsp; G. take until you feel better
+    </div>
+    <button class="check-btn" onclick="checkPart(2)">Check Part 2</button>
+    <div class="score-banner" id="banner2"></div>
+  </section>
+
+  <!-- PART 3 -->
+  <section class="part" id="part3">
+    <div class="part-title">Part 3 · Grammar</div>
+    <div class="part-meta">Choose the one correct answer for each sentence. (10 marks)</div>
+    <div id="p3q"></div>
+    <button class="check-btn" onclick="checkPart(3)">Check Part 3</button>
+    <div class="score-banner" id="banner3"></div>
+  </section>
+
+  <!-- PART 4 -->
+  <section class="part" id="part4">
+    <div class="part-title">Part 4 · Vocabulary</div>
+    <div class="part-meta">Choose the word that best fits each gap. (8 marks)</div>
+    <div id="p4q"></div>
+    <button class="check-btn" onclick="checkPart(4)">Check Part 4</button>
+    <div class="score-banner" id="banner4"></div>
+  </section>
+
+  <!-- PART 5 -->
+  <section class="part" id="part5">
+    <div class="part-title">Part 5 · Writing</div>
+    <div class="part-meta">12 marks · at least 150 words</div>
+    <div class="writing-prompt">
+      In order to attract foreign tourists to visit the Kingdom of Wonder, the royal government has established a promotion that 'Green, Clean City and Good Service'. To take part in this promotion, you are the students, and the future good people —
+      <br><br><b>What good habits should you do to keep the city clean?</b> Explain this in English at least 150 words.
+    </div>
+    <textarea id="essay" placeholder="Start writing here..." oninput="updateWordCount()"></textarea>
+    <div class="wc" id="wc">0 words</div>
+    <div class="checklist">
+      Before you finish, check that you have:
+      <ul>
+        <li>An opening sentence that states your main idea</li>
+        <li>At least 3 concrete habits (e.g. bins, recycling, no littering)</li>
+        <li>Linking words: <i>Firstly, In addition, Moreover, Finally</i></li>
+        <li>A closing sentence that sums up your view</li>
+      </ul>
+    </div>
+    <span class="toggle-link" onclick="toggleSample()">Show a sample answer</span>
+    <div class="sample-box" id="sampleBox">
+      Keeping our city clean is every citizen's duty, and small daily habits make the biggest difference. Firstly, everyone should throw rubbish only into bins, never onto the street or into rivers, since litter spoils both the view and public health. In addition, we should separate waste for recycling, especially plastic bottles and paper, so that fewer materials end up in landfill. Moreover, students and young people can join community clean-up days, sweeping streets and clearing drains before the rainy season causes flooding. We should also avoid single-use plastic bags when shopping, choosing cloth bags instead. Finally, we can raise awareness by sharing clean-city photos on social media and gently reminding tourists and neighbours to dispose of waste properly. If every household follows these simple habits, our city will truly deserve its reputation as a Kingdom of Wonder — clean, green, and welcoming to all who visit.
+    </div>
+  </section>
+
+  <div class="nav-btns">
+    <button id="prevBtn" onclick="changePart(-1)">← Back</button>
+    <button id="nextBtn" onclick="changePart(1)">Next →</button>
+  </div>
+
+</main>
+
+<script>
+const words = ["into","what","for","any","at","enough","it","when","as","make"];
+
+const p1 = [
+  {n:1, a:"make"},
+  {n:2, a:"for"},
+  {n:3, a:"enough"},
+  {n:4, a:"it"},
+  {n:5, a:"into"},
+  {n:6, a:"any"},
+  {n:7, a:"what"},
+  {n:8, a:"when"},
+  {n:9, a:"as"},
+  {n:10, a:"at"}
+];
+
+function buildPassage(){
+  function sel(n){
+    let opts = words.map(w=>`<option value="${w}">${w}</option>`).join('');
+    return `<select class="blank" id="b${n}" data-n="${n}"><option value="">…</option>${opts}</select>`;
+  }
+  document.getElementById('p1passage').innerHTML = `
+  <h3>The Benefits of Physical Activity</h3>
+  <p>The pace <b>(0) of</b> modern life is fast, and most people have busy and demanding lives. So eating a balanced diet and doing physical activity can ${sel(1)} a big difference to overall health. Regular physical activity is good ${sel(2)} your whole body, from your brains to your bones. Yet many people do not get ${sel(3)} exercise. The good news is that ${sel(4)} is easier than you may think to fit physical activity ${sel(5)} your day because you can do it at ${sel(6)} time and almost anywhere. No matter ${sel(7)} your age and stage of life, there are plenty of ways to take exercise. Your feet were made for walking, so use them ${sel(8)} you get a chance. Walk around town, ignore lifts and escalators and build up your leg muscles by climbing stairs. Next, get out and play, kicking a ball is fun, and it is also a great way to spend time together ${sel(9)} a family. Finally try doing two things ${sel(10)} once! While you talk on the phone or watch television, stretches, lift weights or do household chores.</p>`;
+}
+
+const p2 = [
+  {n:1, txt:"Take one tablet 3 times a day,", a:"G", example:true},
+  {n:2, txt:"Have stomach upset,", a:"A"},
+  {n:3, txt:"Be sunburnt,", a:"F"},
+  {n:4, txt:"Get a blister,", a:"C"},
+  {n:5, txt:"Feel rundown,", a:"B"},
+  {n:6, txt:"Get a splinter in your finger,", a:"D"}
+];
+
+function buildP2(){
+  let html = '';
+  p2.forEach(r=>{
+    if(r.example){
+      html += `<div class="match-row"><div class="num">${r.n}.</div><div class="txt">${r.txt}</div><div style="font-weight:700;color:var(--teal-deep);">${r.a} ✓</div></div>`;
+    } else {
+      html += `<div class="match-row"><div class="num">${r.n}.</div><div class="txt">${r.txt}</div>
+      <select id="m${r.n}" data-n="${r.n}">
+        <option value="">–</option>
+        <option value="A">A</option><option value="B">B</option><option value="C">C</option>
+        <option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option>
+      </select></div>`;
+    }
+  });
+  document.getElementById('p2rows').innerHTML = html;
+}
+
+const p3 = [
+  {q:"The pharmacist needed the doctor …………………… the prescription before she filled it.", opts:["to verify","verifies","has verified","verifying"], a:0},
+  {q:"Mr. Kim …………………… has vacation after the project is completed.", opts:["will take","took","taking","has taken"], a:0},
+  {q:"The restaurant …………………… overlooks the river is very popular.", opts:["it","that","whose","who"], a:1},
+  {q:"Mr. Savuth …………………… for the day when the phone call came.", opts:["has already left","already leaves","already left","had already left"], a:3},
+  {q:"Television advertising costs …………………… printing advertising.", opts:["most than","as much as","more as","more than"], a:3}
+];
+
+const p4 = [
+  {q:"We had a perfect view from the plane because the skies were ……………", opts:["empty","cloudy","open","clear"], a:3},
+  {q:"The path was very …………… because of the wet weather.", opts:["stony","muddy","sandy","dusty"], a:1},
+  {q:"It's always a good idea to …………………… clothes before you buy them.", opts:["put","hang","take","try"], a:3},
+  {q:"I hate doing the ……………………, especially cleaning the windows.", opts:["housework","employments","jobs","homework"], a:0},
+  {q:"Most people in the town …………… the idea of green and clean city.", opts:["agree","approve","support","believe"], a:2},
+  {q:"Too much stress can be …………………… to your health.", opts:["painful","harmful","graceful","careful"], a:1},
+  {q:"My sister had a baby boy. I'm really pleased to have a new ……………………", opts:["cousin","nephew","aunt","niece"], a:1},
+  {q:"These shoes do not ……………………, they are too big.", opts:["fit","suit","suitable","pass"], a:0}
+];
+
+function buildMCQ(list, containerId, prefix){
+  let html = '';
+  list.forEach((item, i)=>{
+    let n = i+1;
+    html += `<div class="mcq" id="${prefix}mcq${n}">
+      <div class="q-text"><span class="q-num">${n}.</span> ${item.q}</div>
+      <div class="opts">`;
+    const letters = ['a','b','c','d'];
+    item.opts.forEach((o, oi)=>{
+      html += `<label class="opt" data-idx="${oi}" onclick="selectOpt('${prefix}',${n},${oi})">
+        <input type="radio" name="${prefix}q${n}" style="display:none;">
+        <span>${letters[oi]}. ${o}</span>
+      </label>`;
+    });
+    html += `</div></div>`;
+  });
+  document.getElementById(containerId).innerHTML = html;
+}
+
+let answers = {p3:{}, p4:{}};
+function selectOpt(prefix, n, oi){
+  answers[prefix][n] = oi;
+  document.querySelectorAll(`#${prefix}mcq${n} .opt`).forEach(el=>el.classList.remove('selected'));
+  document.querySelectorAll(`#${prefix}mcq${n} .opt`)[oi].classList.add('selected');
+}
+
+function checkPart(num){
+  let correct = 0, total = 0;
+  if(num===1){
+    total = p1.length;
+    p1.forEach(item=>{
+      const el = document.getElementById('b'+item.n);
+      el.classList.remove('correct','incorrect');
+      if(el.value === item.a){ el.classList.add('correct'); correct++; }
+      else { el.classList.add('incorrect'); }
+    });
+  } else if(num===2){
+    const gradable = p2.filter(r=>!r.example);
+    total = gradable.length;
+    gradable.forEach(item=>{
+      const el = document.getElementById('m'+item.n);
+      el.classList.remove('correct','incorrect');
+      if(el.value === item.a){ el.classList.add('correct'); correct++; }
+      else { el.classList.add('incorrect'); }
+    });
+  } else if(num===3 || num===4){
+    const list = num===3 ? p3 : p4;
+    const prefix = num===3 ? 'p3' : 'p4';
+    total = list.length;
+    list.forEach((item,i)=>{
+      const n = i+1;
+      const opts = document.querySelectorAll(`#${prefix}mcq${n} .opt`);
+      opts.forEach(el=>el.classList.remove('correct','incorrect'));
+      const picked = answers[prefix][n];
+      opts[item.a].classList.add('correct');
+      if(picked === item.a){ correct++; }
+      else if(picked !== undefined){ opts[picked].classList.add('incorrect'); }
+    });
+  }
+
+  const pct = total ? correct/total : 0;
+  const banner = document.getElementById('banner'+num);
+  banner.className = 'score-banner show ' + (pct>=0.8?'ok':pct>=0.5?'mid':'low');
+  banner.textContent = `Score: ${correct} / ${total}`;
+  scores[num] = correct;
+  updateTotal();
+}
+
+let scores = {1:0,2:0,3:0,4:0};
+function updateTotal(){
+  const t = scores[1]+scores[2]+scores[3]+scores[4];
+  document.getElementById('totalBar').textContent = `Score so far: ${t} / 38  (Part 5 is marked separately)`;
+}
+
+function updateWordCount(){
+  const txt = document.getElementById('essay').value.trim();
+  const count = txt.length ? txt.split(/\s+/).length : 0;
+  const wc = document.getElementById('wc');
+  wc.textContent = count + ' words';
+  wc.className = count >= 150 ? 'wc enough' : 'wc';
+}
+
+function toggleSample(){
+  document.getElementById('sampleBox').classList.toggle('show');
+}
+
+const partOrder = [1,2,3,4,5];
+let current = 0;
+function renderTabs(){
+  const labels = ['Part 1','Part 2','Part 3','Part 4','Part 5'];
+  document.getElementById('tabs').innerHTML = labels.map((l,i)=>
+    `<div class="tab ${i===current?'active':''}" onclick="goTo(${i})">${l}</div>`
+  ).join('');
+}
+function goTo(i){
+  current = i;
+  document.querySelectorAll('.part').forEach((el,idx)=>{
+      el.classList.toggle('active', idx===i);
+  });
+  renderTabs();
+  document.getElementById('prevBtn').disabled = i===0;
+  document.getElementById('nextBtn').disabled = i===partOrder.length-1;
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function changePart(dir){
+  goTo(Math.min(Math.max(current+dir,0), partOrder.length-1));
+}
+
+buildPassage();
+buildP2();
+buildMCQ(p3, 'p3q', 'p3');
+buildMCQ(p4, 'p4q', 'p4');
+renderTabs();
+goTo(0);
+</script>
+
+</body>
+</html>

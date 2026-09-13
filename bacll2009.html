@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Exam Practice</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root{
+    --ink:#2b2620;
+    --paper:#faf6ee;
+    --paper2:#f1ead9;
+    --rule:#d8cdb4;
+    --gold:#a8763e;
+    --good:#3f6b45;
+    --bad:#a3402f;
+    --good-bg:#e7f0e3;
+    --bad-bg:#f7e6e0;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.55;
+  }
+  header{
+    padding:28px 20px 18px;
+    border-bottom:2px solid var(--ink);
+    text-align:center;
+  }
+  header h1{
+    font-size:1.5rem;
+    letter-spacing:.02em;
+    margin:0 0 4px;
+    font-weight:600;
+  }
+  header p{
+    margin:0;
+    font-size:.85rem;
+    color:#6b6252;
+    font-style:italic;
+  }
+  nav{
+    display:flex;
+    overflow-x:auto;
+    gap:2px;
+    background:var(--paper2);
+    border-bottom:1px solid var(--rule);
+    -webkit-overflow-scrolling:touch;
+  }
+  nav button{
+    flex:0 0 auto;
+    padding:12px 14px;
+    background:none;
+    border:none;
+    font-family:inherit;
+    font-size:.82rem;
+    color:#6b6252;
+    cursor:pointer;
+    white-space:nowrap;
+    border-bottom:3px solid transparent;
+  }
+  nav button.active{
+    color:var(--ink);
+    border-bottom-color:var(--gold);
+    font-weight:600;
+  }
+  main{
+    max-width:760px;
+    margin:0 auto;
+    padding:20px 18px 60px;
+  }
+  section.part{display:none;}
+  section.part.active{display:block;}
+  h2{
+    font-size:1.15rem;
+    margin:0 0 4px;
+    border-bottom:1px solid var(--rule);
+    padding-bottom:8px;
+  }
+  .marks{
+    font-size:.78rem;
+    color:#8a7d63;
+    font-style:italic;
+    margin:0 0 16px;
+  }
+  .instructions{
+    font-size:.88rem;
+    color:#524a3c;
+    margin-bottom:16px;
+  }
+  .wordbank{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-bottom:18px;
+    padding:12px;
+    background:var(--paper2);
+    border:1px solid var(--rule);
+    border-radius:4px;
+  }
+  .wordbank span{
+    font-size:.82rem;
+    padding:3px 9px;
+    border:1px solid var(--rule);
+    border-radius:20px;
+    background:var(--paper);
+  }
+  .wordbank span.used{
+    text-decoration:line-through;
+    opacity:.4;
+  }
+  .passage{
+    font-size:.95rem;
+    text-align:justify;
+  }
+  select, .gapselect{
+    font-family:inherit;
+    font-size:.85rem;
+    padding:2px 4px;
+    border:none;
+    border-bottom:2px solid var(--gold);
+    background:transparent;
+    color:var(--ink);
+    min-width:110px;
+  }
+  select:focus{outline:none;}
+  .qnum{font-weight:600;margin-right:4px;}
+  .langitem{
+    margin:14px 0;
+    padding-bottom:12px;
+    border-bottom:1px dotted var(--rule);
+    display:flex;
+    flex-wrap:wrap;
+    align-items:baseline;
+    gap:8px;
+    font-size:.9rem;
+  }
+  .langitem .stem{flex:1 1 220px;}
+  .grammar-q{
+    margin:16px 0;
+    font-size:.9rem;
+  }
+  .grammar-q .stem{margin-bottom:6px;}
+  .opts{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px 16px;
+  }
+  .opts label{
+    display:flex;
+    align-items:center;
+    gap:5px;
+    font-size:.85rem;
+    cursor:pointer;
+  }
+  .vocab-row{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin:10px 0;
+    font-size:.9rem;
+  }
+  .vocab-row .term{flex:1 1 140px;font-weight:600;}
+  .checkbtn{
+    display:block;
+    margin:22px auto 6px;
+    padding:11px 26px;
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    border-radius:3px;
+    font-family:inherit;
+    font-size:.9rem;
+    letter-spacing:.02em;
+    cursor:pointer;
+  }
+  .checkbtn:active{opacity:.8;}
+  .result-banner{
+    text-align:center;
+    margin:14px 0 4px;
+    font-size:.95rem;
+    font-weight:600;
+  }
+  .correct-mark{color:var(--good);font-weight:700;margin-left:4px;}
+  .wrong-mark{color:var(--bad);font-weight:700;margin-left:4px;}
+  .explain{
+    display:none;
+    font-size:.78rem;
+    color:#6b6252;
+    margin-top:2px;
+    font-style:italic;
+  }
+  .show-explain{display:block;}
+  .correct-select{border-bottom-color:var(--good) !important;background:var(--good-bg);}
+  .wrong-select{border-bottom-color:var(--bad) !important;background:var(--bad-bg);}
+  textarea{
+    width:100%;
+    min-height:260px;
+    font-family:inherit;
+    font-size:.92rem;
+    padding:12px;
+    border:1px solid var(--rule);
+    border-radius:4px;
+    background:var(--paper2);
+    color:var(--ink);
+    line-height:1.6;
+    resize:vertical;
+  }
+  .wordcount{
+    text-align:right;
+    font-size:.8rem;
+    color:#8a7d63;
+    margin-top:6px;
+  }
+  .wordcount.ok{color:var(--good);}
+  .essay-tips{
+    background:var(--paper2);
+    border:1px solid var(--rule);
+    border-radius:4px;
+    padding:12px 14px;
+    font-size:.85rem;
+    margin-bottom:16px;
+  }
+  .essay-tips li{margin-bottom:4px;}
+  footer{
+    text-align:center;
+    font-size:.75rem;
+    color:#a39a86;
+    padding:20px;
+  }
+</style>
+</head>
+<body>
+  <div class="m-0 p-3 font-sans bg-gray-100">
+  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
+  </div>
+<header>
+  <h1>Bangsak High School — English Exam Practice</h1>
+  <p>Semester I · Grade 11 · Full mock version of your printed test</p>
+</header>
+
+<nav id="tabs">
+  <button data-tab="p1" class="active">Part 1 · Reading</button>
+  <button data-tab="p2">Part 2 · Language Use</button>
+  <button data-tab="p3">Part 3 · Grammar</button>
+  <button data-tab="p4">Part 4 · Vocabulary</button>
+  <button data-tab="p5">Part 5 · Essay</button>
+</nav>
+
+<main>
+
+<!-- PART 1 -->
+<section class="part active" id="p1">
+  <h2>Reading — Student Life</h2>
+  <p class="marks">10 marks</p>
+  <p class="instructions">Fill in each gap with the appropriate word from the box below. Each word is used once. The first one has been done for you.</p>
+
+  <div class="wordbank" id="wordbank1">
+    <span data-w="concentrate">concentrate</span>
+    <span data-w="overcome" class="used">overcome (1 — used)</span>
+    <span data-w="taking">taking</span>
+    <span data-w="taught">taught</span>
+    <span data-w="doing">doing</span>
+    <span data-w="organise">organise</span>
+    <span data-w="learn">learn</span>
+    <span data-w="review">review</span>
+    <span data-w="curriculum">curriculum</span>
+  </div>
+
+  <p class="passage">
+  Even the most studious among you will probably have difficulty studying at some stages in your academic life. If or when this happens, the only way to <b>overcome</b> this problem is to go back to basics. First, make sure you have a comfortable environment to study in. Some students cannot
+  <select class="gap" data-q="1" data-ans="concentrate">
+    <option value="">— choose —</option>
+    <option>concentrate</option><option>taking</option><option>taught</option><option>doing</option><option>organise</option><option>learn</option><option>review</option><option>curriculum</option>
+  </select>
+  if there are too many distractions, so they need a quiet place. Others need some sorts of background noise, such as music or company of friends. Whatever your personal preference is, you need to
+  <select class="gap" data-q="2" data-ans="organise">
+    <option value="">— choose —</option>
+    <option>concentrate</option><option>taking</option><option>taught</option><option>doing</option><option>organise</option><option>learn</option><option>review</option><option>curriculum</option>
+  </select>
+  this first of all. Next make sure you have all of the equipment or tools that you need. For example, if you are
+  <select class="gap" data-q="3" data-ans="taking">
+    <option value="">— choose —</option>
+    <option>concentrate</option><option>taking</option><option>taught</option><option>doing</option><option>organise</option><option>learn</option><option>review</option><option>curriculum</option>
+  </select>
+  a geography course and you have to
+  <select class="gap" data-q="4" data-ans="learn">
+    <option value="">— choose —</option>
+    <option>concentrate</option><option>taking</option><option>taught</option><option>doing</option><option>organise</option><option>learn</option><option>review</option><option>curriculum</option>
+  </select>
+  about countries and their capital cities, then you will need to have your atlas in your hand. If you are
+  <select class="gap" data-q="5" data-ans="doing">
+    <option value="">— choose —</option>
+    <option>concentrate</option><option>taking</option><option>taught</option><option>doing</option><option>organise</option><option>learn</option><option>review</option><option>curriculum</option>
+  </select>
+  your mathematics homework, then be sure to find your calculator, ruler, protractor and compass before you start. Perhaps you are not preparing a homework assignment or project, but are trying to revise for an exam. If so, you need to know exactly what is on your
+  <select class="gap" data-q="6" data-ans="curriculum">
+    <option value="">— choose —</option>
+    <option>concentrate</option><option>taking</option><option>taught</option><option>doing</option><option>organise</option><option>learn</option><option>review</option><option>curriculum</option>
+  </select>
+  . You should also
+  <select class="gap" data-q="7" data-ans="review">
+    <option value="">— choose —</option>
+    <option>concentrate</option><option>taking</option><option>taught</option><option>doing</option><option>organise</option><option>learn</option><option>review</option><option>curriculum</option>
+  </select>
+  your notes and make sure that you have a clear understanding of what your lecturers have
+  <select class="gap" data-q="8" data-ans="taught">
+    <option value="">— choose —</option>
+    <option>concentrate</option><option>taking</option><option>taught</option><option>doing</option><option>organise</option><option>learn</option><option>review</option><option>curriculum</option>
+  </select>
+  you.
+  </p>
+
+  <button class="checkbtn" onclick="checkGaps('p1')">Check Part 1</button>
+  <div class="result-banner" id="result-p1"></div>
+</section>
+
+<!-- PART 2 -->
+<section class="part" id="p2">
+  <h2>Language Use</h2>
+  <p class="marks">10 marks</p>
+  <p class="instructions">Match each sentence in column A with the most suitable response in column B. The first one is done for you as an example. One item in column B is not used.</p>
+
+  <div class="wordbank">
+    <span>a. Let's go picnic.</span><span>b. I'm going to a wedding dinner.</span>
+    <span>c. commits the crime.</span><span>d. At the construction site.</span>
+    <span>e. Happy birthday!</span><span>f. sees a crime being committed.</span>
+    <span>g. On the medicine or poisonous bottle.</span><span>h. As he rose to receive the Prize.</span>
+    <span>i. It's the third burglary in this area.</span><span>j. so he had to pay a parking fine.</span>
+    <span>k. because my bike has broken down.</span><span>l. Good luck!</span>
+  </div>
+
+  <div class="langitem"><span class="stem"><b>1.</b> I'm taking my driving test today. <i>(example: l)</i></span></div>
+
+  <div class="langitem" data-q="2" data-ans="a"><span class="qnum">2.</span><span class="stem">The weather is so lovely.</span>
+    <select class="gap2"><option value="">—</option><option>a</option><option>b</option><option>c</option><option>d</option><option>e</option><option>f</option><option>g</option><option>h</option><option>i</option><option>j</option><option>k</option></select></div>
+
+  <div class="langitem" data-q="3" data-ans="e"><span class="qnum">3.</span><span class="stem">I'm twenty-two today.</span>
+    <select class="gap2"><option value="">—</option><option>a</option><option>b</option><option>c</option><option>d</option><option>e</option><option>f</option><option>g</option><option>h</option><option>i</option><option>j</option><option>k</option></select></div>
+
+  <div class="langitem" data-q="4" data-ans="b"><span class="qnum">4.</span><span class="stem">What beautiful hair you made up!</span>
+    <select class="gap2"><option value="">—</option><option>a</option><option>b</option><option>c</option><option>d</option><option>e</option><option>f</option><option>g</option><option>h</option><option>i</option><option>j</option><option>k</option></select></div>
+
+  <div class="langitem" data-q="5" data-ans="g"><span class="qnum">5.</span><span class="stem">Keep out of reach of children.</span>
+    <select class="gap2"><option value="">—</option><option>a</option><option>b</option><option>c</option><option>d</option><option>e</option><option>f</option><option>g</option><option>h</option><option>i</option><option>j</option><option>k</option></select></div>
+
+  <div class="langitem" data-q="6" data-ans="d"><span class="qnum">6.</span><span class="stem">Safety first.</span>
+    <select class="gap2"><option value="">—</option><option>a</option><option>b</option><option>c</option><option>d</option><option>e</option><option>f</option><option>g</option><option>h</option><option>i</option><option>j</option><option>k</option></select></div>
+
+  <div class="langitem" data-q="7" data-ans="j"><span class="qnum">7.</span><span class="stem">He parked his car in the wrong place.</span>
+    <select class="gap2"><option value="">—</option><option>a</option><option>b</option><option>c</option><option>d</option><option>e</option><option>f</option><option>g</option><option>h</option><option>i</option><option>j</option><option>k</option></select></div>
+
+  <div class="langitem" data-q="8" data-ans="f"><span class="qnum">8.</span><span class="stem">A witness is someone who...</span>
+    <select class="gap2"><option value="">—</option><option>a</option><option>b</option><option>c</option><option>d</option><option>e</option><option>f</option><option>g</option><option>h</option><option>i</option><option>j</option><option>k</option></select></div>
+
+  <div class="langitem" data-q="9" data-ans="k"><span class="qnum">9.</span><span class="stem">I was late for work this morning.</span>
+    <select class="gap2"><option value="">—</option><option>a</option><option>b</option><option>c</option><option>d</option><option>e</option><option>f</option><option>g</option><option>h</option><option>i</option><option>j</option><option>k</option></select></div>
+
+  <div class="langitem" data-q="10" data-ans="h"><span class="qnum">10.</span><span class="stem">There was an outburst of clapping.</span>
+    <select class="gap2"><option value="">—</option><option>a</option><option>b</option><option>c</option><option>d</option><option>e</option><option>f</option><option>g</option><option>h</option><option>i</option><option>j</option><option>k</option></select></div>
+
+  <div class="langitem" data-q="11" data-ans="i"><span class="qnum">11.</span><span class="stem">A house was broken into last week.</span>
+    <select class="gap2"><option value="">—</option><option>a</option><option>b</option><option>c</option><option>d</option><option>e</option><option>f</option><option>g</option><option>h</option><option>i</option><option>j</option><option>k</option></select></div>
+
+  <button class="checkbtn" onclick="checkGaps('p2')">Check Part 2</button>
+  <div class="result-banner" id="result-p2"></div>
+</section>
+
+<!-- PART 3 -->
+<section class="part" id="p3">
+  <h2>Grammar</h2>
+  <p class="marks">12 marks</p>
+  <p class="instructions">There are four answers after each sentence. Choose the correct one.</p>
+
+  <div class="grammar-q"><div class="stem"><i>Example: I <u>ask</u> her for help whenever my department is understaffed. ✓</i></div></div>
+
+  <div class="grammar-q" data-q="1" data-ans="d">
+    <div class="stem">1. Mr. Samnang was getting ready to leave the hotel when he ……… a phone call.</div>
+    <div class="opts">
+      <label><input type="radio" name="g1" value="a"> a. receives</label>
+      <label><input type="radio" name="g1" value="b"> b. had received</label>
+      <label><input type="radio" name="g1" value="c"> c. is receiving</label>
+      <label><input type="radio" name="g1" value="d"> d. received</label>
+    </div>
+  </div>
+
+  <div class="grammar-q" data-q="2" data-ans="c">
+    <div class="stem">2. The director ……… for his vacation and will not return until next week.</div>
+    <div class="opts">
+      <label><input type="radio" name="g2" value="a"> a. leaving</label>
+      <label><input type="radio" name="g2" value="b"> b. had left</label>
+      <label><input type="radio" name="g2" value="c"> c. has left</label>
+      <label><input type="radio" name="g2" value="d"> d. will have left</label>
+    </div>
+  </div>
+
+  <div class="grammar-q" data-q="3" data-ans="b">
+    <div class="stem">3. ……… I am tired, I will work late tonight.</div>
+    <div class="opts">
+      <label><input type="radio" name="g3" value="a"> a. Or</label>
+      <label><input type="radio" name="g3" value="b"> b. Even though</label>
+      <label><input type="radio" name="g3" value="c"> c. Because</label>
+      <label><input type="radio" name="g3" value="d"> d. So that</label>
+    </div>
+  </div>
+
+  <div class="grammar-q" data-q="4" data-ans="c">
+    <div class="stem">4. The final report on the project needs to be completed ……… possible.</div>
+    <div class="opts">
+      <label><input type="radio" name="g4" value="a"> a. as quickly as</label>
+      <label><input type="radio" name="g4" value="b"> b. quickly than</label>
+      <label><input type="radio" name="g4" value="c"> c. quickly as</label>
+      <label><input type="radio" name="g4" value="d"> d. more quickly</label>
+    </div>
+  </div>
+
+  <div class="grammar-q" data-q="5" data-ans="a">
+    <div class="stem">5. If the weather were sunny, we ……… indoors.</div>
+    <div class="opts">
+      <label><input type="radio" name="g5" value="a"> a. would stay</label>
+      <label><input type="radio" name="g5" value="b"> b. will stay</label>
+      <label><input type="radio" name="g5" value="c"> c. should stay</label>
+      <label><input type="radio" name="g5" value="d"> d. stay</label>
+    </div>
+  </div>
+
+  <div class="grammar-q" data-q="6" data-ans="b">
+    <div class="stem">6. I feel tired, because I ……… for hours.</div>
+    <div class="opts">
+      <label><input type="radio" name="g6" value="a"> a. was working</label>
+      <label><input type="radio" name="g6" value="b"> b. have been working</label>
+      <label><input type="radio" name="g6" value="c"> c. am working</label>
+      <label><input type="radio" name="g6" value="d"> d. has worked</label>
+    </div>
+  </div>
+
+  <div class="grammar-q" data-q="7" data-ans="a">
+    <div class="stem">7. If he were a millionaire, he ……… you a palace.</div>
+    <div class="opts">
+      <label><input type="radio" name="g7" value="a"> a. would buy</label>
+      <label><input type="radio" name="g7" value="b"> b. will buy</label>
+      <label><input type="radio" name="g7" value="c"> c. should buy</label>
+      <label><input type="radio" name="g7" value="d"> d. buy</label>
+    </div>
+  </div>
+
+  <div class="grammar-q" data-q="8" data-ans="d">
+    <div class="stem">8. If Mr. Savuth does not arrive soon, we ……… without him.</div>
+    <div class="opts">
+      <label><input type="radio" name="g8" value="a"> a. left</label>
+      <label><input type="radio" name="g8" value="b"> b. is leaving</label>
+      <label><input type="radio" name="g8" value="c"> c. had left</label>
+      <label><input type="radio" name="g8" value="d"> d. will leave</label>
+    </div>
+  </div>
+
+  <div class="grammar-q" data-q="9" data-ans="a">
+    <div class="stem">9. If I had a spare ticket, I ……… you to the concert.</div>
+    <div class="opts">
+      <label><input type="radio" name="g9" value="a"> a. could take</label>
+      <label><input type="radio" name="g9" value="b"> b. can take</label>
+      <label><input type="radio" name="g9" value="c"> c. take</label>
+      <label><input type="radio" name="g9" value="d"> d. will take</label>
+    </div>
+  </div>
+
+  <div class="grammar-q" data-q="10" data-ans="c">
+    <div class="stem">10. We arrived ……… Phnom Penh at 4:30 in the morning.</div>
+    <div class="opts">
+      <label><input type="radio" name="g10" value="a"> a. to</label>
+      <label><input type="radio" name="g10" value="b"> b. at</label>
+      <label><input type="radio" name="g10" value="c"> c. in</label>
+      <label><input type="radio" name="g12" value="d"> d. at</label>
+    </div>
+  </div>
+
+  <button class="checkbtn" onclick="checkGrammar()">Check Part 3</button>
+  <div class="result-banner" id="result-p3"></div>
+</section>
+
+<!-- PART 4 -->
+<section class="part" id="p4">
+  <h2>Vocabulary</h2>
+  <p class="marks">8 marks</p>
+  <p class="instructions">Match each word or phrase in column A with its meaning in column B. The first one is done as an example. One option in column B is not used.</p>
+
+  <div class="wordbank">
+    <span>a. try not to judge before you know the facts</span>
+    <span>b. giving one's own opinion</span>
+    <span>c. repair and make new again</span>
+    <span>d. remember</span>
+    <span>e. written only in one language</span>
+    <span>f. stop doing something</span>
+    <span>g. keep in good condition</span>
+    <span>h. I forgot</span>
+    <span>i. feel tired</span>
+    <span>j. is never late, but always arrives at the exact time</span>
+  </div>
+
+  <div class="vocab-row"><span class="term">1. monolingual</span><i>e (example)</i></div>
+
+  <div class="vocab-row" data-q="2" data-ans="d"><span class="term">2. bear in mind</span>
+    <select class="gap4"><option value="">—</option><option>a</option><option>b</option><option>c</option><option>d</option><option>e</option><option>f</option><option>g</option><option>h</option><option>i</option><option>j</option></select></div>
+
+  <div class="vocab-row" data-q="3" data-ans="a"><span class="term">3. keep an open mind</span>
+    <select class="gap4"><option value="">—</option><option>a</option><option>b</option><option>c</option><option>d</option><option>e</option><option>f</option><option>g</option><option>h</option><option>i</option><option>j</option></select></div>
+
+  <div class="vocab-row" data-q="4" data-ans="g"><span class="term">4. maintain</span>
+    <select class="gap4"><option value="">—</option><option>a</option><option>b</option><option>c</option><option>d</option><option>e</option><option>f</option><option>g</option><option>h</option><option>i</option><option>j</option></select></div>
+
+  <div class="vocab-row" data-q="5" data-ans="b"><span class="term">5. personally</span>
+    <select class="gap4"><option value="">—</option><option>a</option><option>b</option><option>c</option><option>d</option><option>e</option><option>f</option><option>g</option><option>h</option><option>i</option><option>j</option></select></div>
+
+  <div class="vocab-row" data-q="6" data-ans="h"><span class="term">6. my mind went blank</span>
+    <select class="gap4"><option value="">—</option><option>a</option><option>b</option><option>c</option><option>d</option><option>e</option><option>f</option><option>g</option><option>h</option><option>i</option><option>j</option></select></div>
+
+  <div class="vocab-row" data-q="7" data-ans="c"><span class="term">7. renovate</span>
+    <select class="gap4"><option value="">—</option><option>a</option><option>b</option><option>c</option><option>d</option><option>e</option><option>f</option><option>g</option><option>h</option><option>i</option><option>j</option></select></div>
+
+  <div class="vocab-row" data-q="8" data-ans="f"><span class="term">8. give up</span>
+    <select class="gap4"><option value="">—</option><option>a</option><option>b</option><option>c</option><option>d</option><option>e</option><option>f</option><option>g</option><option>h</option><option>i</option><option>j</option></select></div>
+
+  <div class="vocab-row" data-q="9" data-ans="j"><span class="term">9. punctual</span>
+    <select class="gap4"><option value="">—</option><option>a</option><option>b</option><option>c</option><option>d</option><option>e</option><option>f</option><option>g</option><option>h</option><option>i</option><option>j</option></select></div>
+
+  <button class="checkbtn" onclick="checkGaps('p4')">Check Part 4</button>
+  <div class="result-banner" id="result-p4"></div>
+</section>
+
+<!-- PART 5 -->
+<section class="part" id="p5">
+  <h2>Essay Writing</h2>
+  <p class="marks">12 marks</p>
+  <p class="instructions"><b>Topic:</b> Describe "The Role of Cambodian Women in Society" — at least 150 words.</p>
+
+  <div class="essay-tips">
+    <b>Before you write, plan:</b>
+    <ul>
+      <li>Introduction — one sentence stating the general idea (women's roles have changed over time).</li>
+      <li>Body 1 — traditional roles: family, household, raising children.</li>
+      <li>Body 2 — modern roles: education, careers, business, politics, leadership.</li>
+      <li>Body 3 — challenges women still face and why equality matters.</li>
+      <li>Conclusion — your own opinion on the future of women's roles in Cambodia.</li>
+    </ul>
+  </div>
+
+  <textarea id="essayBox" placeholder="Write your essay here..."></textarea>
+  <div class="wordcount" id="wc">0 words (minimum 150)</div>
+</section>
+
+</main>
+
+<footer>Practice tool generated from your printed exam paper — check your work, then revise anything you got wrong.</footer>
+
+<script>
+// Tab switching
+document.querySelectorAll('#tabs button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('#tabs button').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('section.part').forEach(s=>s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+// Part 1: reading gaps (select.gap)
+function checkGaps(partId){
+  const section = document.getElementById(partId);
+  let selects;
+  if(partId==='p1') selects = section.querySelectorAll('select.gap');
+  else if(partId==='p2') selects = section.querySelectorAll('.langitem[data-q] select.gap2');
+  else if(partId==='p4') selects = section.querySelectorAll('.vocab-row[data-q] select.gap4');
+
+  let correct=0, total=0;
+  selects.forEach(sel=>{
+    total++;
+    let ansAttrHolder = sel.closest('[data-ans]');
+    let correctAns = ansAttrHolder ? ansAttrHolder.dataset.ans : sel.dataset.ans;
+    sel.classList.remove('correct-select','wrong-select');
+    if(sel.value && sel.value === correctAns){
+      correct++;
+      sel.classList.add('correct-select');
+    } else if(sel.value){
+      sel.classList.add('wrong-select');
+    }
+  });
+  const resultDiv = document.getElementById('result-'+partId);
+  resultDiv.textContent = `Score: ${correct} / ${total} correct`;
+  resultDiv.style.color = correct===total ? 'var(--good)' : 'var(--ink)';
+}
+
+// Part 3: grammar radios
+function checkGrammar(){
+  const qs = document.querySelectorAll('#p3 .grammar-q[data-q]');
+  let correct=0, total=0;
+  qs.forEach(q=>{
+    total++;
+    const name = 'g'+q.dataset.q;
+    const ans = q.dataset.ans;
+    const checked = q.querySelector(`input[name="${name}"]:checked`);
+    // reset label styling
+    q.querySelectorAll('label').forEach(l=>{l.style.color='';});
+    if(checked){
+      const correctLabel = q.querySelector(`input[name="${name}"][value="${ans}"]`).closest('label');
+      if(checked.value===ans){
+        correct++;
+        checked.closest('label').style.color = 'var(--good)';
+      } else {
+        checked.closest('label').style.color = 'var(--bad)';
+        correctLabel.style.color = 'var(--good)';
+      }
+    }
+  });
+  const resultDiv = document.getElementById('result-p3');
+  resultDiv.textContent = `Score: ${correct} / ${total} correct`;
+  resultDiv.style.color = correct===total ? 'var(--good)' : 'var(--ink)';
+}
+
+// Part 5: word count
+const essayBox = document.getElementById('essayBox');
+const wc = document.getElementById('wc');
+essayBox.addEventListener('input',()=>{
+  const words = essayBox.value.trim().split(/\s+/).filter(Boolean).length;
+  wc.textContent = `${words} words (minimum 150)`;
+  wc.classList.toggle('ok', words>=150);
+});
+</script>
+
+</body>
+</html>

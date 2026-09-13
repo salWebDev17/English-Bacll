@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<title>English Exam Practice</title>
+<style>
+  :root{
+    --paper:#FAF6EC;
+    --paper-line:#E4D9BE;
+    --ink:#22304A;
+    --navy:#1F3A5F;
+    --gold:#B8912E;
+    --good:#3A7D44;
+    --good-bg:#E7F1E6;
+    --bad:#B23A32;
+    --bad-bg:#F7E8E4;
+    --muted:#6B6455;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      linear-gradient(var(--paper-line) 1px, transparent 1px);
+    background-size: 100% 2.1em;
+    color:var(--ink);
+    font-family: "Iowan Old Style","Georgia","Times New Roman",serif;
+    line-height:1.55;
+    padding-bottom:60px;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:28px 20px 10px;}
+  header.title{
+    text-align:left;
+    border-bottom:3px solid var(--navy);
+    padding-bottom:14px;
+    margin-bottom:22px;
+  }
+  header.title .stamp{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:12px;
+    letter-spacing:.04em;
+    color:var(--gold);
+    font-weight:700;
+    margin-bottom:4px;
+  }
+  header.title h1{
+    margin:0 0 6px;
+    font-size:1.7rem;
+    font-weight:700;
+    color:var(--navy);
+  }
+  header.title p{
+    margin:0;
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:13px;
+    color:var(--muted);
+  }
+  .part{
+    margin-bottom:38px;
+  }
+  .part h2{
+    font-size:1.15rem;
+    color:var(--navy);
+    border-left:5px solid var(--gold);
+    padding-left:10px;
+    margin:0 0 4px;
+  }
+  .part .points{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:12px;
+    color:var(--muted);
+    margin:0 0 16px 15px;
+  }
+  .bank{
+    background:#fff;
+    border:1px solid var(--paper-line);
+    border-radius:4px;
+    padding:12px 14px;
+    margin-bottom:18px;
+    font-size:.92rem;
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 16px;
+  }
+  .bank span{white-space:nowrap;}
+  .bank span.used{color:#b7b0a0;text-decoration:line-through;}
+  .passage{
+    background:#fff;
+    border:1px solid var(--paper-line);
+    border-radius:4px;
+    padding:16px 18px;
+    font-size:1rem;
+  }
+  select.gap{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:.88rem;
+    padding:2px 6px;
+    border:none;
+    border-bottom:2px solid var(--navy);
+    background:#F2ECDD;
+    color:var(--navy);
+    border-radius:2px;
+    margin:0 2px;
+  }
+  select.gap.correct{border-bottom-color:var(--good);background:var(--good-bg);color:var(--good);}
+  select.gap.incorrect{border-bottom-color:var(--bad);background:var(--bad-bg);color:var(--bad);}
+  .q{
+    background:#fff;
+    border:1px solid var(--paper-line);
+    border-radius:4px;
+    padding:14px 16px;
+    margin-bottom:12px;
+  }
+  .q .stem{font-size:1rem;margin-bottom:10px;}
+  .q .num{color:var(--gold);font-weight:700;margin-right:4px;}
+  .opts{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:.92rem;
+  }
+  .opt{
+    border:1px solid var(--paper-line);
+    border-radius:4px;
+    padding:8px 10px;
+    cursor:pointer;
+    background:#FEFDF9;
+    transition:background .15s, border-color .15s;
+  }
+  .opt:hover{border-color:var(--gold);}
+  .opt.selected{border-color:var(--navy);background:#EEF2F7;}
+  .opt.correct{background:var(--good-bg);border-color:var(--good);color:var(--good);font-weight:600;}
+  .opt.incorrect{background:var(--bad-bg);border-color:var(--bad);color:var(--bad);}
+  .opt input{display:none;}
+  .checkbtn, .revealbtn{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:.95rem;
+    font-weight:600;
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    padding:10px 22px;
+    border-radius:4px;
+    cursor:pointer;
+    margin-top:8px;
+  }
+  .checkbtn:hover, .revealbtn:hover{background:#16283f;}
+  .scoreline{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:.9rem;
+    margin-top:10px;
+    color:var(--navy);
+    font-weight:600;
+    min-height:18px;
+  }
+  textarea{
+    width:100%;
+    min-height:220px;
+    font-family:"Iowan Old Style","Georgia",serif;
+    font-size:1rem;
+    padding:14px;
+    border:1px solid var(--paper-line);
+    border-radius:4px;
+    background:#fff;
+    resize:vertical;
+    line-height:1.6;
+  }
+  .wordcount{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:.85rem;
+    color:var(--muted);
+    margin-top:6px;
+  }
+  .wordcount.ok{color:var(--good);font-weight:600;}
+  .prompt-box{
+    background:#fff;
+    border:1px solid var(--paper-line);
+    border-left:4px solid var(--navy);
+    padding:12px 14px;
+    margin-bottom:10px;
+    font-style:italic;
+  }
+  .checklist{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:.85rem;
+    color:var(--muted);
+    margin-top:10px;
+    padding-left:18px;
+  }
+  footer{
+    text-align:center;
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:.8rem;
+    color:var(--muted);
+    margin-top:30px;
+  }
+</style>
+</head>
+<body>
+  <div class="m-0 p-3 font-sans bg-gray-100">
+  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
+
+<div class="wrap">
+
+  <header class="title">
+    <div class="stamp">PRACTICE PAPER</div>
+    <h1>English Exam Practice</h1>
+    <p>Reading &middot; Grammar &middot; Vocabulary &middot; Writing — check your own answers as you go</p>
+  </header>
+
+  <!-- PART 1: READING -->
+  <div class="part">
+    <h2>Part 1 &ndash; Reading</h2>
+    <p class="points">10 points &middot; fill each gap with a word from the box (one is used already)</p>
+    <div class="bank" id="bank">
+      <span data-word="discipline">discipline</span>
+      <span data-word="situation">situation</span>
+      <span class="used" data-word="stricter">stricter (example)</span>
+      <span data-word="progressive">progressive</span>
+      <span data-word="reputation">reputation</span>
+      <span data-word="behavior">behavior</span>
+      <span data-word="punishment">punishment</span>
+      <span data-word="control">control</span>
+      <span data-word="conduct">conduct</span>
+      <span data-word="freedom">freedom</span>
+      <span data-word="respect">respect</span>
+    </div>
+    <div class="passage" id="passage"></div>
+    <button class="checkbtn" onclick="checkReading()">Check my answers</button>
+    <div class="scoreline" id="readingScore"></div>
+  </div>
+
+  <!-- PART 2: GRAMMAR -->
+  <div class="part">
+    <h2>Part 2 &ndash; Grammar</h2>
+    <p class="points">15 points &middot; choose the one correct answer for each sentence</p>
+    <div id="grammarQs"></div>
+    <button class="checkbtn" onclick="checkSection('grammarQs','grammar','grammarScore')">Check my answers</button>
+    <div class="scoreline" id="grammarScore"></div>
+  </div>
+
+  <!-- PART 3: VOCABULARY -->
+  <div class="part">
+    <h2>Part 3 &ndash; Vocabulary</h2>
+    <p class="points">15 points &middot; choose the one correct answer for each sentence</p>
+    <div id="vocabQs"></div>
+    <button class="checkbtn" onclick="checkSection('vocabQs','vocab','vocabScore')">Check my answers</button>
+    <div class="scoreline" id="vocabScore"></div>
+  </div>
+
+  <!-- PART 4: WRITING -->
+  <div class="part">
+    <h2>Part 4 &ndash; Writing</h2>
+    <p class="points">10 points &middot; write at least 80 words</p>
+    <div class="prompt-box">"How to Reduce Road Accidents in Cambodia?"</div>
+    <textarea id="essay" placeholder="Write your essay here..."></textarea>
+    <div class="wordcount" id="wordcount">0 words &middot; need at least 80</div>
+    <ul class="checklist">
+      <li>State the problem, then give 2&ndash;3 clear causes or solutions.</li>
+      <li>Use linking words: firstly, in addition, moreover, finally.</li>
+      <li>End with a short conclusion sentence.</li>
+    </ul>
+  </div>
+
+  <footer>Made for self-study practice &middot; not an official answer key</footer>
+</div>
+
+<script>
+/* ---------------- PART 1: READING ---------------- */
+const readingWords = ["discipline","situation","progressive","reputation","behavior","punishment","control","conduct","freedom","respect"];
+const readingAnswers = {2:"situation",3:"control",4:"reputation",5:"conduct",6:"respect",7:"behavior",8:"progressive",9:"discipline",10:"freedom",11:"punishment"};
+
+function makeSelect(n){
+  let opts = '<option value="">— choose —</option>';
+  readingWords.slice().sort().forEach(w=>{
+    opts += `<option value="${w}">${w}</option>`;
+  });
+  return `<select class="gap" id="g${n}">${opts}</select>`;
+}
+
+const passageHTML = `
+In most schools, schools were much (1) <b>stricter</b> twenty-five years ago than they are today.
+Many parents are not at all happy with the present (2) ${makeSelect(2)} because they feel that
+teachers have lost the ability to (3) ${makeSelect(3)} their classes. Some schools in particular
+have developed a very bad (4) ${makeSelect(4)} for the way in which the students (5) ${makeSelect(5)}
+themselves. They no longer seem to have any (6) ${makeSelect(6)} for the school or the teachers who
+work in it. Some experts feel the reason for these new patterns of (7) ${makeSelect(7)} in schools
+is the result of (8) ${makeSelect(8)} ideas in education. They feel that (9) ${makeSelect(9)} has
+become weak because students have been given too much (10) ${makeSelect(10)} to choose how they want
+to spend their time. It is no doubt a good idea that physical (11) ${makeSelect(11)}
+&mdash; a traditional kind of education &mdash; has vanished in most schools.
+`;
+document.getElementById('passage').innerHTML = passageHTML;
+
+function checkReading(){
+  let correct = 0;
+  Object.keys(readingAnswers).forEach(n=>{
+    const sel = document.getElementById('g'+n);
+    sel.classList.remove('correct','incorrect');
+    if(sel.value === readingAnswers[n]){
+      sel.classList.add('correct');
+      correct++;
+    } else {
+      sel.classList.add('incorrect');
+    }
+  });
+  const total = Object.keys(readingAnswers).length;
+  document.getElementById('readingScore').textContent = `Score: ${correct} / ${total} correct`;
+}
+
+/* ---------------- PART 2: GRAMMAR ---------------- */
+const grammarQs = [
+  {stem:"Good management _______ to the employees.", opts:{a:"will be listened", b:"are listened", c:"listen", d:"listens"}, answer:"d"},
+  {stem:"He has got a new friend _______ works in the bank.", opts:{a:"whose", b:"where", c:"who", d:"which"}, answer:"c"},
+  {stem:"Your mother used to visit you quite often, _______?", opts:{a:"didn't she", b:"doesn't she", c:"wouldn't she", d:"hadn't she"}, answer:"a"},
+  {stem:"I _______ on the bus when I dropped my wallet.", opts:{a:"am getting", b:"get", c:"was getting", d:"have gotten"}, answer:"c"},
+  {stem:"More roads _______ every year.", opts:{a:"was built", b:"had built", c:"are being built", d:"are built"}, answer:"c"}
+];
+
+const vocabQs = [
+  {stem:"What are you going to do when you _______ school?", opts:{a:"conclude", b:"end", c:"complete", d:"leave"}, answer:"d"},
+  {stem:"All medicines should be kept out of _______ of children.", opts:{a:"hand", b:"touch", c:"contact", d:"reach"}, answer:"d"},
+  {stem:"He _______ to get some cards for his birthday, but they never arrived.", opts:{a:"promised", b:"expected", c:"assumed", d:"supposed"}, answer:"b"},
+  {stem:"Is it possible to _______ now for the next term's classes?", opts:{a:"participate", b:"join in", c:"enroll", d:"enter"}, answer:"c"},
+  {stem:"I _______ to inform you that your grandmother died ten minutes ago.", opts:{a:"apologise", b:"sorry", c:"pity", d:"regret"}, answer:"d"}
+];
+
+function renderMC(containerId, list, prefix){
+  const container = document.getElementById(containerId);
+  container.innerHTML = list.map((q,i)=>{
+    const opts = Object.entries(q.opts).map(([key,text])=>`
+      <label class="opt" id="${prefix}${i}-${key}">
+        <input type="radio" name="${prefix}${i}" value="${key}" onclick="selectOpt('${prefix}${i}','${key}')">
+        <b>${key}.</b> ${text}
+      </label>`).join('');
+    return `<div class="q">
+      <div class="stem"><span class="num">${i+1}.</span>${q.stem}</div>
+      <div class="opts">${opts}</div>
+    </div>`;
+  }).join('');
+}
+
+function selectOpt(qname, key){
+  document.querySelectorAll(`[id^="${qname}-"]`).forEach(el=>el.classList.remove('selected'));
+  document.getElementById(`${qname}-${key}`).classList.add('selected');
+}
+
+function checkSection(containerId, dataKey, scoreId){
+  const list = dataKey === 'grammar' ? grammarQs : vocabQs;
+  const prefix = dataKey === 'grammar' ? 'gr' : 'vo';
+  let correct = 0, answered = 0;
+  list.forEach((q,i)=>{
+    const qname = `${prefix}${i}`;
+    const selected = document.querySelector(`input[name="${qname}"]:checked`);
+    Object.keys(q.opts).forEach(key=>{
+      const el = document.getElementById(`${qname}-${key}`);
+      el.classList.remove('correct','incorrect');
+      if(key === q.answer) el.classList.add('correct');
+    });
+    if(selected){
+      answered++;
+      if(selected.value !== q.answer){
+        document.getElementById(`${qname}-${selected.value}`).classList.add('incorrect');
+      } else {
+        correct++;
+      }
+    }
+  });
+  document.getElementById(scoreId).textContent = `Score: ${correct} / ${list.length} correct (${answered} answered)`;
+}
+
+renderMC('grammarQs', grammarQs, 'gr');
+renderMC('vocabQs', vocabQs, 'vo');
+
+/* ---------------- PART 4: WRITING ---------------- */
+const essay = document.getElementById('essay');
+const wc = document.getElementById('wordcount');
+essay.addEventListener('input', ()=>{
+  const words = essay.value.trim().split(/\s+/).filter(Boolean).length;
+  wc.textContent = `${words} words ${words>=80 ? '— nice, you have reached the minimum' : '— need at least 80'}`;
+  wc.classList.toggle('ok', words>=80);
+});
+</script>
+</body>
+</html>

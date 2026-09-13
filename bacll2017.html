@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grade 12 English — Mock Exam Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"> 
+<link rel="stylesheet" href="bacll2017.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="m-0 p-3 font-sans bg-gray-100">
+  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
+  </div>
+<div class="sheet">
+
+  <div class="stamp-header">
+    <div class="khmer">
+      <div class="title">ប្រឡងសញ្ញាបត្រមធ្យមសិក្សាទុតិយភូមិ</div>
+      សម័យប្រឡង: ២១ សីហា ២០១៧<br>
+      វិញ្ញាសា: ភាសាអង់គ្លេស<br>
+      រយៈពេល: ៦០ នាទី &nbsp;•&nbsp; ពិន្ទុ: ៥០
+    </div>
+    <div class="seal">PRACTICE<br>MODE</div>
+  </div>
+
+  <div class="title-block">
+    <h1>English Exam — Interactive Practice</h1>
+    <p>Grade 12 mock paper, retyped for self-study. Answer every part, then check your score.</p>
+  </div>
+
+  <div class="meta-strip">
+    <span>Duration: <b>60 min</b></span>
+    <span>Total: <b>50 pts</b></span>
+    <span>Auto-graded: <b>Parts 1–3</b></span>
+  </div>
+
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <!-- PART 1 -->
+  <section class="part">
+    <div class="part-head">
+      <h2>Part 1. Reading</h2>
+      <span class="pts">10 points</span>
+    </div>
+    <p class="instructions">Read the text and fill each gap using a word from the box. Gap 1 is done for you. Each word is used once.</p>
+
+    <div class="word-box" id="wordBox"></div>
+
+    <div class="passage">
+      <h3>Evening classes</h3>
+      <p>
+        Recently I decided to go to <span class="gap-num">(1)</span>
+        <select class="gap example" disabled><option selected>evening</option></select>
+        classes twice a week. During the day I work in a <span class="gap-num">(2)</span>
+        <select class="gap" data-blank="2"></select>
+        agency as a telephonist. It is not a very interesting <span class="gap-num">(3)</span>
+        <select class="gap" data-blank="3"></select>
+        and I get bored. I also got tired of coming home every evening putting a <span class="gap-num">(4)</span>
+        <select class="gap" data-blank="4"></select>
+        meal in the oven, and then watching TV. So I decided to take up carpentry as a <span class="gap-num">(5)</span>
+        <select class="gap" data-blank="5"></select>.
+        Perhaps I should give you an <span class="gap-num">(6)</span>
+        <select class="gap" data-blank="6"></select>
+        for my choice. Learning a skill is a good <span class="gap-num">(7)</span>
+        <select class="gap" data-blank="7"></select>
+        to the problem of boring work. Also, I felt I was a <span class="gap-num">(8)</span>
+        <select class="gap" data-blank="8"></select>
+        because any time I tried to put up a shelf, for example, it always fell down! Now I am quite a <span class="gap-num">(9)</span>
+        <select class="gap" data-blank="9"></select>
+        wood-worker! I am working on the <span class="gap-num">(10)</span>
+        <select class="gap" data-blank="10"></select>
+        of some furniture at the moment. And although there are only few students in the class, I don't feel any <span class="gap-num">(11)</span>
+        <select class="gap" data-blank="11"></select>.
+        I've turned out to be the best student in the class!
+      </p>
+    </div>
+  </section>
+
+  <!-- PART 2 -->
+  <section class="part">
+    <div class="part-head">
+      <h2>Part 2. Grammar</h2>
+      <span class="pts">15 points</span>
+    </div>
+    <p class="instructions">Choose the letter — a, b, c, or d — that correctly completes each sentence.</p>
+    <div id="grammarQuestions"></div>
+  </section>
+
+  <!-- PART 3 -->
+  <section class="part">
+    <div class="part-head">
+      <h2>Part 3. Vocabulary</h2>
+      <span class="pts">15 points</span>
+    </div>
+    <p class="instructions">Choose the letter — a, b, c, or d — that best completes each sentence.</p>
+    <div id="vocabQuestions"></div>
+  </section>
+
+  <!-- PART 4 -->
+  <section class="part">
+    <div class="part-head">
+      <h2>Part 4. Writing</h2>
+      <span class="pts">10 points</span>
+    </div>
+    <div class="prompt-box">
+      There is too much traffic in the city. "What do you think the authorities should do about it?" Write at least 80 words.
+    </div>
+    <textarea id="essayBox" placeholder="Start writing your essay here…"></textarea>
+    <div class="wordcount" id="wordCount">0 words (aim for 80+)</div>
+  </section>
+
+  <div class="grade-bar">
+    <button class="check" id="checkBtn">Check my answers</button>
+    <button class="reset" id="resetBtn">Reset</button>
+    <div class="score-display" id="scoreDisplay">
+      <span class="num" id="scoreNum">0</span><span class="outof"> / 40 auto-graded</span>
+      <div class="breakdown" id="scoreBreakdown"></div>
+    </div>
+  </div>
+
+  <div class="footer-note">Retyped: Chap Thorn — Page 11 · rebuilt as a self-check practice sheet</div>
+</div>
+  <script src="bacll2017.js"></script>
+</body>
+</html>

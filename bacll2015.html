@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<title>English Practice Exam</title>
+<style>
+  :root{
+    --paper:#f7f4ec;
+    --ink:#2b2b2b;
+    --rule:#c9c2ab;
+    --marker:#8a3324;
+    --good:#3f6b3f;
+    --bad:#a13a2e;
+    --pending:#8a7f5e;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:#e7e2d4;
+    font-family: Georgia, 'Times New Roman', serif;
+    color:var(--ink);
+    padding:24px 12px 80px;
+  }
+  .sheet{
+    max-width:760px;
+    margin:0 auto;
+    background:var(--paper);
+    border:1px solid var(--rule);
+    box-shadow:0 2px 14px rgba(0,0,0,0.12);
+    padding:32px 28px;
+    position:relative;
+  }
+  .header{
+    text-align:center;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:14px;
+    margin-bottom:20px;
+  }
+  .header h1{
+    font-size:1.5em;
+    letter-spacing:0.02em;
+    margin:0 0 4px;
+  }
+  .header p{
+    margin:0;
+    font-size:0.85em;
+    color:#555;
+  }
+  .part-title{
+    font-size:1.05em;
+    font-weight:bold;
+    margin:32px 0 4px;
+    border-bottom:1px dashed var(--rule);
+    padding-bottom:4px;
+  }
+  .part-note{
+    font-size:0.85em;
+    color:#555;
+    margin-bottom:14px;
+    font-style:italic;
+  }
+  .wordbank{
+    background:#efe9d8;
+    border:1px solid var(--rule);
+    padding:10px 14px;
+    margin-bottom:16px;
+    font-size:0.9em;
+    line-height:1.9;
+  }
+  .wordbank .tag{
+    display:inline-block;
+    background:var(--paper);
+    border:1px solid var(--rule);
+    border-radius:3px;
+    padding:1px 8px;
+    margin:2px 3px;
+  }
+  .wordbank .used{
+    text-decoration:line-through;
+    opacity:0.4;
+  }
+  .story{
+    font-size:0.98em;
+    line-height:2.1;
+    text-indent:1.5em;
+  }
+  select.blank{
+    font-family:inherit;
+    font-size:0.95em;
+    border:none;
+    border-bottom:2px solid var(--marker);
+    background:transparent;
+    padding:0 2px;
+    color:var(--marker);
+    font-weight:bold;
+  }
+  select.blank.correct{ color:var(--good); border-color:var(--good); }
+  select.blank.incorrect{ color:var(--bad); border-color:var(--bad); }
+
+  .q{
+    margin:16px 0;
+    padding-bottom:12px;
+    border-bottom:1px solid #e2dcc9;
+  }
+  .q-text{
+    font-weight:bold;
+    margin-bottom:8px;
+    font-size:0.98em;
+  }
+  .options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:6px 12px;
+  }
+  .opt{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:6px 8px;
+    border:1px solid transparent;
+    border-radius:4px;
+    cursor:pointer;
+    font-size:0.92em;
+  }
+  .opt:hover{ background:#efe9d8; }
+  .opt input{ accent-color:var(--marker); }
+  .opt.correct{ background:#e4efe0; border-color:var(--good); }
+  .opt.incorrect{ background:#f3e2df; border-color:var(--bad); }
+
+  textarea{
+    width:100%;
+    min-height:220px;
+    font-family:inherit;
+    font-size:0.95em;
+    line-height:1.6;
+    padding:12px;
+    border:1px solid var(--rule);
+    background:#fffdf7;
+    resize:vertical;
+  }
+  .wordcount{
+    text-align:right;
+    font-size:0.8em;
+    color:var(--pending);
+    margin-top:4px;
+  }
+  .actions{
+    text-align:center;
+    margin-top:36px;
+  }
+  button{
+    font-family:inherit;
+    font-size:1em;
+    background:var(--marker);
+    color:#fff;
+    border:none;
+    padding:12px 28px;
+    border-radius:4px;
+    cursor:pointer;
+    letter-spacing:0.02em;
+  }
+  button:hover{ background:#6f2619; }
+  button.secondary{
+    background:transparent;
+    color:var(--marker);
+    border:1px solid var(--marker);
+    margin-left:10px;
+  }
+  button.secondary:hover{ background:#f3e2df; }
+
+  .score-panel{
+    display:none;
+    margin-top:28px;
+    padding:18px 20px;
+    border:2px solid var(--ink);
+    background:#fffdf7;
+    text-align:center;
+  }
+  .score-panel.show{ display:block; }
+  .score-panel .big{
+    font-size:2.4em;
+    font-weight:bold;
+    margin:6px 0;
+  }
+  .score-breakdown{
+    text-align:left;
+    font-size:0.9em;
+    margin-top:10px;
+    line-height:1.8;
+  }
+  .stamp{
+    position:absolute;
+    top:26px;
+    right:26px;
+    width:66px;
+    height:66px;
+    border:3px solid var(--marker);
+    border-radius:50%;
+    color:var(--marker);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    font-size:0.6em;
+    font-weight:bold;
+    letter-spacing:0.05em;
+    transform:rotate(-12deg);
+    opacity:0.55;
+    line-height:1.2;
+  }
+</style>
+</head>
+<body>
+  <div class="m-0 p-3 font-sans bg-gray-100">
+  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
+
+<div class="sheet">
+  <div class="stamp">PRACTICE<br>MODE</div>
+  <div class="header">
+    <h1>English Practice Exam</h1>
+    <p>Reading &middot; Grammar &middot; Vocabulary &middot; Writing</p>
+  </div>
+
+  <!-- PART 1 -->
+  <div class="part-title">Part 1. Reading (10 points)</div>
+  <div class="part-note">Read the text and fill the gaps with words from the box. Gap (1) is done for you.</div>
+  <div class="wordbank" id="wordbank">
+    <span class="tag used">doctor</span>
+    <span class="tag" data-w="recovery">recovery</span>
+    <span class="tag" data-w="month">month</span>
+    <span class="tag" data-w="treatment">treatment</span>
+    <span class="tag" data-w="poisonous">poisonous</span>
+    <span class="tag" data-w="weight">weight</span>
+    <span class="tag" data-w="disease">disease</span>
+    <span class="tag" data-w="heartened">heartened</span>
+    <span class="tag" data-w="optimistic">optimistic</span>
+    <span class="tag" data-w="infectious">infectious</span>
+    <span class="tag" data-w="painful">painful</span>
+  </div>
+  <div class="story">
+    <strong style="display:block; text-align:center; text-indent:0; margin-bottom:8px;">A visit to the doctor's</strong>
+    Kimseng decided to visit the (1) <em>doctor</em> after his trip to the jungle. He was normally a tall muscular person, but over the past
+    <span data-blank="2"></span> he had lost a lot of
+    <span data-blank="3"></span>. He had also noticed that his ankles and knees had become rather
+    <span data-blank="4"></span>. He thought that he might have eaten or drunk something
+    <span data-blank="5"></span>, or caught some kind of
+    <span data-blank="6"></span> disease. The doctor took some blood for tests and told Kimseng to go back a week later.
+    This time the doctor had an
+    <span data-blank="7"></span> expression on her face, and Kimseng felt quite
+    <span data-blank="8"></span>. "Don't worry," said the doctor, "It's nothing serious. You haven't caught an incurable
+    <span data-blank="9"></span>, or anything terrible like that. It's a simple virus, and you will need some
+    <span data-blank="10"></span>. Take these tablets twice a day for two weeks, and you'll make a full
+    <span data-blank="11"></span>."
+  </div>
+
+  <!-- PART 2 -->
+  <div class="part-title">Part 2. Grammar (15 points)</div>
+  <div class="part-note">Choose the letter of the correct answer.</div>
+  <div id="grammar"></div>
+
+  <!-- PART 3 -->
+  <div class="part-title">Part 3. Vocabulary (15 points)</div>
+  <div class="part-note">Choose the letter of the correct answer.</div>
+  <div id="vocab"></div>
+
+  <!-- PART 4 -->
+  <div class="part-title">Part 4. Writing (10 points)</div>
+  <div class="part-note">Write an essay: "What Makes a Good Parent" &mdash; at least 180 words. (Not auto-graded &mdash; write freely and check your word count.)</div>
+  <textarea id="essay" placeholder="Start writing here..."></textarea>
+  <div class="wordcount" id="wordcount">0 words</div>
+
+  <div class="actions">
+    <button id="submitBtn">Check my answers</button>
+    <button id="resetBtn" class="secondary">Reset</button>
+  </div>
+
+  <div class="score-panel" id="scorePanel">
+    <div>Your score</div>
+    <div class="big" id="bigScore">0 / 40</div>
+    <div class="score-breakdown" id="breakdown"></div>
+  </div>
+</div>
+
+<script>
+const readingAnswers = {
+  2:"month", 3:"weight", 4:"painful", 5:"poisonous", 6:"infectious",
+  7:"optimistic", 8:"heartened", 9:"disease", 10:"treatment", 11:"recovery"
+};
+const readingWords = ["month","treatment","poisonous","weight","disease","heartened","optimistic","infectious","painful","recovery"];
+
+const grammarQ = [
+  {q:"Angkor Wat temple ……………… by thousands of tourists every month.",
+   opts:{a:"was visited", b:"visited", c:"are visited", d:"is visited"}, ans:"d"},
+  {q:"Mr. Sophal can't talk on the phone because he……………....... dinner right now.",
+   opts:{a:"eats", b:"is eating", c:"has eaten", d:"has been eating"}, ans:"b"},
+  {q:"I ………………… the house before you called.",
+   opts:{a:"leave", b:"had left", c:"am leaving", d:"had been leaving"}, ans:"b"},
+  {q:"If I found a wallet on the street, I ……………… it to the police station.",
+   opts:{a:"will take", b:"take", c:"would take", d:"am taking"}, ans:"c"},
+  {q:"The tree, ………………… behind my house, gives a lot of shade.",
+   opts:{a:"grows", b:"which it grows", c:"which grows", d:"it grows"}, ans:"c"}
+];
+
+const vocabQ = [
+  {q:"How much do they ……………… for cleaning your room?",
+   opts:{a:"demand", b:"cost", c:"charge", d:"need"}, ans:"c"},
+  {q:"In some countries, smoking in public places is …………… because many people are hurt of smoke.",
+   opts:{a:"prohibited", b:"increased", c:"encourage", d:"continued"}, ans:"a"},
+  {q:"The government should ……………… a law to make computer hacking illegal.",
+   opts:{a:"allow", b:"enter", c:"pass", d:"bring"}, ans:"c"},
+  {q:"The bad weather ……………………… the flight for several hours.",
+   opts:{a:"postponed", b:"delayed", c:"cancelled", d:"stopped"}, ans:"b"},
+  {q:"In recent years, inflation has almost double the ……………… of living.",
+   opts:{a:"price", b:"expense", c:"charge", d:"cost"}, ans:"d"}
+];
+
+function buildBlanks(){
+  document.querySelectorAll('[data-blank]').forEach(span=>{
+    const n = span.getAttribute('data-blank');
+    const sel = document.createElement('select');
+    sel.className = 'blank';
+    sel.id = 'blank'+n;
+    const optBlank = document.createElement('option');
+    optBlank.value=""; optBlank.textContent="…………";
+    sel.appendChild(optBlank);
+    readingWords.slice().sort().forEach(w=>{
+      const o = document.createElement('option');
+      o.value=w; o.textContent=w;
+      sel.appendChild(o);
+    });
+    span.appendChild(sel);
+  });
+}
+
+function buildMCQ(containerId, list, prefix){
+  const container = document.getElementById(containerId);
+  list.forEach((item,i)=>{
+    const div = document.createElement('div');
+    div.className='q';
+    const qt = document.createElement('div');
+    qt.className='q-text';
+    qt.textContent = (i+1)+". "+item.q;
+    div.appendChild(qt);
+    const optsDiv = document.createElement('div');
+    optsDiv.className='options';
+    ['a','b','c','d'].forEach(letter=>{
+      const label = document.createElement('label');
+      label.className='opt';
+      label.id = prefix+i+'_'+letter;
+      const input = document.createElement('input');
+      input.type='radio';
+      input.name = prefix+i;
+      input.value = letter;
+      label.appendChild(input);
+      const span = document.createElement('span');
+      span.textContent = letter+". "+item.opts[letter];
+      label.appendChild(span);
+      optsDiv.appendChild(label);
+    });
+    div.appendChild(optsDiv);
+    container.appendChild(div);
+  });
+}
+
+buildBlanks();
+buildMCQ('grammar', grammarQ, 'g');
+buildMCQ('vocab', vocabQ, 'v');
+
+const essay = document.getElementById('essay');
+const wordcount = document.getElementById('wordcount');
+essay.addEventListener('input', ()=>{
+  const words = essay.value.trim().split(/\s+/).filter(Boolean);
+  const n = words.length;
+  wordcount.textContent = n + " words" + (n>0 && n<180 ? " (aim for 180+)" : n>=180 ? " — nice, you've hit the minimum" : "");
+});
+
+document.getElementById('submitBtn').addEventListener('click', ()=>{
+  let score = 0;
+  let readingCorrect = 0;
+  for(let n=2;n<=11;n++){
+    const sel = document.getElementById('blank'+n);
+    sel.classList.remove('correct','incorrect');
+    if(sel.value === readingAnswers[n]){
+      sel.classList.add('correct');
+      readingCorrect++;
+    } else {
+      sel.classList.add('incorrect');
+    }
+  }
+  const readingScore = readingCorrect; // 1 pt each, 10 total
+  score += readingScore;
+
+  function gradeMCQ(list, prefix){
+    let correct = 0;
+    list.forEach((item,i)=>{
+      ['a','b','c','d'].forEach(letter=>{
+        document.getElementById(prefix+i+'_'+letter).classList.remove('correct','incorrect');
+      });
+      const selected = document.querySelector('input[name="'+prefix+i+'"]:checked');
+      const rightLabel = document.getElementById(prefix+i+'_'+item.ans);
+      rightLabel.classList.add('correct');
+      if(selected){
+        if(selected.value === item.ans){
+          correct++;
+        } else {
+          document.getElementById(prefix+i+'_'+selected.value).classList.add('incorrect');
+        }
+      }
+    });
+    return correct;
+  }
+
+  const grammarCorrect = gradeMCQ(grammarQ, 'g');
+  const vocabCorrect = gradeMCQ(vocabQ, 'v');
+
+  const grammarScore = grammarCorrect * 3; // 15 pts / 5 q
+  const vocabScore = vocabCorrect * 3;
+  score += grammarScore + vocabScore;
+
+  document.getElementById('bigScore').textContent = score + " / 40";
+  document.getElementById('breakdown').innerHTML =
+    "Part 1 Reading: " + readingCorrect + " / 10<br>" +
+    "Part 2 Grammar: " + grammarCorrect + " / 5 (" + grammarScore + " pts)<br>" +
+    "Part 3 Vocabulary: " + vocabCorrect + " / 5 (" + vocabScore + " pts)<br>" +
+    "Part 4 Writing: not auto-graded — review it yourself or ask for feedback.";
+  document.getElementById('scorePanel').classList.add('show');
+  document.getElementById('scorePanel').scrollIntoView({behavior:'smooth', block:'nearest'});
+});
+
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  document.querySelectorAll('select.blank').forEach(s=>{ s.value=""; s.classList.remove('correct','incorrect'); });
+  document.querySelectorAll('input[type=radio]').forEach(r=>{ r.checked=false; });
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('correct','incorrect'));
+  essay.value="";
+  wordcount.textContent="0 words";
+  document.getElementById('scorePanel').classList.remove('show');
+});
+</script>
+</body>
+</html>

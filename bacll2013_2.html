@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exam Practice — Town &amp; Country</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  :root{
+    --paper:#FBF7ED;
+    --paper-line:#D8CFB8;
+    --ink:#26314A;
+    --ink-soft:#5B6478;
+    --red:#B23A2E;
+    --green:#3F7D4F;
+    --gold:#B98B2A;
+    --blank:#EFE7D4;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:#E9E2CE;
+    font-family: 'Iowan Old Style','Palatino Linotype',Georgia,serif;
+    color:var(--ink);
+    padding:18px 10px 60px;
+  }
+  .sheet{
+    max-width:720px;
+    margin:0 auto;
+    background:var(--paper);
+    border:1px solid var(--paper-line);
+    box-shadow:0 2px 0 var(--paper-line), 0 14px 30px rgba(38,49,74,0.12);
+    padding:26px 20px 34px;
+    position:relative;
+  }
+  .sheet::before{
+    content:"";
+    position:absolute;
+    left:46px; top:0; bottom:0;
+    width:1px;
+    background:var(--red);
+    opacity:0.28;
+  }
+  header{
+    padding-left:26px;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:14px;
+    margin-bottom:20px;
+  }
+  header .kicker{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:11px;
+    letter-spacing:0.08em;
+    color:var(--ink-soft);
+    margin:0 0 4px;
+  }
+  header h1{
+    margin:0;
+    font-size:26px;
+    font-weight:600;
+    line-height:1.2;
+  }
+  header p.sub{
+    margin:6px 0 0;
+    font-size:14px;
+    color:var(--ink-soft);
+    font-style:italic;
+  }
+  .content{padding-left:26px;}
+  section.part{
+    margin-bottom:30px;
+  }
+  section.part h2{
+    font-size:18px;
+    margin:0 0 4px;
+    border-bottom:1px dashed var(--paper-line);
+    padding-bottom:6px;
+  }
+  section.part .points{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:12px;
+    color:var(--ink-soft);
+    font-weight:400;
+  }
+  .instructions{
+    font-size:13.5px;
+    color:var(--ink-soft);
+    margin:6px 0 14px;
+    line-height:1.5;
+  }
+  .wordbank{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 8px;
+    margin:0 0 14px;
+    padding:10px 12px;
+    background:var(--blank);
+    border:1px solid var(--paper-line);
+    font-size:13.5px;
+  }
+  .wordbank span{
+    padding:2px 8px;
+    background:var(--paper);
+    border:1px solid var(--paper-line);
+  }
+  .wordbank span.used{
+    text-decoration:line-through;
+    color:var(--ink-soft);
+    opacity:0.6;
+  }
+  .passage{
+    font-size:15.5px;
+    line-height:1.85;
+  }
+  .passage select{
+    font-family:inherit;
+    font-size:14px;
+    padding:1px 4px;
+    border:none;
+    border-bottom:2px solid var(--ink);
+    background:var(--blank);
+    color:var(--ink);
+    margin:0 2px;
+  }
+  .passage select.correct{ border-bottom-color:var(--green); background:#E4EFE6;}
+  .passage select.wrong{ border-bottom-color:var(--red); background:#F6E4E1;}
+
+  table.match{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+  }
+  table.match td, table.match th{
+    padding:7px 6px;
+    vertical-align:top;
+    border-bottom:1px solid var(--paper-line);
+  }
+  table.match th{
+    text-align:left;
+    font-size:11px;
+    letter-spacing:0.05em;
+    color:var(--ink-soft);
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-weight:600;
+  }
+  table.match .num{width:20px; color:var(--ink-soft);}
+  table.match select{
+    font-family:inherit;
+    font-size:14px;
+    padding:2px 4px;
+    border:1px solid var(--ink);
+    background:var(--paper);
+  }
+  table.match select.correct{border-color:var(--green); background:#E4EFE6;}
+  table.match select.wrong{border-color:var(--red); background:#F6E4E1;}
+  table.match .example{color:var(--ink-soft); font-style:italic;}
+
+  .q{
+    margin-bottom:16px;
+    padding-bottom:14px;
+    border-bottom:1px dashed var(--paper-line);
+  }
+  .q:last-child{border-bottom:none;}
+  .q .stem{
+    font-size:15px;
+    margin-bottom:8px;
+  }
+  .q .stem .qnum{color:var(--red); font-weight:600; margin-right:4px;}
+  .options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:6px 10px;
+  }
+  .opt{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size:14px;
+    padding:6px 8px;
+    border:1px solid var(--paper-line);
+    background:var(--paper);
+    cursor:pointer;
+    transition:background .15s;
+  }
+  .opt:hover{background:var(--blank);}
+  .opt input{accent-color:var(--ink); margin:0;}
+  .opt.correct{border-color:var(--green); background:#E4EFE6;}
+  .opt.wrong{border-color:var(--red); background:#F6E4E1;}
+  .opt.locked{cursor:default;}
+  .example-tag{
+    display:inline-block;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:10.5px;
+    letter-spacing:0.05em;
+    color:var(--gold);
+    border:1px solid var(--gold);
+    padding:1px 6px;
+    margin-bottom:6px;
+  }
+  .writing textarea{
+    width:100%;
+    min-height:170px;
+    font-family:inherit;
+    font-size:14.5px;
+    line-height:1.6;
+    padding:12px;
+    border:1px solid var(--ink);
+    background:var(--blank);
+    color:var(--ink);
+    resize:vertical;
+  }
+  .wc{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-top:6px;
+    text-align:right;
+  }
+  .wc.ok{color:var(--green);}
+
+  .controls{
+    position:sticky;
+    bottom:0;
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    padding:14px 0 4px;
+    margin-top:6px;
+  }
+  button.action{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:14px;
+    font-weight:600;
+    letter-spacing:0.01em;
+    padding:12px 22px;
+    border:none;
+    cursor:pointer;
+  }
+  button.check{background:var(--ink); color:var(--paper);}
+  button.reset{background:transparent; color:var(--ink); border:1px solid var(--ink);}
+
+  .scoreboard{
+    display:none;
+    margin:0 0 20px;
+    padding:14px 16px;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Helvetica Neue',Arial,sans-serif;
+  }
+  .scoreboard.show{display:block;}
+  .scoreboard .big{font-size:28px; font-weight:700;}
+  .scoreboard .label{font-size:12px; color:#C9CEDB;}
+
+  @media (max-width:420px){
+    .options{grid-template-columns:1fr;}
+    .sheet{padding:20px 12px 28px;}
+    .content, header{padding-left:18px;}
+  }
+</style>
+</head>
+<body>
+  <div class="m-0 p-3 font-sans bg-gray-100">
+  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
+
+<div class="sheet">
+  <header>
+    <p class="kicker">GRADE 9 · ENGLISH EXAM PRACTICE</p>
+    <h1>Town &amp; Country</h1>
+    <p class="sub">Reading · Language Use · Grammar · Vocabulary · Writing</p>
+  </header>
+
+  <div class="content">
+
+    <div id="scoreboard" class="scoreboard">
+      <div class="big" id="scoreBig">0 / 0</div>
+      <div class="label" id="scoreLabel">auto-graded items correct</div>
+    </div>
+
+    <!-- PART 1: READING -->
+    <section class="part" id="part1">
+      <h2>Part 1. Reading <span class="points">(10 points)</span></h2>
+      <p class="instructions">Read the text and fill the gaps with words from the box. Gap one has been done as an example.</p>
+      <div class="wordbank" id="wordbank">
+        <span data-w="villages" class="used">villages ✓ (example)</span>
+        <span data-w="department stores">department stores</span>
+        <span data-w="skyscraper">skyscraper</span>
+        <span data-w="district">district</span>
+        <span data-w="services">services</span>
+        <span data-w="hospital">hospital</span>
+        <span data-w="factories">factories</span>
+        <span data-w="reason">reason</span>
+        <span data-w="moment">moment</span>
+        <span data-w="cities">cities</span>
+        <span data-w="offices">offices</span>
+      </div>
+      <div class="passage">
+        Today, people all over the world are moving out of small <strong>villages</strong> in the country to go and live in big noisy
+        <sel data-q="r2" data-ans="cities"></sel>. They are moving from the peaceful hills, mountains, fields, rivers and streams of the countryside to the
+        busy world of streets, buildings, traffic and crowds. This <sel data-q="r3" data-ans="moment"></sel> from rural areas to urban areas has been
+        going on for over two hundred years.
+        <br><br>
+        In many countries the main <sel data-q="r4" data-ans="reason"></sel> people come to live in towns and cities is work. After one or more huge
+        <sel data-q="r5" data-ans="factories"></sel> have been built in or near a town, people come to live there too. And soon, the industrial area
+        begins to grow. The residential area, shops, schools, <sel data-q="r6" data-ans="hospital"></sel> and other <sel data-q="r7" data-ans="services"></sel>
+        have been located so many people come to live there to provide these <sel data-q="r7b" data-ans="services"></sel>, and so the cities grow.
+        <br><br>
+        In the giant cities of the world, there is a business <sel data-q="r8" data-ans="district"></sel> where the big companies have their main
+        <sel data-q="r9" data-ans="offices"></sel>. The area is usually in the city center downtown. You can see the huge
+        <sel data-q="r10" data-ans="skyscraper"></sel> office blocks. The people who are very pleasant have nice houses, big gardens, parks, large
+        <sel data-q="r11" data-ans="department stores"></sel> where they can buy what they need.
+        <br><br>
+        But what is the future of the big city? Will they continue to get bigger and bigger? Perhaps not. Some giant cities have become smaller in the
+        last 10 years, and it is quite possible that one day we will see people moving out of the major cities and back into small towns and villages.
+      </div>
+    </section>
+
+    <!-- PART 2: MATCHING -->
+    <section class="part" id="part2">
+      <h2>Part 2. Language Use <span class="points">(10 points)</span></h2>
+      <p class="instructions">Match the sentence in column A with the best ending in column B.</p>
+      <table class="match">
+        <tr><th>A</th><th></th><th>B (your answer)</th></tr>
+        <tr>
+          <td class="num">1</td>
+          <td>Before the Dutch built their canals,</td>
+          <td class="example">⇒ b <span style="font-size:11px;">(example)</span></td>
+        </tr>
+        <tr>
+          <td class="num">2</td>
+          <td>When natural disasters are regular,</td>
+          <td>⇒ <select data-q="m2" data-ans="d"><option value="">–</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option><option value="g">g</option></select></td>
+        </tr>
+        <tr>
+          <td class="num">3</td>
+          <td>When countries are hit by cyclones,</td>
+          <td>⇒ <select data-q="m3" data-ans="g"><option value="">–</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option><option value="g">g</option></select></td>
+        </tr>
+        <tr>
+          <td class="num">4</td>
+          <td>After trees have been cut down,</td>
+          <td>⇒ <select data-q="m4" data-ans="a"><option value="">–</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option><option value="g">g</option></select></td>
+        </tr>
+        <tr>
+          <td class="num">5</td>
+          <td>After a flood,</td>
+          <td>⇒ <select data-q="m5" data-ans="f"><option value="">–</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option><option value="g">g</option></select></td>
+        </tr>
+        <tr>
+          <td class="num">6</td>
+          <td>When rivers have received soil,</td>
+          <td>⇒ <select data-q="m6" data-ans="c"><option value="">–</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option><option value="g">g</option></select></td>
+        </tr>
+      </table>
+      <p class="instructions" style="margin-top:12px;">
+        a. the top soil washed down the rivers &nbsp;·&nbsp; b. Holland was often flooded &nbsp;·&nbsp; c. there is a fresh deposit of rich soil on the land<br>
+        d. they are easier to deal with &nbsp;·&nbsp; e. they flood &nbsp;·&nbsp; f. people lose their homes &nbsp;·&nbsp; g. they are both irregular and powerful
+      </p>
+    </section>
+
+    <!-- PART 3: GRAMMAR -->
+    <section class="part" id="part3">
+      <h2>Part 3. Grammar <span class="points">(10 points)</span></h2>
+      <p class="instructions">There are four answers after each statement. Only one is correct.</p>
+
+      <div id="grammarQs"></div>
+    </section>
+
+    <!-- PART 4: VOCABULARY -->
+    <section class="part" id="part4">
+      <h2>Part 4. Vocabulary <span class="points">(08 points)</span></h2>
+      <p class="instructions">Choose the correct letter a, b, c or d.</p>
+      <div id="vocabQs"></div>
+    </section>
+
+    <!-- PART 5: WRITING -->
+    <section class="part writing" id="part5">
+      <h2>Part 5. Writing <span class="points">(12 points)</span></h2>
+      <p class="instructions">Describe the cause and effect of deforestation. Write at least 150 words.</p>
+      <textarea id="writingBox" placeholder="Start writing here..."></textarea>
+      <div class="wc" id="wc">0 words</div>
+    </section>
+
+    <div class="controls">
+      <button class="action check" id="checkBtn">Check my answers</button>
+      <button class="action reset" id="resetBtn">Reset</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ---------- data ----------
+const grammar = [
+  {q:"When we get to the party, everybody ……………", opts:{a:"are dancing", b:"has danced", c:"will be dancing", d:"dances"}, ans:"c"},
+  {q:"If that jacket ……… so expensive, I would buy it.", opts:{a:"wasn't", b:"isn't", c:"will be not", d:"weren't"}, ans:"d"},
+  {q:"The new bridge ……… before the end of next year.", opts:{a:"will complete", b:"will be completed", c:"is completed", d:"completed"}, ans:"b"},
+  {q:"Thida fell asleep ………… she was watching TV.", opts:{a:"while", b:"before", c:"soon", d:"again"}, ans:"a"},
+  {q:"The woman ………… at the meeting was very interesting.", opts:{a:"is spoke", b:"who spoke", c:"who she spoke", d:"speaks"}, ans:"b"},
+];
+
+const vocab = [
+  {q:"I'm afraid there isn't ………. in the car for everyone.", opts:{a:"space", b:"room", c:"places", d:"seating"}, ans:"b"},
+  {q:"Excuse me. Have you got ………., please? I want to smoke.", opts:{a:"a match", b:"the fire", c:"a light", d:"lighting"}, ans:"c"},
+  {q:"I like your hat, Bopha. It really ………. you.", opts:{a:"suiting", b:"passes", c:"shows", d:"suits"}, ans:"d"},
+  {q:"Is there ………. wine for everyone? We will have a huge drink tonight.", opts:{a:"enough", b:"enough of", c:"many", d:"many of"}, ans:"a"},
+  {q:"Don't go yet. I'm just going to ………. some coffee.", opts:{a:"do", b:"boil", c:"make", d:"cook"}, ans:"c"},
+  {q:"A good way to practice speaking is to tell a story or a ………. to someone.", opts:{a:"joke", b:"fun", c:"laughter", d:"fool"}, ans:"a"},
+  {q:"Tourism suffers from the lack of ………. in that country.", opts:{a:"arrangement", b:"direction", c:"organization", d:"regularity"}, ans:"c"},
+  {q:"After the earthquake, many houses were in danger of ………. .", opts:{a:"destruction", b:"pollutions", c:"collapsing", d:"slipping"}, ans:"c"},
+];
+
+function buildMC(list, container, prefix){
+  list.forEach((item,i)=>{
+    const qid = prefix+i;
+    const div = document.createElement('div');
+    div.className = 'q';
+    div.innerHTML = `<div class="stem"><span class="qnum">${i+1}.</span>${item.q}</div>
+      <div class="options" data-q="${qid}" data-ans="${item.ans}">
+        ${Object.entries(item.opts).map(([k,v])=>`
+          <label class="opt" data-val="${k}">
+            <input type="radio" name="${qid}" value="${k}"> ${k}. ${v}
+          </label>`).join('')}
+      </div>`;
+    container.appendChild(div);
+  });
+}
+buildMC(grammar, document.getElementById('grammarQs'), 'g');
+buildMC(vocab, document.getElementById('vocabQs'), 'v');
+
+// wordbank highlight on use (reading section)
+const selects = document.querySelectorAll('.passage sel');
+selects.forEach(s=>{
+  const sel = document.createElement('select');
+  sel.dataset.q = s.dataset.q;
+  sel.dataset.ans = s.dataset.ans;
+  const words = ["–","department stores","skyscraper","district","services","hospital","factories","reason","moment","cities","offices"];
+  words.forEach(w=>{
+    const o = document.createElement('option');
+    o.value = w==="–"?"":w;
+    o.textContent = w;
+    sel.appendChild(o);
+  });
+  s.replaceWith(sel);
+});
+
+function updateWordbank(){
+  const used = new Set();
+  document.querySelectorAll('.passage select').forEach(sel=>{ if(sel.value) used.add(sel.value); });
+  document.querySelectorAll('#wordbank span').forEach(span=>{
+    if(span.dataset.w==='villages') return;
+    if(used.has(span.dataset.w)) span.classList.add('used'); else span.classList.remove('used');
+  });
+}
+document.querySelectorAll('.passage select').forEach(sel=>sel.addEventListener('change', updateWordbank));
+
+// writing word count
+const wbox = document.getElementById('writingBox');
+const wc = document.getElementById('wc');
+wbox.addEventListener('input', ()=>{
+  const words = wbox.value.trim().split(/\s+/).filter(Boolean).length;
+  wc.textContent = words + ' words' + (words>=150 ? ' — nice, you\'ve reached 150!' : '');
+  wc.classList.toggle('ok', words>=150);
+});
+
+// check answers
+document.getElementById('checkBtn').addEventListener('click', ()=>{
+  let correct = 0, total = 0;
+
+  // reading selects
+  document.querySelectorAll('.passage select').forEach(sel=>{
+    total++;
+    sel.classList.remove('correct','wrong');
+    if(sel.value === sel.dataset.ans){ sel.classList.add('correct'); correct++; }
+    else if(sel.value) sel.classList.add('wrong');
+    else sel.classList.add('wrong');
+  });
+
+  // matching selects
+  document.querySelectorAll('table.match select').forEach(sel=>{
+    total++;
+    sel.classList.remove('correct','wrong');
+    if(sel.value === sel.dataset.ans){ sel.classList.add('correct'); correct++; }
+    else sel.classList.add('wrong');
+  });
+
+  // radio groups
+  document.querySelectorAll('.options').forEach(group=>{
+    total++;
+    const ans = group.dataset.ans;
+    const checked = group.querySelector('input:checked');
+    group.querySelectorAll('.opt').forEach(o=>o.classList.remove('correct','wrong'));
+    const correctLabel = group.querySelector(`.opt[data-val="${ans}"]`);
+    if(checked && checked.value === ans){
+      correctLabel.classList.add('correct');
+      correct++;
+    } else {
+      if(checked) checked.closest('.opt').classList.add('wrong');
+      correctLabel.classList.add('correct');
+    }
+  });
+
+  const board = document.getElementById('scoreboard');
+  board.classList.add('show');
+  document.getElementById('scoreBig').textContent = correct + ' / ' + total;
+  board.scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  document.querySelectorAll('.passage select, table.match select').forEach(s=>{s.value=''; s.classList.remove('correct','wrong');});
+  document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('correct','wrong'));
+  document.getElementById('scoreboard').classList.remove('show');
+  wbox.value=''; wc.textContent='0 words'; wc.classList.remove('ok');
+  updateWordbank();
+});
+</script>
+</body>
+</html>

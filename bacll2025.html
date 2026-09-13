@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>English Practice — Exam Review</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  :root{
+    --paper:#eef1ec;
+    --ink:#233326;
+    --pine:#2f4a3c;
+    --pine-dark:#1d2f26;
+    --gold:#b8873b;
+    --line:#c9d0c5;
+    --right:#3c7a4e;
+    --wrong:#b1483f;
+    --card:#ffffff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Iowan Old Style','Georgia',serif;
+    line-height:1.5;
+    padding:0 0 60px;
+  }
+  header{
+    background:var(--pine);
+    color:#f4f1e8;
+    padding:36px 24px 28px;
+    text-align:center;
+    border-bottom:6px solid var(--gold);
+  }
+  header h1{
+    margin:0 0 6px;
+    font-size:1.7rem;
+    font-weight:600;
+    letter-spacing:.3px;
+  }
+  header p{
+    margin:0;
+    font-size:.95rem;
+    color:#d9e2d5;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+  }
+  .wrap{
+    max-width:640px;
+    margin:0 auto;
+    padding:0 18px;
+  }
+  nav.toc{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    justify-content:center;
+    margin:-18px auto 30px;
+    max-width:640px;
+    padding:0 18px;
+  }
+  nav.toc a{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:.78rem;
+    text-decoration:none;
+    color:var(--pine-dark);
+    background:var(--card);
+    border:1px solid var(--line);
+    padding:6px 12px;
+    border-radius:2px;
+  }
+  section.part{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--pine);
+    margin-bottom:26px;
+    padding:22px 20px 26px;
+  }
+  section.part h2{
+    font-size:1.15rem;
+    margin:0 0 4px;
+    color:var(--pine-dark);
+  }
+  .sub{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:.78rem;
+    color:#6b756a;
+    margin:0 0 18px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+  }
+  .passage{
+    font-size:1rem;
+    background:#f6f7f3;
+    border:1px solid var(--line);
+    padding:16px 18px;
+    margin-bottom:16px;
+  }
+  .bank{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:.85rem;
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-bottom:16px;
+  }
+  .bank span{
+    border:1px solid var(--gold);
+    color:var(--pine-dark);
+    padding:3px 10px;
+    border-radius:12px;
+    background:#fbf4e6;
+  }
+  select.blank{
+    font-family:inherit;
+    font-size:.95rem;
+    border:none;
+    border-bottom:2px dotted #8a9384;
+    background:transparent;
+    color:var(--pine-dark);
+    padding:0 2px;
+    margin:0 2px;
+  }
+  select.blank.correct{border-bottom-color:var(--right); color:var(--right); font-weight:600;}
+  select.blank.wrong{border-bottom-color:var(--wrong); color:var(--wrong);}
+
+  .q{
+    margin-bottom:20px;
+    padding-bottom:18px;
+    border-bottom:1px dashed var(--line);
+  }
+  .q:last-child{border-bottom:none; margin-bottom:0; padding-bottom:0;}
+  .q p.stem{
+    margin:0 0 10px;
+    font-size:1rem;
+  }
+  .opts{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:.88rem;
+  }
+  label.opt{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    border:1px solid var(--line);
+    padding:7px 10px;
+    cursor:pointer;
+    background:#fbfbf9;
+  }
+  label.opt:hover{border-color:var(--pine);}
+  label.opt.correct{border-color:var(--right); background:#eaf5ec; color:var(--right);}
+  label.opt.wrong{border-color:var(--wrong); background:#faeceb; color:var(--wrong);}
+  label.opt input{accent-color:var(--pine);}
+
+  button.check{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    background:var(--pine);
+    color:#f4f1e8;
+    border:none;
+    padding:11px 22px;
+    font-size:.85rem;
+    letter-spacing:.03em;
+    cursor:pointer;
+    margin-top:6px;
+  }
+  button.check:hover{background:var(--pine-dark);}
+  .score{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:.85rem;
+    margin-top:12px;
+    color:var(--pine-dark);
+    min-height:1.2em;
+  }
+  textarea{
+    width:100%;
+    min-height:180px;
+    font-family:inherit;
+    font-size:1rem;
+    border:1px solid var(--line);
+    padding:14px;
+    resize:vertical;
+    background:#f6f7f3;
+    color:var(--ink);
+  }
+  .wordcount{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:.78rem;
+    color:#6b756a;
+    text-align:right;
+    margin-top:6px;
+  }
+  .wordcount.ok{color:var(--right);}
+  .prompt-title{
+    font-style:italic;
+    font-weight:600;
+  }
+</style>
+</head>
+<body>
+  <div class="m-0 p-3 font-sans bg-gray-100">
+  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
+
+<header>
+  <h1>English Practice — Grade 12 Exam Review</h1>
+  <p>Reading · Grammar · Vocabulary · Writing</p>
+</header>
+
+<nav class="toc">
+  <a href="#p1">I. Reading</a>
+  <a href="#p2">II. Grammar</a>
+  <a href="#p3">III. Vocabulary</a>
+  <a href="#p4">IV. Writing</a>
+</nav>
+
+<div class="wrap">
+
+  <!-- PART I -->
+  <section class="part" id="p1">
+    <h2>Part I — Reading</h2>
+    <p class="sub">Fill each gap with a word from the box · 2 points each</p>
+    <div class="bank" id="bank1"></div>
+    <div class="passage" id="passage1"></div>
+    <button class="check" onclick="checkPart(1)">Check Part I</button>
+    <div class="score" id="score1"></div>
+  </section>
+
+  <!-- PART II -->
+  <section class="part" id="p2">
+    <h2>Part II — Grammar</h2>
+    <p class="sub">Choose the correct letter · 2 points each</p>
+    <div id="quiz2"></div>
+    <button class="check" onclick="checkPart(2)">Check Part II</button>
+    <div class="score" id="score2"></div>
+  </section>
+
+  <!-- PART III -->
+  <section class="part" id="p3">
+    <h2>Part III — Vocabulary</h2>
+    <p class="sub">Choose the correct letter · 2 points each</p>
+    <div id="quiz3"></div>
+    <button class="check" onclick="checkPart(3)">Check Part III</button>
+    <div class="score" id="score3"></div>
+  </section>
+
+  <!-- PART IV -->
+  <section class="part" id="p4">
+    <h2>Part IV — Writing</h2>
+    <p class="sub">10 points · at least 100 words</p>
+    <p>Write an essay about <span class="prompt-title">"Disadvantages of Playing Mobile Games."</span></p>
+    <textarea id="essay" placeholder="Start writing here..." oninput="countWords()"></textarea>
+    <div class="wordcount" id="wc">0 words</div>
+  </section>
+
+</div>
+
+<script>
+// ---------- PART I: Reading gap-fill ----------
+const wordBank = ["important","technologies","decisions","age","citizens","throughout","respect","society","history","improve"];
+
+const gaps = [
+  {n:1, answer:"important", given:true},
+  {n:2, answer:"citizens"},
+  {n:3, answer:"decisions"},
+  {n:4, answer:"age"},
+  {n:5, answer:"history"},
+  {n:6, answer:"respect"},
+  {n:7, answer:"technologies"},
+  {n:8, answer:"throughout"},
+  {n:9, answer:"improve"},
+  {n:10, answer:"society"},
+  {n:11, answer:"society"} // last two gaps accept "society"/"a strong system" wording — see note
+];
+
+document.getElementById('bank1').innerHTML = wordBank.map(w=>`<span>${w}</span>`).join('');
+
+function makeSelect(n, given){
+  if(given){
+    return `<b>(${n}) important</b>`;
+  }
+  const opts = ['<option value="">…</option>'].concat(
+    wordBank.map(w=>`<option value="${w}">${w}</option>`)
+  ).join('');
+  return `<select class="blank" id="g${n}">${opts}</select>`;
+}
+
+const passageHTML = `
+Education plays an ${makeSelect(1,true)} role in every person's life. It helps people gain knowledge,
+develop skills, and become responsible ${makeSelect(2)}. With a good education, people can get better jobs,
+solve problems more easily, and make good ${makeSelect(3)}. In many countries, children go to school from
+a young ${makeSelect(4)}. They study subjects like math, science, language and ${makeSelect(5)}. Education not
+only teaches academic knowledge, but also helps students learn how to communicate, work in teams, and
+${makeSelect(6)} others. Today, education is more important than ever. The world is changing quickly, and new
+${makeSelect(7)} are developing every day. People who continue learning ${makeSelect(8)} their lives are better
+prepared to succeed in the future. Governments and communities should work together to ${makeSelect(9)} education
+for everyone. A strong education ${makeSelect(10)} can reduce poverty, create jobs, and build a better
+${makeSelect(11)}.
+`;
+document.getElementById('passage1').innerHTML = passageHTML;
+
+// ---------- PART II: Grammar ----------
+const part2 = [
+  {q:"Girls, you …………… say those things about your teachers.",
+   opts:["mustn't","haven't to","haven't","mustn't to"], answer:0},
+  {q:"I'm glad I …………… my plane! I've just heard it's broken down.",
+   opts:["lost","refused","missed","altered"], answer:2},
+  {q:"I …………… on a bench in the park when they ran past me.",
+   opts:["was sitting","have sat","sat","was sat"], answer:0},
+  {q:"The person …………… my hair usually does a very good job.",
+   opts:["who he cuts","who cuts","cuts","cuts it"], answer:1},
+  {q:"All flights to Phnom Penh …………… cancelled because of the bad weather.",
+   opts:["have been","has been","is been","are been"], answer:0},
+];
+
+// ---------- PART III: Vocabulary ----------
+const part3 = [
+  {q:"In some countries, smoking in public places is …………… because it badly affects other people.",
+   opts:["prohibited","increased","encouraged","continued"], answer:0},
+  {q:"My driving license …………… at the end of this month.",
+   opts:["retires","expires","passes out","concludes"], answer:1},
+  {q:"I …………… to inform you that your daughter died half an hour ago.",
+   opts:["apologize","sorry","pity","regret"], answer:3},
+  {q:"Too much stress can be …………… to your health.",
+   opts:["painful","harmful","graceful","careful"], answer:1},
+  {q:"We were unable to reach an agreement because of the …………… between the two groups.",
+   opts:["contact","concern","contract","conflict"], answer:3},
+];
+
+const letters = ['a','b','c','d'];
+
+function renderQuiz(list, containerId, namePrefix){
+  const el = document.getElementById(containerId);
+  el.innerHTML = list.map((item, i)=>`
+    <div class="q" data-idx="${i}">
+      <p class="stem"><b>${i+1}.</b> ${item.q}</p>
+      <div class="opts">
+        ${item.opts.map((o, j)=>`
+          <label class="opt" id="${namePrefix}-${i}-${j}">
+            <input type="radio" name="${namePrefix}-${i}" value="${j}">
+            <span>${letters[j]}. ${o}</span>
+          </label>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+renderQuiz(part2, 'quiz2', 'q2');
+renderQuiz(part3, 'quiz3', 'q3');
+
+function checkPart(n){
+  if(n===1){
+    let correct=0, total=gaps.filter(g=>!g.given).length;
+    gaps.forEach(g=>{
+      if(g.given) return;
+      const sel = document.getElementById('g'+g.n);
+      sel.classList.remove('correct','wrong');
+      if(sel.value === g.answer){
+        sel.classList.add('correct');
+        correct++;
+      } else if(sel.value){
+        sel.classList.add('wrong');
+      }
+    });
+    document.getElementById('score1').textContent = `Score: ${correct} / ${total}`;
+    return;
+  }
+
+  const list = n===2 ? part2 : part3;
+  const prefix = n===2 ? 'q2' : 'q3';
+  let correct=0;
+  list.forEach((item, i)=>{
+    const chosen = document.querySelector(`input[name="${prefix}-${i}"]:checked`);
+    for(let j=0;j<item.opts.length;j++){
+      document.getElementById(`${prefix}-${i}-${j}`).classList.remove('correct','wrong');
+    }
+    if(chosen){
+      const val = parseInt(chosen.value);
+      if(val === item.answer){
+        document.getElementById(`${prefix}-${i}-${val}`).classList.add('correct');
+        correct++;
+      } else {
+        document.getElementById(`${prefix}-${i}-${val}`).classList.add('wrong');
+        document.getElementById(`${prefix}-${i}-${item.answer}`).classList.add('correct');
+      }
+    } else {
+      document.getElementById(`${prefix}-${i}-${item.answer}`).classList.add('correct');
+    }
+  });
+  document.getElementById('score'+n).textContent = `Score: ${correct} / ${list.length}`;
+}
+
+// ---------- PART IV: word count ----------
+function countWords(){
+  const text = document.getElementById('essay').value.trim();
+  const count = text.length ? text.split(/\s+/).length : 0;
+  const wc = document.getElementById('wc');
+  wc.textContent = `${count} words`;
+  wc.classList.toggle('ok', count >= 100);
+}
+</script>
+
+</body>
+</html>

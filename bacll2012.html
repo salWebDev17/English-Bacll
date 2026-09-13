@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<title>English Practice — Homework Exam</title>
+<style>
+  :root{
+    --paper:#F6F2E8;
+    --paper-line:#DED5C0;
+    --ink:#1F2A44;
+    --ink-soft:#3B4763;
+    --red:#B23A2E;
+    --green:#2F6F4E;
+    --gray:#6B6357;
+    --gold:#A6822E;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Iowan Old Style','Palatino Linotype',Georgia,'Times New Roman',serif;
+    line-height:1.5;
+    padding:0 0 80px 0;
+  }
+  .page{
+    max-width:720px;
+    margin:0 auto;
+    padding:36px 28px 20px 40px;
+    position:relative;
+  }
+  .page::before{
+    content:"";
+    position:absolute;
+    left:26px;
+    top:0;
+    bottom:0;
+    width:1px;
+    background:var(--red);
+    opacity:0.35;
+  }
+  header.masthead{
+    text-align:center;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:16px;
+    margin-bottom:24px;
+  }
+  header.masthead .eyebrow{
+    font-family:system-ui,-apple-system,sans-serif;
+    font-size:12px;
+    letter-spacing:0.02em;
+    color:var(--gray);
+    margin-bottom:6px;
+  }
+  header.masthead h1{
+    font-size:26px;
+    margin:0 0 4px 0;
+    font-weight:600;
+  }
+  header.masthead .sub{
+    font-family:system-ui,-apple-system,sans-serif;
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+  .fields{
+    display:flex;
+    justify-content:space-between;
+    font-family:system-ui,-apple-system,sans-serif;
+    font-size:12.5px;
+    color:var(--gray);
+    margin-top:14px;
+    flex-wrap:wrap;
+    gap:6px 24px;
+  }
+  .fields span{border-bottom:1px dotted var(--gray); padding-bottom:1px;}
+
+  section.part{
+    margin-bottom:38px;
+    padding-top:6px;
+  }
+  section.part + section.part{
+    border-top:1px dashed var(--paper-line);
+    padding-top:30px;
+  }
+  .part-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:6px;
+  }
+  .part-head h2{
+    font-size:19px;
+    margin:0;
+    font-weight:600;
+  }
+  .points{
+    font-family:system-ui,-apple-system,sans-serif;
+    font-size:12px;
+    color:var(--gold);
+    white-space:nowrap;
+  }
+  .instructions{
+    font-size:14.5px;
+    color:var(--ink-soft);
+    margin:0 0 14px 0;
+  }
+
+  /* word bank */
+  .wordbank{
+    font-family:system-ui,-apple-system,sans-serif;
+    font-size:13px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    border:1px solid var(--ink);
+    padding:12px 14px;
+    margin-bottom:16px;
+    background:rgba(255,255,255,0.4);
+  }
+  .wordbank span{
+    padding:2px 9px;
+    border:1px solid var(--paper-line);
+    border-radius:3px;
+    background:#fff;
+  }
+
+  .reading-text p{margin:0 0 10px 0; font-size:15.5px;}
+  .gap-select{
+    font-family:'Iowan Old Style',Georgia,serif;
+    font-size:15px;
+    border:none;
+    border-bottom:2px solid var(--ink);
+    background:transparent;
+    padding:1px 2px;
+    color:var(--ink);
+    min-width:118px;
+  }
+  .gap-select:focus{outline:none; border-bottom-color:var(--red);}
+  .gap-select.example{
+    border-bottom-style:dotted;
+    font-style:italic;
+    color:var(--gray);
+  }
+
+  /* part 2 & 4 matching */
+  table.match{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14.5px;
+  }
+  table.match th{
+    font-family:system-ui,-apple-system,sans-serif;
+    font-size:11px;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    color:var(--gray);
+    text-align:left;
+    padding:4px 8px;
+    border-bottom:1px solid var(--ink);
+  }
+  table.match td{
+    padding:7px 8px;
+    vertical-align:top;
+    border-bottom:1px solid var(--paper-line);
+  }
+  table.match tr.example td{ color:var(--gray); font-style:italic; }
+  .col-c{width:78px; text-align:center;}
+  .col-c select{
+    font-family:system-ui,-apple-system,sans-serif;
+    font-size:13px;
+    padding:3px 4px;
+    border:1px solid var(--ink);
+    background:#fff;
+    width:64px;
+  }
+  .col-c .example-badge{
+    font-family:system-ui,-apple-system,sans-serif;
+    font-size:12.5px;
+    color:var(--gray);
+  }
+
+  /* part 3 grammar */
+  table.grammar{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14.5px;
+  }
+  table.grammar td{
+    padding:8px 4px;
+    border-bottom:1px solid var(--paper-line);
+    vertical-align:top;
+  }
+  table.grammar .qnum{width:26px; font-weight:600; color:var(--ink-soft);}
+  table.grammar .qtext{padding-bottom:2px;}
+  .abcd{
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+    font-family:system-ui,-apple-system,sans-serif;
+    font-size:13.5px;
+    margin-top:4px;
+  }
+  .abcd label{display:flex; align-items:center; gap:5px; cursor:pointer;}
+  .abcd input{accent-color:var(--ink);}
+  tr.example-row .abcd label{color:var(--gray);}
+
+  /* writing part */
+  textarea{
+    width:100%;
+    min-height:220px;
+    font-family:'Iowan Old Style',Georgia,serif;
+    font-size:15px;
+    line-height:1.6;
+    padding:14px;
+    border:1px solid var(--ink);
+    background:#fff;
+    resize:vertical;
+  }
+  .wordcount{
+    font-family:system-ui,-apple-system,sans-serif;
+    font-size:12.5px;
+    color:var(--gray);
+    margin-top:6px;
+    text-align:right;
+  }
+  .wordcount.ok{color:var(--green);}
+
+  /* controls & feedback */
+  .check-btn{
+    font-family:system-ui,-apple-system,sans-serif;
+    font-size:13.5px;
+    font-weight:600;
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    padding:9px 20px;
+    cursor:pointer;
+    margin-top:14px;
+  }
+  .check-btn:hover{background:var(--ink-soft);}
+  .score{
+    font-family:system-ui,-apple-system,sans-serif;
+    font-size:13.5px;
+    font-weight:600;
+    margin-top:10px;
+    display:none;
+  }
+  .score.visible{display:block;}
+  .score .n{color:var(--green);}
+  .correct-mark{color:var(--green); font-weight:600;}
+  .wrong-mark{color:var(--red); font-weight:600;}
+  .answer-hint{
+    font-family:system-ui,-apple-system,sans-serif;
+    font-size:12.5px;
+    color:var(--red);
+    display:none;
+    margin-top:2px;
+  }
+  .answer-hint.show{display:inline;}
+
+  footer{
+    text-align:center;
+    font-family:system-ui,-apple-system,sans-serif;
+    font-size:12px;
+    color:var(--gray);
+    margin-top:20px;
+  }
+
+  @media (max-width:480px){
+    .page{padding:24px 14px 20px 26px;}
+    header.masthead h1{font-size:21px;}
+    table.match td, table.grammar td{font-size:13.5px;}
+    .abcd{gap:10px;}
+  }
+</style>
+</head>
+<body>
+  <div class="m-0 p-3 font-sans bg-gray-100">
+  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
+
+<div class="page">
+
+  <header class="masthead">
+    <div class="eyebrow">Practice test</div>
+    <h1>English Examination — "Homework"</h1>
+    <div class="sub">Grade 8 · Reading · Language Use · Grammar · Vocabulary · Writing</div>
+    <div class="fields">
+      <span>Time: 60 minutes</span>
+      <span>Total: 50 points</span>
+    </div>
+  </header>
+
+  <!-- PART 1 : READING -->
+  <section class="part" id="part1">
+    <div class="part-head">
+      <h2>Part 1. Reading</h2>
+      <div class="points">10 points</div>
+    </div>
+    <p class="instructions">Read the text and fill the gaps with words from the box. Gap one was done as an example for you.</p>
+
+    <div class="wordbank">
+      <span>expectations</span><span>achievement</span><span>marks</span><span>because</span>
+      <span>encouragement</span><span>comparisons</span><span>properly</span><span>introduction</span>
+      <span>additional</span><span>enjoyment</span><span>powerful</span>
+    </div>
+
+    <div class="reading-text">
+      <p><strong>Homework</strong></p>
+      <p>
+        School inspectors have found that, contrary to all (1)
+        <select class="gap-select example" disabled data-gap="1"></select>
+        , children don't dislike homework at all. In fact, many do more than
+        their teachers suggest, either (2) <span class="gap-holder" data-gap="2"></span>
+        of anxiety about their (3) <span class="gap-holder" data-gap="3"></span>
+        or simply for (4) <span class="gap-holder" data-gap="4"></span>. The inspectors'
+        findings add to the evidence of the (5) <span class="gap-holder" data-gap="5"></span>
+        beneficial effects of homework on pupils' (6) <span class="gap-holder" data-gap="6"></span>.
+      </p>
+      <p>
+        The inspectors also recommend the (7) <span class="gap-holder" data-gap="7"></span>
+        of 'homework charters'. These tell parents and children how much (8)
+        <span class="gap-holder" data-gap="8"></span> work is expected and provide (9)
+        <span class="gap-holder" data-gap="9"></span> to schools to form links with parents who
+        can check that tasks are (10) <span class="gap-holder" data-gap="10"></span> completed.
+        International (11) <span class="gap-holder" data-gap="11"></span> suggests that a typical
+        14-year-old does six hours homework in Britain, eight hours in Italy and almost nine
+        hours in Japan and Poland.
+      </p>
+    </div>
+
+    <button class="check-btn" onclick="checkPart1()">Check Part 1</button>
+    <div class="score" id="score1"></div>
+  </section>
+
+  <!-- PART 2 : LANGUAGE USE -->
+  <section class="part" id="part2">
+    <div class="part-head">
+      <h2>Part 2. Language Use</h2>
+      <div class="points">10 points</div>
+    </div>
+    <p class="instructions">Match part of the sentences in (A) with the most suitable ones in (B). The first one has been done for you.</p>
+
+    <table class="match" id="table2">
+      <thead><tr><th>A</th><th>B</th><th class="col-c">C</th></tr></thead>
+      <tbody>
+        <tr class="example">
+          <td><em>Pass the salt, please?</em></td>
+          <td><em>Certainly, here you are.</em></td>
+          <td class="col-c"><span class="example-badge">1 → B</span></td>
+        </tr>
+        <tr data-q="2">
+          <td>Unless you apologize,</td>
+          <td id="opt2"></td>
+          <td class="col-c"><select data-q="2"></select></td>
+        </tr>
+        <tr data-q="3">
+          <td>Thanks for the flower, Samnang.</td>
+          <td id="opt3"></td>
+          <td class="col-c"><select data-q="3"></select></td>
+        </tr>
+        <tr data-q="4">
+          <td>Keep an open mind.</td>
+          <td id="opt4"></td>
+          <td class="col-c"><select data-q="4"></select></td>
+        </tr>
+        <tr data-q="5">
+          <td>My dog died yesterday.</td>
+          <td id="opt5"></td>
+          <td class="col-c"><select data-q="5"></select></td>
+        </tr>
+        <tr data-q="6">
+          <td>I have just passed my exam.</td>
+          <td id="opt6"></td>
+          <td class="col-c"><select data-q="6"></select></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="instructions" style="margin-top:10px;font-size:13px;">B options: A. It's my pleasure. &nbsp; B. Certainly, here you are. &nbsp; C. No, not just now, thanks. &nbsp; D. Try not to judge before you know the facts. &nbsp; E. I'll never speak to you again. &nbsp; F. Oh, how awful. &nbsp; G. Congratulation!</p>
+
+    <button class="check-btn" onclick="checkPart2()">Check Part 2</button>
+    <div class="score" id="score2"></div>
+  </section>
+
+  <!-- PART 3 : GRAMMAR -->
+  <section class="part" id="part3">
+    <div class="part-head">
+      <h2>Part 3. Grammar</h2>
+      <div class="points">10 points</div>
+    </div>
+    <p class="instructions">Choose the one correct answer for each statement. The first one has been done as an example.</p>
+
+    <table class="grammar" id="table3">
+      <tbody>
+        <tr class="example-row">
+          <td class="qnum">Ex.</td>
+          <td>
+            <div class="qtext">As soon as Audrey arrived in New York, she … her family.</div>
+            <div class="abcd">
+              <label><input type="radio" disabled> A. was telephoning</label>
+              <label><input type="radio" checked disabled> B. telephoned</label>
+              <label><input type="radio" disabled> C. had telephoned</label>
+              <label><input type="radio" disabled> D. telephones</label>
+            </div>
+          </td>
+        </tr>
+        <tr data-q="1">
+          <td class="qnum">1</td>
+          <td>
+            <div class="qtext">Every time she thinks of her departure from home, she … a little homesick.</div>
+            <div class="abcd" data-q="1">
+              <label><input type="radio" name="g1" value="A"> A. will have felt</label>
+              <label><input type="radio" name="g1" value="B"> B. felt</label>
+              <label><input type="radio" name="g1" value="C"> C. feels</label>
+              <label><input type="radio" name="g1" value="D"> D. is feeling</label>
+            </div>
+          </td>
+        </tr>
+        <tr data-q="2">
+          <td class="qnum">2</td>
+          <td>
+            <div class="qtext">Since she left her country a year ago, she … her friends several times.</div>
+            <div class="abcd" data-q="2">
+              <label><input type="radio" name="g2" value="A"> A. calls</label>
+              <label><input type="radio" name="g2" value="B"> B. will have called</label>
+              <label><input type="radio" name="g2" value="C"> C. is calling</label>
+              <label><input type="radio" name="g2" value="D"> D. has called</label>
+            </div>
+          </td>
+        </tr>
+        <tr data-q="3">
+          <td class="qnum">3</td>
+          <td>
+            <div class="qtext">When she gets home, she … surprised by the changes that have taken place at home.</div>
+            <div class="abcd" data-q="3">
+              <label><input type="radio" name="g3" value="A"> A. is</label>
+              <label><input type="radio" name="g3" value="B"> B. will be</label>
+              <label><input type="radio" name="g3" value="C"> C. has been</label>
+              <label><input type="radio" name="g3" value="D"> D. will have been</label>
+            </div>
+          </td>
+        </tr>
+        <tr data-q="4">
+          <td class="qnum">4</td>
+          <td>
+            <div class="qtext">You can stay here … you don't make a loud noise.</div>
+            <div class="abcd" data-q="4">
+              <label><input type="radio" name="g4" value="A"> A. when</label>
+              <label><input type="radio" name="g4" value="B"> B. until</label>
+              <label><input type="radio" name="g4" value="C"> C. so long as</label>
+              <label><input type="radio" name="g4" value="D"> D. unless</label>
+            </div>
+          </td>
+        </tr>
+        <tr data-q="5">
+          <td class="qnum">5</td>
+          <td>
+            <div class="qtext">The girl weeps whenever she … such a story.</div>
+            <div class="abcd" data-q="5">
+              <label><input type="radio" name="g5" value="A"> A. hears</label>
+              <label><input type="radio" name="g5" value="B"> B. had heard</label>
+              <label><input type="radio" name="g5" value="C"> C. will hear</label>
+              <label><input type="radio" name="g5" value="D"> D. heard</label>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button class="check-btn" onclick="checkPart3()">Check Part 3</button>
+    <div class="score" id="score3"></div>
+  </section>
+
+  <!-- PART 4 : VOCABULARY -->
+  <section class="part" id="part4">
+    <div class="part-head">
+      <h2>Part 4. Vocabulary</h2>
+      <div class="points">8 points</div>
+    </div>
+    <p class="instructions">Match the words in (A) with the most suitable definitions in (B). The first one has been done for you.</p>
+
+    <table class="match" id="table4">
+      <thead><tr><th>A</th><th>B</th><th class="col-c">C</th></tr></thead>
+      <tbody>
+        <tr class="example">
+          <td><em>1 bush</em></td>
+          <td><em>a group of small trees.</em></td>
+          <td class="col-c"><span class="example-badge">1 → 6</span></td>
+        </tr>
+        <tr data-q="2"><td>3 coal</td><td id="v2"></td><td class="col-c"><select data-q="2"></select></td></tr>
+        <tr data-q="3"><td>5 receiver</td><td id="v3"></td><td class="col-c"><select data-q="3"></select></td></tr>
+        <tr data-q="4"><td>7 pepper</td><td id="v4"></td><td class="col-c"><select data-q="4"></select></td></tr>
+        <tr data-q="5"><td>9 ring</td><td id="v5"></td><td class="col-c"><select data-q="5"></select></td></tr>
+        <tr data-q="6"><td>11 wind</td><td id="v6"></td><td class="col-c"><select data-q="6"></select></td></tr>
+        <tr data-q="7"><td>13 boot</td><td id="v7"></td><td class="col-c"><select data-q="7"></select></td></tr>
+        <tr data-q="8"><td>15 earthworm</td><td id="v8"></td><td class="col-c"><select data-q="8"></select></td></tr>
+        <tr data-q="9"><td>17 cobra</td><td id="v9"></td><td class="col-c"><select data-q="9"></select></td></tr>
+      </tbody>
+    </table>
+    <p class="instructions" style="margin-top:10px;font-size:13px;">
+      B options: 2. a kind of reptile that can kill people with its poisonous liquid &nbsp;·&nbsp;
+      4. something that lives in the soil &nbsp;·&nbsp; 6. a group of small trees &nbsp;·&nbsp;
+      8. a kind of footwear covering the foot and ankle &nbsp;·&nbsp; 10. a kind of jewelry worn on a finger &nbsp;·&nbsp;
+      12. someone who gets something &nbsp;·&nbsp; 14. a kind of mine used to make power &nbsp;·&nbsp;
+      16. air blows in the sky &nbsp;·&nbsp; 18. a place that is so far from us &nbsp;·&nbsp;
+      19. a kind of soup ingredient
+    </p>
+
+    <button class="check-btn" onclick="checkPart4()">Check Part 4</button>
+    <div class="score" id="score4"></div>
+  </section>
+
+  <!-- PART 5 : WRITING -->
+  <section class="part" id="part5">
+    <div class="part-head">
+      <h2>Part 5. Writing</h2>
+      <div class="points">12 points</div>
+    </div>
+    <p class="instructions">Describe in English the advantages and disadvantages of computers. Write at least 150 words.</p>
+    <textarea id="essay" placeholder="Start writing here…" oninput="updateWordCount()"></textarea>
+    <div class="wordcount" id="wordcount">0 words</div>
+  </section>
+
+  <button class="check-btn" style="width:100%;font-size:15px;padding:14px;" onclick="checkAll()">Check entire test</button>
+  <div class="score" id="scoreAll" style="text-align:center;font-size:16px;margin-top:16px;"></div>
+
+  <footer>Made for practice — based on the sample "Homework" exam.</footer>
+</div>
+
+<script>
+  // ---------- PART 1 ----------
+  const bank = ["expectations","achievement","marks","because","encouragement","comparisons","properly","introduction","additional","enjoyment","powerful"];
+  const p1answers = {2:"because",3:"marks",4:"enjoyment",5:"powerful",6:"achievement",7:"introduction",8:"additional",9:"encouragement",10:"properly",11:"comparisons"};
+
+  document.querySelector('.gap-select.example').innerHTML = '<option>expectations</option>';
+
+  Object.keys(p1answers).forEach(g=>{
+    const holder = document.querySelector(`.gap-holder[data-gap="${g}"]`);
+    const sel = document.createElement('select');
+    sel.className = 'gap-select';
+    sel.dataset.gap = g;
+    sel.innerHTML = '<option value="">…</option>' + bank.map(w=>`<option value="${w}">${w}</option>`).join('');
+    holder.appendChild(sel);
+  });
+
+  function checkPart1(){
+    let correct = 0;
+    Object.entries(p1answers).forEach(([g,ans])=>{
+      const sel = document.querySelector(`select.gap-select[data-gap="${g}"]`);
+      const parent = sel.parentElement;
+      parent.querySelectorAll('.mark-icon').forEach(e=>e.remove());
+      const icon = document.createElement('span');
+      icon.className = 'mark-icon';
+      if(sel.value === ans){
+        icon.className += ' correct-mark';
+        icon.textContent = ' ✓';
+        correct++;
+      } else {
+        icon.className += ' wrong-mark';
+        icon.textContent = ` ✗ (${ans})`;
+      }
+      parent.appendChild(icon);
+    });
+    const el = document.getElementById('score1');
+    el.classList.add('visible');
+    el.innerHTML = `Score: <span class="n">${correct}</span> / 10`;
+  }
+
+  // ---------- PART 2 ----------
+  const p2options = {
+    2: {label:"E. I'll never speak to you again.", correct:"E"},
+    3: {label:"A. It's my pleasure.", correct:"A"},
+       4:{label:"19. a kind of soup ingredient", correct:"19"},
+    5:{label:"10. a kind of jewelry worn on a finger", correct:"10"},
+    6:{label:"16. air blows in the sky", correct:"16"},
+    7:{label:"8. a kind of footwear covering the foot and ankle", correct:"8"},
+    8:{label:"4. something that lives in the soil", correct:"4"},
+    9:{label:"2. a kind of reptile that can kill people with its poisonous liquid", correct:"2"}
+  };
+  const p4choices = ["2","4","8","10","12","14","16","18","19"];
+  Object.entries(p4options).forEach(([q,data])=>{
+    document.getElementById('v'+q).textContent = data.label;
+    const sel = document.querySelector(`#table4 select[data-q="${q}"]`);
+    sel.innerHTML = '<option value="">…</option>' + p4choices.map(c=>`<option value="${c}">${c}</option>`).join('');
+  });
+  function checkPart4(){
+    let correct = 0;
+    Object.entries(p4options).forEach(([q,data])=>{
+      const sel = document.querySelector(`#table4 select[data-q="${q}"]`);
+      const cell = sel.parentElement;
+      cell.querySelectorAll('.mark-icon').forEach(e=>e.remove());
+      const icon = document.createElement('span');
+      icon.className = 'mark-icon';
+      if(sel.value === data.correct){
+        icon.className += ' correct-mark'; icon.textContent = ' ✓'; correct++;
+      } else {
+        icon.className += ' wrong-mark'; icon.textContent = ` ✗ (${data.correct})`;
+      }
+      cell.appendChild(icon);
+    });
+    const el = document.getElementById('score4');
+    el.classList.add('visible');
+    el.innerHTML = `Score: <span class="n">${correct}</span> / 8`;
+  }
+
+  // ---------- PART 5 ----------
+  function updateWordCount(){
+    const text = document.getElementById('essay').value.trim();
+    const words = text.length ? text.split(/\s+/).length : 0;
+    const el = document.getElementById('wordcount');
+    el.textContent = `${words} words (minimum 150)`;
+    el.classList.toggle('ok', words >= 150);
+  }
+
+  // ---------- ALL ----------
+  function checkAll(){
+    checkPart1(); checkPart2(); checkPart3(); checkPart4();
+    document.getElementById('scoreAll').classList.add('visible');
+    document.getElementById('scoreAll').innerHTML = 'All parts checked above — scroll up to review ✓ / ✗ marks. Part 5 (Writing) is not auto-graded.';
+    document.getElementById('scoreAll').scrollIntoView({behavior:'smooth'});
+  }
+</script>
+
+</body>
+</html>

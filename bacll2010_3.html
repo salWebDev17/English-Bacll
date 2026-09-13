@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.tailwindcss.com"></script>
+<title>English Practice Exam</title>
+<style>
+  :root{
+    --paper:#faf6ec;
+    --ink:#2b2a28;
+    --rule:#c9beac;
+    --pencil:#8a6f4b;
+    --correct:#3f6b4f;
+    --correct-bg:#e4efe6;
+    --wrong:#a3423a;
+    --wrong-bg:#f6e4e2;
+    --accent:#a3423a;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      linear-gradient(var(--paper),var(--paper)),
+      repeating-linear-gradient(180deg, transparent 0px, transparent 33px, var(--rule) 34px);
+    color:var(--ink);
+    font-family:Georgia, 'Times New Roman', serif;
+    line-height:1.5;
+    padding:0 0 60px;
+  }
+  .sheet{
+    max-width:760px;
+    margin:0 auto;
+    padding:36px 28px 20px;
+  }
+  header.title-block{
+    text-align:center;
+    border-bottom:3px double var(--ink);
+    padding-bottom:18px;
+    margin-bottom:28px;
+  }
+  header.title-block .kicker{
+    font-family:'Trebuchet MS', sans-serif;
+    font-size:12.5px;
+    letter-spacing:0.02em;
+    color:var(--pencil);
+  }
+  header.title-block h1{
+    font-size:28px;
+    margin:8px 0 6px;
+    font-weight:700;
+  }
+  header.title-block p{
+    margin:0;
+    font-size:13.5px;
+    color:#555;
+    font-family:'Trebuchet MS', sans-serif;
+  }
+  #score-summary{
+    font-family:'Trebuchet MS', sans-serif;
+    font-size:14px;
+    text-align:center;
+    margin:0 0 30px;
+    color:var(--pencil);
+  }
+  #score-summary strong{color:var(--ink); font-size:16px;}
+
+  section.part{
+    margin-bottom:44px;
+  }
+  .part-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    border-bottom:1.5px solid var(--ink);
+    padding-bottom:6px;
+    margin-bottom:16px;
+  }
+  .part-head h2{
+    font-size:19px;
+    margin:0;
+  }
+  .part-head .marks{
+    font-family:'Trebuchet MS', sans-serif;
+    font-size:12.5px;
+    color:var(--pencil);
+  }
+  .instructions{
+    font-family:'Trebuchet MS', sans-serif;
+    font-size:13.5px;
+    color:#4a4a4a;
+    margin:0 0 16px;
+    font-style:italic;
+  }
+
+  /* PART 1 - reading */
+  .reading-text{
+    font-size:15.5px;
+    text-align:justify;
+  }
+  .reading-text h3{
+    text-align:center;
+    font-size:16px;
+    margin:0 0 12px;
+    text-decoration:underline;
+    text-decoration-color:var(--rule);
+  }
+  .wordbank{
+    font-family:'Trebuchet MS', sans-serif;
+    font-size:13px;
+    background:#f0ead9;
+    border:1px solid var(--rule);
+    border-radius:3px;
+    padding:10px 14px;
+    margin-bottom:18px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 18px;
+  }
+  .wordbank span{white-space:nowrap;}
+  .wordbank span.used{
+    color:#b3aa96;
+    text-decoration:line-through;
+  }
+  select.gap{
+    font-family:'Trebuchet MS', sans-serif;
+    font-size:13.5px;
+    border:none;
+    border-bottom:2px solid var(--pencil);
+    background:transparent;
+    color:var(--ink);
+    padding:1px 4px;
+    min-width:118px;
+  }
+  select.gap:focus{outline:none; border-bottom-color:var(--accent);}
+  .gapnum{
+    font-family:'Trebuchet MS', sans-serif;
+    font-weight:700;
+    font-size:12px;
+    color:var(--pencil);
+  }
+  .gap-wrap.correct select{border-bottom-color:var(--correct); color:var(--correct);}
+  .gap-wrap.wrong select{border-bottom-color:var(--wrong); color:var(--wrong);}
+
+  /* PART 2 - grammar table */
+  table.grammar{
+    width:100%;
+    border-collapse:collapse;
+    font-family:'Trebuchet MS', sans-serif;
+    font-size:13.5px;
+  }
+  table.grammar td{
+    border:1px solid var(--rule);
+    padding:9px 10px;
+    vertical-align:top;
+  }
+  table.grammar tr.q-row td.qtext{
+    font-family:Georgia, serif;
+    font-size:14.5px;
+    font-style:italic;
+    border-bottom:none;
+    padding-bottom:2px;
+  }
+  table.grammar tr.opt-row td{
+    border-top:none;
+    padding-top:2px;
+  }
+  .options{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 22px;
+  }
+  .option-label{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    cursor:pointer;
+  }
+  .option-label input{accent-color:var(--pencil); cursor:pointer;}
+  tr.q-row.correct td.qtext{color:var(--correct);}
+  tr.q-row.wrong td.qtext{color:var(--wrong);}
+  .option-label.right-answer{color:var(--correct); font-weight:700;}
+
+  /* PART 3 & 4 - matching */
+  table.match{
+    width:100%;
+    border-collapse:collapse;
+    font-family:'Trebuchet MS', sans-serif;
+    font-size:13.5px;
+  }
+  table.match th{
+    text-align:left;
+    font-size:11.5px;
+    color:var(--pencil);
+    padding:4px 10px;
+    border-bottom:1px solid var(--ink);
+  }
+  table.match td{
+    padding:7px 10px;
+    border-bottom:1px dotted var(--rule);
+  }
+  table.match td.a-col{width:56%;}
+  table.match td.ans-col{width:60px; text-align:center;}
+  select.match-select{
+    font-family:'Trebuchet MS', sans-serif;
+    font-size:13px;
+    border:1px solid var(--rule);
+    border-radius:3px;
+    background:#fff;
+    padding:3px 5px;
+    width:48px;
+    text-align:center;
+  }
+  td.ans-col.correct select{border-color:var(--correct); background:var(--correct-bg); color:var(--correct);}
+  td.ans-col.wrong select{border-color:var(--wrong); background:var(--wrong-bg); color:var(--wrong);}
+  .bcol-ref{
+    font-size:11.5px;
+    color:#777;
+    margin-top:14px;
+    border-top:1px dashed var(--rule);
+    padding-top:8px;
+  }
+  .bcol-ref span{display:block; margin-bottom:2px;}
+
+  /* PART 5 writing */
+  textarea{
+    width:100%;
+    min-height:220px;
+    font-family:Georgia, serif;
+    font-size:14.5px;
+    line-height:1.7;
+    padding:14px;
+    border:1px solid var(--rule);
+    border-radius:2px;
+    background:
+      repeating-linear-gradient(180deg, transparent 0, transparent 25px, var(--rule) 26px);
+    resize:vertical;
+  }
+  .wordcount{
+    font-family:'Trebuchet MS', sans-serif;
+    font-size:12.5px;
+    color:var(--pencil);
+    margin-top:6px;
+    text-align:right;
+  }
+  .wordcount.ok{color:var(--correct);}
+
+  button.check-btn{
+    font-family:'Trebuchet MS', sans-serif;
+    font-size:13.5px;
+    font-weight:700;
+    letter-spacing:0.01em;
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    border-radius:3px;
+    padding:9px 20px;
+    cursor:pointer;
+    margin-top:16px;
+  }
+  button.check-btn:hover{background:var(--accent);}
+  button.check-btn:active{transform:translateY(1px);}
+
+  .result-line{
+    font-family:'Trebuchet MS', sans-serif;
+    font-size:13.5px;
+    margin-top:10px;
+    font-weight:700;
+  }
+
+  footer{
+    text-align:center;
+    font-family:'Trebuchet MS', sans-serif;
+    font-size:11.5px;
+    color:#9a927e;
+    margin-top:40px;
+  }
+
+  @media (max-width:520px){
+    .sheet{padding:24px 16px 10px;}
+    header.title-block h1{font-size:22px;}
+    table.grammar, table.match{font-size:12.5px;}
+  }
+</style>
+</head>
+<body>
+    <div class="m-0 p-3 font-sans bg-gray-100">
+  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
+
+<div class="sheet">
+
+  <header class="title-block">
+    <div class="kicker">General English Proficiency &middot; Practice Paper</div>
+    <h1>English Practice Exam</h1>
+    <p>Reading &middot; Grammar &middot; Vocabulary &middot; Language Use &middot; Writing</p>
+  </header>
+
+  <div id="score-summary">Answer each part, then press "Check" to see your score. Total so far: <strong id="grand-total">0 / 46</strong></div>
+
+  <!-- PART 1: READING -->
+  <section class="part" id="part1">
+    <div class="part-head">
+      <h2>Part 1 &middot; Reading</h2>
+      <span class="marks">10 marks</span>
+    </div>
+    <p class="instructions">Read the text and choose the correct word from the box for each gap. Gap (1) is done for you.</p>
+
+    <div class="wordbank" id="wordbank1">
+      <span data-w="emergency" class="used">emergency</span>
+      <span data-w="professionals">professionals</span>
+      <span data-w="become">become</span>
+      <span data-w="rewards">rewards</span>
+      <span data-w="satisfaction">satisfaction</span>
+      <span data-w="qualifications">qualifications</span>
+      <span data-w="reduction">reduction</span>
+      <span data-w="project">project</span>
+      <span data-w="reaction">reaction</span>
+      <span data-w="abroad">abroad</span>
+    </div>
+
+    <div class="reading-text">
+      <h3>Doctor Without Border</h3>
+      <p>Médecins Sans Frontières (MSF), which means "Doctor Without Border," was established in 1971. It is now the world's largest independent organization that provides <span class="gapnum">(1)</span> <em>emergency</em> medical relief. The aim of the organization is to help people who have suffered badly in wars or natural disasters, such as earthquakes or floods.</p>
+
+      <p>Each year, about 3,000 people are sent <span class="gapnum">(2)</span> <span class="gap-wrap" data-answer="abroad"><select class="gap" data-gap="2"></select></span> to work in over seventy different countries worldwide. MSF relies on professional volunteers but also works closely with local <span class="gapnum">(3)</span> <span class="gap-wrap" data-answer="professionals"><select class="gap" data-gap="3"></select></span>, in most projects there are seven local staff members to every one foreigner. Volunteers are paid about $800 a month and receive travel expenses. They usually work for nine months to a year on a <span class="gapnum">(4)</span> <span class="gap-wrap" data-answer="project"><select class="gap" data-gap="4"></select></span> and then go home; however, about 50% of volunteers go on more than one mission. One volunteer reports, "Working on politically sensitive areas with limited resources can be frustrating, but there is huge <span class="gapnum">(5)</span> <span class="gap-wrap" data-answer="satisfaction"><select class="gap" data-gap="5"></select></span> in making even a small or temporary difference to people. What better recommendation than to say I'm about to leave on third mission!"</p>
+
+      <p>What qualities and skills do you need to <span class="gapnum">(6)</span> <span class="gap-wrap" data-answer="become"><select class="gap" data-gap="6"></select></span> a volunteer? You have to be able to deal with stress, and you need to be able to work independently as well as in a team. You are not required, however, to have medical <span class="gapnum">(7)</span> <span class="gap-wrap" data-answer="qualifications"><select class="gap" data-gap="7"></select></span>.</p>
+
+      <p>Besides medical professionals, MSF needs the skilled support of technical staff such as building engineers and food experts. The <span class="gapnum">(8)</span> <span class="gap-wrap" data-answer="reaction"><select class="gap" data-gap="8"></select></span> of volunteers returning from MSF speaks for itself. "One of my biggest challenges was organizing a team to open a new hospital in a town that had no medical care for three years," one volunteer said. This volunteer concluded that the project was a success for two reasons: the <span class="gapnum">(9)</span> <span class="gap-wrap" data-answer="reduction"><select class="gap" data-gap="9"></select></span> of deaths and the fact that the local people were thankful. Another volunteer says, "With MSF, I have had the chance to travel and test my skills to limits both professionally and personally. The <span class="gapnum">(10)</span> <span class="gap-wrap" data-answer="rewards"><select class="gap" data-gap="10"></select></span> can be enormous."</p>
+    </div>
+
+    <button class="check-btn" onclick="checkPart1()">Check Part 1</button>
+    <div class="result-line" id="result1"></div>
+  </section>
+
+  <!-- PART 2: GRAMMAR -->
+  <section class="part" id="part2">
+    <div class="part-head">
+      <h2>Part 2 &middot; Grammar</h2>
+      <span class="marks">10 marks</span>
+    </div>
+    <p class="instructions">Choose the one correct answer for each sentence.</p>
+
+    <table class="grammar" id="grammarTable"></table>
+
+    <button class="check-btn" onclick="checkPart2()">Check Part 2</button>
+    <div class="result-line" id="result2"></div>
+  </section>
+
+  <!-- PART 3: VOCABULARY -->
+  <section class="part" id="part3">
+    <div class="part-head">
+      <h2>Part 3 &middot; Vocabulary</h2>
+      <span class="marks">8 marks</span>
+    </div>
+    <p class="instructions">Match the word or phrase in column A with its definition. Choose the matching letter for each.</p>
+
+    <table class="match" id="vocabTable">
+      <tr><th class="a-col">A</th><th>Answer</th></tr>
+    </table>
+    <div class="bcol-ref" id="vocabRef"></div>
+
+    <button class="check-btn" onclick="checkPart3()">Check Part 3</button>
+    <div class="result-line" id="result3"></div>
+  </section>
+
+  <!-- PART 4: LANGUAGE USE -->
+  <section class="part" id="part4">
+    <div class="part-head">
+      <h2>Part 4 &middot; Language Use</h2>
+      <span class="marks">8 marks</span>
+    </div>
+    <p class="instructions">Match each sentence in A with the most suitable response in B.</p>
+
+    <table class="match" id="langTable">
+      <tr><th class="a-col">A</th><th>Answer</th></tr>
+    </table>
+    <div class="bcol-ref" id="langRef"></div>
+
+    <button class="check-btn" onclick="checkPart4()">Check Part 4</button>
+    <div class="result-line" id="result4"></div>
+  </section>
+
+  <!-- PART 5: WRITING -->
+  <section class="part" id="part5">
+    <div class="part-head">
+      <h2>Part 5 &middot; Writing</h2>
+      <span class="marks">15 marks</span>
+    </div>
+    <p class="instructions">Write about "one of the tourist places where you have been to" (100&ndash;150 words). This part is not auto-graded &mdash; use it to practise and check your word count.</p>
+
+    <textarea id="writingBox" placeholder="Start writing here..."></textarea>
+    <div class="wordcount" id="wordcount">0 words (aim for 100&ndash;150)</div>
+  </section>
+
+  <footer>Practice paper &middot; adapted from a General English Proficiency test</footer>
+</div>
+
+<script>
+/* ---------- DATA ---------- */
+
+const gapAnswers = {2:"abroad",3:"professionals",4:"project",5:"satisfaction",6:"become",7:"qualifications",8:"reaction",9:"reduction",10:"rewards"};
+const wordbankWords = ["professionals","become","rewards","satisfaction","qualifications","reduction","project","reaction","abroad"];
+
+const grammarQuestions = [
+  {q:"Have you lived here ……………………… life?", opts:["your all","all the","the whole","all your"], answer:3},
+  {q:"Please do not talk ……………………… the orchestra is playing.", opts:["during","while","otherwise","that"], answer:1},
+  {q:"The price of petrol has ……………………… up again.", opts:["lifted","got","gone","stood"], answer:2},
+  {q:"Anyone who lives alone has to look after ……………………… .", opts:["himself","oneself","self","itself"], answer:0},
+  {q:"The policeman took his notebook ……………………… his top pocket.", opts:["into","in","out","from"], answer:2},
+  {q:"The man ……………………… of killing said that he was at the cinema at that time.", opts:["who are accused","who is accused","who was accused","who were accused"], answer:2},
+  {q:"She's from Cambodia, and ……………………… .", opts:["so is she","so was she","so I am","so am I"], answer:3},
+  {q:"She told me not to worry, because she ……………………… me.", opts:["would be","would help","could go into","was at a meeting"], answer:1},
+  {q:"Sophia said that there ……………………… five different types of rhinos in the world today.", opts:["are","is","was","were"], answer:3},
+  {q:"If you want to apply for a camp, you ……………………… a student.", opts:["must have","must be","must been","must be able"], answer:1}
+];
+
+const vocabItems = [
+  {word:"monolingual", answer:"e"},
+  {word:"bear in mind", answer:"d"},
+  {word:"keep an open mind", answer:"a"},
+  {word:"maintain", answer:"g"},
+  {word:"personally", answer:"b"},
+  {word:"my mind went blank", answer:"h"},
+  {word:"renovate", answer:"c"},
+  {word:"give up", answer:"f"},
+  {word:"punctual", answer:"j"}
+];
+const vocabDefs = [
+  "a. try not to judge before you know the fact",
+  "b. this is my own opinion",
+  "c. repair and make new again",
+  "d. remember",
+  "e. written in only one language",
+  "f. stop doing something",
+  "g. keep in good condition",
+  "h. I forgot",
+  "i. feel tired",
+  "j. is never late, but always arrives at the exact time"
+];
+
+const langItems = [
+  {a:"Your eyes hurt and can't see the sun in the sky.", answer:"b"},
+  {a:"The weather in Cambodia is bad nowadays.", answer:"e"},
+  {a:"My friend has had the traffic accident.", answer:"a"},
+  {a:"Why aren't they talking to each other?", answer:"c"},
+  {a:"Would you hold this for me, please?", answer:"g"},
+  {a:"Drive carefully.", answer:"h"},
+  {a:"Have you got the right time?", answer:"i"},
+  {a:"Do you mind if I smoke?", answer:"f"}
+];
+const langDefs = [
+  "a. How awful!",
+  "b. Yes, I've heard that, but how bad is it?",
+  "c. I don't know. Maybe they quarrel.",
+  "d. You are very nice.",
+  "e. Sounds terrible.",
+  "f. Sorry Sir! This is a non-smoking area.",
+  "g. Never mind! I always please to help everyone.",
+  "h. Thank you. I will pay close attention.",
+  "i. Yes, I have. It is half past twelve.",
+  "j. What do you do for a living?"
+];
+
+let scores = {p1:0, p2:0, p3:0, p4:0};
+
+/* ---------- BUILD PART 1 (gap selects) ---------- */
+document.querySelectorAll('select.gap').forEach(sel=>{
+  sel.innerHTML = '<option value="">— choose —</option>' + wordbankWords.map(w=>`<option value="${w}">${w}</option>`).join('');
+});
+
+/* ---------- BUILD PART 2 ---------- */
+(function buildGrammar(){
+  const table = document.getElementById('grammarTable');
+  const letters = ['a','b','c','d'];
+  grammarQuestions.forEach((item, i)=>{
+    const qRow = document.createElement('tr');
+    qRow.className = 'q-row';
+    qRow.id = 'grow-'+i;
+    qRow.innerHTML = `<td class="qtext">${i+1}. ${item.q}</td>`;
+    table.appendChild(qRow);
+
+    const optRow = document.createElement('tr');
+    optRow.className = 'opt-row';
+    const optsHtml = item.opts.map((opt, oi)=>
+      `<label class="option-label" id="opt-${i}-${oi}"><input type="radio" name="g${i}" value="${oi}"> ${letters[oi]}. ${opt}</label>`
+    ).join('');
+    optRow.innerHTML = `<td><div class="options">${optsHtml}</div></td>`;
+    table.appendChild(optRow);
+  });
+})();
+
+/* ---------- BUILD PART 3 (vocabulary matching) ---------- */
+(function buildVocab(){
+  const table = document.getElementById('vocabTable');
+  vocabItems.forEach((item, i)=>{
+    const row = document.createElement('tr');
+    row.id = 'vrow-'+i;
+    const options = ['a','b','c','d','e','f','g','h','i','j'];
+    row.innerHTML = `<td class="a-col">${i+1}. <em>${item.word}</em></td>
+      <td class="ans-col"><select class="match-select" id="vsel-${i}">
+        <option value="">–</option>
+        ${options.map(o=>`<option value="${o}">${o}</option>`).join('')}
+      </select></td>`;
+    table.appendChild(row);
+  });
+  document.getElementById('vocabRef').innerHTML = vocabDefs.map(d=>`<span>${d}</span>`).join('');
+})();
+
+/* ---------- BUILD PART 4 (language use matching) ---------- */
+(function buildLang(){
+  const table = document.getElementById('langTable');
+  langItems.forEach((item, i)=>{
+    const row = document.createElement('tr');
+    row.id = 'lrow-'+i;
+    const options = ['a','b','c','d','e','f','g','h','i','j'];
+    row.innerHTML = `<td class="a-col">${i+2}. ${item.a}</td>
+      <td class="ans-col"><select class="match-select" id="lsel-${i}">
+        <option value="">–</option>
+        ${options.map(o=>`<option value="${o}">${o}</option>`).join('')}
+      </select></td>`;
+    table.appendChild(row);
+  });
+  document.getElementById('langRef').innerHTML = langDefs.map(d=>`<span>${d}</span>`).join('');
+})();
+
+/* ---------- CHECK FUNCTIONS ---------- */
+function updateGrandTotal(){
+  const total = scores.p1 + scores.p2 + scores.p3 + scores.p4;
+  document.getElementById('grand-total').textContent = total + " / 37";
+}
+
+function checkPart1(){
+  let correct = 0;
+  document.querySelectorAll('.gap-wrap').forEach(wrap=>{
+    const sel = wrap.querySelector('select');
+    const isRight = sel.value === wrap.dataset.answer;
+    wrap.classList.remove('correct','wrong');
+    wrap.classList.add(isRight ? 'correct':'wrong');
+    if(isRight) correct++;
+  });
+  scores.p1 = correct;
+  document.getElementById('result1').textContent = `Score: ${correct} / 9 correct (gap 1 given free)`;
+  updateGrandTotal();
+}
+
+function checkPart2(){
+  let correct = 0;
+  grammarQuestions.forEach((item, i)=>{
+    const chosen = document.querySelector(`input[name="g${i}"]:checked`);
+    const row = document.getElementById('grow-'+i);
+    row.classList.remove('correct','wrong');
+    document.querySelectorAll(`#opt-${i}-0,#opt-${i}-1,#opt-${i}-2,#opt-${i}-3`).forEach(l=>l.classList.remove('right-answer'));
+    document.getElementById(`opt-${i}-${item.answer}`).classList.add('right-answer');
+    if(chosen && parseInt(chosen.value) === item.answer){
+      row.classList.add('correct');
+      correct++;
+    } else {
+      row.classList.add('wrong');
+    }
+  });
+  scores.p2 = correct;
+  document.getElementById('result2').textContent = `Score: ${correct} / 10 correct`;
+  updateGrandTotal();
+}
+
+function checkPart3(){
+  let correct = 0;
+  vocabItems.forEach((item, i)=>{
+    const sel = document.getElementById('vsel-'+i);
+    const cell = sel.parentElement;
+    cell.classList.remove('correct','wrong');
+    if(sel.value === item.answer){
+      cell.classList.add('correct');
+      correct++;
+    } else {
+      cell.classList.add('wrong');
+    }
+  });
+  scores.p3 = correct;
+  document.getElementById('result3').textContent = `Score: ${correct} / 9 correct`;
+  updateGrandTotal();
+}
+
+function checkPart4(){
+  let correct = 0;
+  langItems.forEach((item, i)=>{
+    const sel = document.getElementById('lsel-'+i);
+    const cell = sel.parentElement;
+    cell.classList.remove('correct','wrong');
+    if(sel.value === item.answer){
+      cell.classList.add('correct');
+      correct++;
+    } else {
+      cell.classList.add('wrong');
+    }
+  });
+  scores.p4 = correct;
+  document.getElementById('result4').textContent = `Score: ${correct} / 8 correct`;
+  updateGrandTotal();
+}
+
+/* ---------- WORD COUNT ---------- */
+const writingBox = document.getElementById('writingBox');
+const wc = document.getElementById('wordcount');
+writingBox.addEventListener('input', ()=>{
+  const text = writingBox.value.trim();
+  const words = text.length ? text.split(/\s+/).length : 0;
+  wc.textContent = `${words} words (aim for 100–150)`;
+  wc.classList.toggle('ok', words>=100 && words<=150);
+});
+</script>
+</body>
+</html>

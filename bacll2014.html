@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Election English — Practice</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root{
+    --paper: #F6F1E4;
+    --paper-dark: #EAE2CE;
+    --ink: #202A2E;
+    --navy: #1D3557;
+    --stamp-red: #A8342A;
+    --stamp-blue: #2C5E7A;
+    --line: #C9BFA4;
+    --ok: #3E6E4E;
+    --bad: #A8342A;
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height:1.5;
+  }
+
+  .wrap{
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  header.hero{
+    border-bottom: 3px solid var(--navy);
+    padding-bottom: 20px;
+    margin-bottom: 28px;
+    position: relative;
+  }
+
+  .stamp{
+    position:absolute;
+    top: 0;
+    right: 0;
+    width: 74px;
+    height: 74px;
+    border: 2.5px solid var(--stamp-red);
+    border-radius: 50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transform: rotate(-9deg);
+    color: var(--stamp-red);
+    font-family:'Source Serif 4', serif;
+    font-weight:700;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    text-align:center;
+    line-height:1.2;
+  }
+
+  h1{
+    font-family:'Source Serif 4', serif;
+    font-weight:700;
+    font-size: 34px;
+    margin: 0 0 6px;
+    color: var(--navy);
+  }
+
+  .sub{
+    font-size: 15px;
+    color: #52605f;
+  }
+
+  .progress-row{
+    display:flex;
+    gap:8px;
+    margin-top:18px;
+  }
+  .progress-seg{
+    flex:1;
+    height:6px;
+    background: var(--paper-dark);
+    border-radius:3px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    width:0%;
+    background: var(--navy);
+    transition: width .4s ease;
+  }
+
+  section.part{
+    background: #fffdf8;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 26px 24px;
+    margin-bottom: 26px;
+  }
+
+  .part-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 10px;
+    margin-bottom: 18px;
+  }
+
+  .part-head h2{
+    font-family:'Source Serif 4', serif;
+    font-size: 20px;
+    margin:0;
+    color: var(--navy);
+  }
+  .part-head span{
+    font-size: 13px;
+    color: #8a7f63;
+  }
+
+  .story{
+    font-size: 15.5px;
+    line-height: 1.9;
+    color:#2a3336;
+  }
+
+  select.blank{
+    font-family: 'Inter', sans-serif;
+    font-size: 14.5px;
+    padding: 3px 6px;
+    border: none;
+    border-bottom: 2px solid var(--stamp-blue);
+    background: var(--paper-dark);
+    border-radius: 2px;
+    color: var(--navy);
+    font-weight: 600;
+    min-width: 130px;
+  }
+  select.blank.locked{
+    border-bottom-color: var(--ok);
+    background: #e9f2ec;
+  }
+  select.blank.wrong{
+    border-bottom-color: var(--bad);
+    background: #fbe9e7;
+  }
+  .blank-num{
+    font-size:11px;
+    vertical-align: super;
+    color:#8a7f63;
+    margin-right:1px;
+  }
+
+  .word-bank{
+    margin-top: 18px;
+    padding: 12px 14px;
+    background: var(--paper-dark);
+    border-radius: 4px;
+    font-size: 13.5px;
+    color: #52605f;
+  }
+  .word-bank b{ color: var(--navy); }
+
+  .mc-item{
+    margin-bottom: 22px;
+  }
+  .mc-q{
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+  .mc-q .n{
+    font-weight:700;
+    color: var(--navy);
+    margin-right: 4px;
+  }
+  .mc-options{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 10px;
+  }
+  @media (max-width:520px){
+    .mc-options{ grid-template-columns: 1fr; }
+  }
+
+  label.opt{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding: 8px 10px;
+    border: 1.5px solid var(--line);
+    border-radius: 4px;
+    cursor:pointer;
+    font-size: 14px;
+    background:#fff;
+    transition: border-color .15s, background .15s;
+  }
+  label.opt:hover{ border-color: var(--stamp-blue); }
+  label.opt.selected{
+    border-color: var(--navy);
+    background: #eef2f6;
+  }
+  label.opt.correct{
+    border-color: var(--ok);
+    background: #e9f2ec;
+  }
+  label.opt.incorrect{
+    border-color: var(--bad);
+    background: #fbe9e7;
+  }
+  label.opt input{ accent-color: var(--navy); }
+  .opt-letter{
+    font-weight:700;
+    color:#8a7f63;
+    width: 14px;
+  }
+
+  .part-footer{
+    margin-top: 18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+
+  .score-pill{
+    font-size: 13.5px;
+    font-weight:600;
+    color: var(--navy);
+    background: var(--paper-dark);
+    padding: 5px 12px;
+    border-radius: 20px;
+    visibility:hidden;
+  }
+  .score-pill.show{ visibility:visible; }
+
+  button{
+    font-family:'Inter', sans-serif;
+    font-weight:600;
+    font-size: 14px;
+    padding: 9px 18px;
+    border-radius: 4px;
+    border: none;
+    cursor:pointer;
+  }
+  .btn-check{
+    background: var(--navy);
+    color: #fff;
+  }
+  .btn-check:hover{ background:#162947; }
+
+  .final{
+    text-align:center;
+    padding: 30px 24px;
+    background: var(--navy);
+    color: #F6F1E4;
+    border-radius: 4px;
+  }
+  .final h2{
+    font-family:'Source Serif 4', serif;
+    font-size: 26px;
+    margin: 0 0 6px;
+  }
+  .final .big-score{
+    font-family:'Source Serif 4', serif;
+    font-size: 52px;
+    font-weight:700;
+    margin: 8px 0;
+  }
+  .final button{
+    margin-top: 14px;
+    background: var(--stamp-red);
+    color:#fff;
+  }
+  .final button:hover{ background:#8a2a22; }
+  .hidden{ display:none; }
+</style>
+</head>
+<body>
+  <div class="m-0 p-3 font-sans bg-gray-100">
+  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="stamp">EXAM<br>PRACTICE</div>
+    <h1>Election English</h1>
+    <div class="sub">Reading · Grammar · Vocabulary — self-check practice</div>
+    <div class="progress-row">
+      <div class="progress-seg"><div class="progress-fill" id="fill-1"></div></div>
+      <div class="progress-seg"><div class="progress-fill" id="fill-2"></div></div>
+      <div class="progress-seg"><div class="progress-fill" id="fill-3"></div></div>
+    </div>
+  </header>
+
+  <!-- PART 1 -->
+  <section class="part" id="part1">
+    <div class="part-head">
+      <h2>Part 1 · Reading</h2>
+      <span>10 points</span>
+    </div>
+    <div class="story" id="story"></div>
+    <div class="word-bank"><b>Word bank:</b> candidate · eligible · election campaign · opinion poll · ballot box · support · polling station · polling day · predict · result · winner</div>
+    <div class="part-footer">
+      <button class="btn-check" onclick="checkPart(1)">Check Part 1</button>
+      <span class="score-pill" id="score1"></span>
+    </div>
+  </section>
+
+  <!-- PART 2 -->
+  <section class="part" id="part2">
+    <div class="part-head">
+      <h2>Part 2 · Grammar</h2>
+      <span>10 points</span>
+    </div>
+    <div id="grammar-list"></div>
+    <div class="part-footer">
+      <button class="btn-check" onclick="checkPart(2)">Check Part 2</button>
+      <span class="score-pill" id="score2"></span>
+    </div>
+  </section>
+
+  <!-- PART 3 -->
+  <section class="part" id="part3">
+    <div class="part-head">
+      <h2>Part 3 · Vocabulary</h2>
+      <span>10 points</span>
+    </div>
+    <div id="vocab-list"></div>
+    <div class="part-footer">
+      <button class="btn-check" onclick="checkPart(3)">Check Part 3</button>
+      <span class="score-pill" id="score3"></span>
+    </div>
+  </section>
+
+  <section class="final hidden" id="finalScore">
+    <h2>Total score</h2>
+    <div class="big-score" id="totalBig">0 / 30</div>
+    <div id="totalMsg" class="sub" style="color:#cfd7e0;"></div>
+    <button onclick="resetAll()">Try again</button>
+  </section>
+
+</div>
+
+<script>
+/* ---------- DATA ---------- */
+
+const wordBank = ["candidate","eligible","election campaign","opinion poll","ballot box","support","polling station","polling day","predict","result","winner"];
+
+// blank number -> correct answer
+const readingAnswers = {
+  2: "result",
+  3: "opinion poll",
+  4: "election campaign",
+  5: "support",
+  6: "eligible",
+  7: "polling station",
+  8: "polling day",
+  9: "ballot box",
+  10: "candidate",
+  11: "winner"
+};
+
+const storyParts = [
+  {text:"People sometimes try to "},
+  {given:"predict"},
+  {text:" the result of an election weeks before it takes place. Several hundred people are asked which party they prefer, and their answers are used to guess the "},
+  {blank:2},
+  {text:" of the coming election. This is called an "},
+  {blank:3},
+  {text:". Meanwhile each party conducts its "},
+  {blank:4},
+  {text:" with meetings, speeches, television commercials and party members going from door to door encouraging people to "},
+  {blank:5},
+  {text:" their party. In Cambodia everyone over 18 is "},
+  {blank:6},
+  {text:" to vote. The place where people go to vote in an election is called a "},
+  {blank:7},
+  {text:" and the day of the election is often known as "},
+  {blank:8},
+  {text:". The voters put their votes in a "},
+  {blank:9},
+  {text:" and later they are counted. The "},
+  {blank:10},
+  {text:" with the most votes is then declared the "},
+  {blank:11},
+  {text:"."}
+];
+
+const grammar = [
+  {n:1, q:"Although Ms, Thida ................ reservation, the hotel did not have a room for her.",
+   opts:["made","has made","had made","makes"], correct:2},
+  {n:2, q:"I .................... on the bus when I dropped my wallet.",
+   opts:["am getting","have gotten","get","was getting"], correct:3},
+  {n:3, q:"Several trees fell down last night ....................... the strong wind.",
+   opts:["because of","since","because","so"], correct:0},
+  {n:4, q:"We.................... at that restaurant during the last few months.",
+   opts:["don't eat","won't eat","haven't eaten","didn't eat"], correct:2},
+  {n:5, q:"Mr Dara .................. so many accidents if he drove more carefully.",
+   opts:["would have","won't have","would have had","wouldn't have"], correct:3},
+];
+
+const vocab = [
+  {n:1, q:"I'm really .................... of my son who won first prize in the art competition.",
+   opts:["pleased","proud","delighted","happy"], correct:1},
+  {n:2, q:"We all need to .................. responsibility for improving our local community.",
+   opts:["have","make","take","give"], correct:2},
+  {n:3, q:"It's important to set yourself clear .................. so you know what you are aiming for.",
+   opts:["ambitions","opportunities","decisions","goals"], correct:3},
+  {n:4, q:"According to the weather ...................., there will be rain tomorrow.",
+   opts:["programme","information","survey","forecast"], correct:3},
+  {n:5, q:"Many people believe that violent computer games can have a harmful .................. on children.",
+   opts:["effect","affect","damage","involvement"], correct:0},
+];
+
+const letters = ["a","b","c","d"];
+
+/* ---------- BUILD PART 1 ---------- */
+const storyEl = document.getElementById('story');
+storyParts.forEach(p=>{
+  if(p.text){
+    storyEl.append(document.createTextNode(p.text));
+  } else if(p.given){
+    const b = document.createElement('b');
+    b.style.color = "var(--stamp-blue)";
+    b.textContent = "(1) " + p.given;
+    storyEl.append(b);
+  } else if(p.blank){
+    const sup = document.createElement('span');
+    sup.className = "blank-num";
+    sup.textContent = "(" + p.blank + ")";
+    storyEl.append(sup);
+
+    const sel = document.createElement('select');
+    sel.className = "blank";
+    sel.dataset.blank = p.blank;
+    const optDefault = document.createElement('option');
+    optDefault.value=""; optDefault.textContent="— choose —";
+    sel.append(optDefault);
+    [...wordBank].sort().forEach(w=>{
+      const o = document.createElement('option');
+      o.value = w; o.textContent = w;
+      sel.append(o);
+    });
+    storyEl.append(sel);
+  }
+});
+
+/* ---------- BUILD PART 2 & 3 ---------- */
+function buildMC(containerId, items){
+  const container = document.getElementById(containerId);
+  items.forEach(item=>{
+    const wrap = document.createElement('div');
+    wrap.className = "mc-item";
+    wrap.dataset.n = item.n;
+
+    const qEl = document.createElement('div');
+    qEl.className = "mc-q";
+    qEl.innerHTML = `<span class="n">${item.n}.</span>${item.q}`;
+    wrap.appendChild(qEl);
+
+    const optsWrap = document.createElement('div');
+    optsWrap.className = "mc-options";
+    item.opts.forEach((optText, idx)=>{
+      const label = document.createElement('label');
+      label.className = "opt";
+      label.dataset.idx = idx;
+      label.innerHTML = `<span class="opt-letter">${letters[idx]}.</span><span>${optText}</span>`;
+      const input = document.createElement('input');
+      input.type = "radio";
+      input.name = containerId + "-q" + item.n;
+      input.value = idx;
+      input.style.display = "none";
+      label.prepend(input);
+      label.addEventListener('click', ()=>{
+        optsWrap.querySelectorAll('label').forEach(l=>l.classList.remove('selected'));
+        label.classList.add('selected');
+        input.checked = true;
+      });
+      optsWrap.appendChild(label);
+    });
+    wrap.appendChild(optsWrap);
+    container.appendChild(wrap);
+  });
+}
+buildMC('grammar-list', grammar);
+buildMC('vocab-list', vocab);
+
+/* ---------- CHECKING ---------- */
+let partScores = {1:null,2:null,3:null};
+
+function checkPart(n){
+  if(n===1){
+    let correct = 0;
+    const selects = document.querySelectorAll('select.blank');
+    selects.forEach(sel=>{
+      const bNum = sel.dataset.blank;
+      const answer = readingAnswers[bNum];
+      sel.classList.remove('locked','wrong');
+      if(sel.value === answer){
+        sel.classList.add('locked');
+        correct++;
+      } else {
+        sel.classList.add('wrong');
+      }
+      sel.disabled = true;
+    });
+    const total = Object.keys(readingAnswers).length;
+    partScores[1] = correct;
+    showScore(1, correct, total);
+  }
+  if(n===2){ checkMC('grammar-list', grammar, 2); }
+  if(n===3){ checkMC('vocab-list', vocab, 3); }
+
+  maybeShowFinal();
+}
+
+function checkMC(containerId, items, partNum){
+  let correct = 0;
+  items.forEach(item=>{
+    const wrap = document.querySelector(`#${containerId} .mc-item[data-n="${item.n}"]`);
+    const labels = wrap.querySelectorAll('label.opt');
+    const chosen = wrap.querySelector('input:checked');
+    labels.forEach(l=>{
+      l.classList.remove('correct','incorrect');
+      const idx = parseInt(l.dataset.idx);
+      if(idx === item.correct) l.classList.add('correct');
+    });
+    if(chosen){
+      const idx = parseInt(chosen.value);
+      if(idx === item.correct){ correct++; }
+      else {
+        wrap.querySelector(`label.opt[data-idx="${idx}"]`).classList.add('incorrect');
+      }
+    }
+    wrap.querySelectorAll('input').forEach(i=> i.disabled = true);
+  });
+  partScores[partNum] = correct;
+  showScore(partNum, correct, items.length * 2); // 2 points each, 5 items = 10
+}
+
+function showScore(partNum, correctCount, maxRaw){
+  const pill = document.getElementById('score'+partNum);
+  let points;
+  if(partNum === 1){
+    points = correctCount; // 10 blanks, 1 pt each
+    pill.textContent = `${points} / 10`;
+  } else {
+    points = correctCount * 2; // 5 questions, 2 pts each
+    pill.textContent = `${points} / 10`;
+  }
+  pill.classList.add('show');
+  document.getElementById('fill-'+partNum).style.width = (points*10)+"%";
+}
+
+function maybeShowFinal(){
+  if(partScores[1]!==null && partScores[2]!==null && partScores[3]!==null){
+    const total = partScores[1] + partScores[2]*2 + partScores[3]*2;
+    document.getElementById('totalBig').textContent = total + " / 30";
+    let msg;
+    if(total >= 27) msg = "Excellent — you know your election vocabulary and grammar well.";
+    else if(total >= 20) msg = "Good work — review the ones you missed and try again.";
+    else msg = "Keep practising — go back over the reading text and grammar rules.";
+    document.getElementById('totalMsg').textContent = msg;
+    document.getElementById('finalScore').classList.remove('hidden');
+    document.getElementById('finalScore').scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+}
+
+function resetAll(){
+  location.reload();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Energy Sources — English Practice</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  :root{
+    --paper:#F3EEE3;
+    --paper-deep:#EAE2CE;
+    --rule:#CBC2A6;
+    --ink:#242A22;
+    --ink-soft:#5B5A4C;
+    --amber:#B8791E;
+    --amber-deep:#8F5E14;
+    --good:#3E7D5A;
+    --good-bg:#E3EEE2;
+    --bad:#B03A2E;
+    --bad-bg:#F5E2DE;
+    font-size:16px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif;
+    line-height:1.5;
+    padding-bottom:60px;
+  }
+  .wrap{max-width:660px;margin:0 auto;padding:28px 20px 10px;}
+
+  header.hero{
+    text-align:left;
+    padding:0 0 22px;
+    border-bottom:3px solid var(--ink);
+    margin-bottom:26px;
+  }
+  header.hero .kicker{
+    font-size:0.78rem;
+    letter-spacing:0.02em;
+    color:var(--amber-deep);
+    font-weight:600;
+    margin-bottom:6px;
+  }
+  header.hero h1{
+    font-family:Georgia,"Iowan Old Style","Times New Roman",serif;
+    font-size:2.1rem;
+    line-height:1.12;
+    margin:0 0 10px;
+    font-weight:700;
+  }
+  header.hero p{
+    margin:0;
+    color:var(--ink-soft);
+    font-size:0.98rem;
+    max-width:46ch;
+  }
+
+  .part{
+    margin-bottom:40px;
+  }
+  .part-head{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    border-bottom:1px solid var(--rule);
+    padding-bottom:8px;
+    margin-bottom:16px;
+  }
+  .part-num{
+    font-family:Georgia,serif;
+    font-weight:700;
+    font-size:1.5rem;
+    color:var(--amber-deep);
+    min-width:1.4em;
+  }
+  .part-title{
+    font-family:Georgia,serif;
+    font-weight:700;
+    font-size:1.15rem;
+  }
+  .part-sub{
+    color:var(--ink-soft);
+    font-size:0.88rem;
+    margin:-8px 0 16px;
+  }
+
+  .bank{
+    background:var(--paper-deep);
+    border:1px solid var(--rule);
+    border-radius:4px;
+    padding:12px 14px;
+    font-size:0.9rem;
+    margin-bottom:16px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 14px;
+  }
+  .bank span{
+    white-space:nowrap;
+  }
+  .bank .used{
+    text-decoration:line-through;
+    color:#A79E86;
+  }
+
+  .passage{
+    font-size:0.98rem;
+    text-align:left;
+  }
+  .passage select{
+    font:inherit;
+    font-weight:600;
+    color:var(--amber-deep);
+    background:#fff;
+    border:none;
+    border-bottom:2px solid var(--amber);
+    padding:1px 4px;
+    margin:0 2px;
+    border-radius:2px;
+    max-width:150px;
+  }
+  .passage select.correct{border-bottom-color:var(--good);color:var(--good);background:var(--good-bg);}
+  .passage select.wrong{border-bottom-color:var(--bad);color:var(--bad);background:var(--bad-bg);}
+  .passage b.given{color:var(--ink);}
+
+  .match-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:8px 0;
+    border-bottom:1px dashed var(--rule);
+    font-size:0.95rem;
+  }
+  .match-row:last-child{border-bottom:none;}
+  .match-row .stem{flex:1;}
+  .match-row .stem em{font-style:italic;color:var(--ink-soft);}
+  .match-row select{
+    font:inherit;
+    padding:5px 6px;
+    border-radius:4px;
+    border:1px solid var(--rule);
+    background:#fff;
+    min-width:52px;
+  }
+  .match-row select.correct{border-color:var(--good);background:var(--good-bg);color:var(--good);}
+  .match-row select.wrong{border-color:var(--bad);background:var(--bad-bg);color:var(--bad);}
+  .bank-b{
+    background:var(--paper-deep);
+    border:1px solid var(--rule);
+    border-radius:4px;
+    padding:10px 14px;
+    font-size:0.87rem;
+    margin-bottom:14px;
+  }
+  .bank-b div{padding:2px 0;}
+
+  .mcq{
+    margin-bottom:20px;
+    padding-bottom:16px;
+    border-bottom:1px dashed var(--rule);
+  }
+  .mcq:last-child{border-bottom:none;}
+  .mcq .stem{
+    font-size:0.96rem;
+    margin-bottom:10px;
+  }
+  .mcq .stem .example-tag{
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    color:var(--amber-deep);
+    font-weight:700;
+    margin-right:6px;
+  }
+  .options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  .opt{
+    border:1px solid var(--rule);
+    background:#fff;
+    border-radius:6px;
+    padding:9px 11px;
+    font-size:0.9rem;
+    cursor:pointer;
+    text-align:left;
+    transition:border-color .12s, background .12s;
+  }
+  .opt:hover{border-color:var(--amber);}
+  .opt.selected{border-color:var(--amber-deep);background:#FBF1DE;}
+  .opt.correct{border-color:var(--good);background:var(--good-bg);color:var(--good);font-weight:600;}
+  .opt.wrong{border-color:var(--bad);background:var(--bad-bg);color:var(--bad);}
+  .opt[disabled]{cursor:default;}
+
+  .voc-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:9px 0;
+    border-bottom:1px dashed var(--rule);
+    flex-wrap:wrap;
+  }
+  .voc-item:last-child{border-bottom:none;}
+  .voc-num{
+    font-weight:700;
+    color:var(--amber-deep);
+    min-width:1.4em;
+    font-size:0.9rem;
+  }
+  .voc-opts{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+    flex:1;
+  }
+  .voc-opt{
+    border:1px solid var(--rule);
+    background:#fff;
+    border-radius:14px;
+    padding:5px 11px;
+    font-size:0.85rem;
+    cursor:pointer;
+  }
+  .voc-opt.selected{border-color:var(--amber-deep);background:#FBF1DE;}
+  .voc-opt.correct{border-color:var(--good);background:var(--good-bg);color:var(--good);font-weight:600;}
+  .voc-opt.wrong{border-color:var(--bad);background:var(--bad-bg);color:var(--bad);}
+
+  .btn{
+    font:inherit;
+    font-weight:600;
+    font-size:0.88rem;
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    border-radius:6px;
+    padding:10px 16px;
+    cursor:pointer;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn.secondary{
+    background:transparent;
+    color:var(--ink);
+    border:1px solid var(--ink);
+  }
+  .part-check{
+    margin-top:14px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .score-pill{
+    font-size:0.85rem;
+    font-weight:600;
+    padding:5px 10px;
+    border-radius:12px;
+    background:var(--paper-deep);
+    border:1px solid var(--rule);
+  }
+  .score-pill.done{background:var(--good-bg);color:var(--good);border-color:var(--good);}
+
+  textarea{
+    width:100%;
+    min-height:220px;
+    font:inherit;
+    font-size:0.96rem;
+    padding:12px;
+    border:1px solid var(--rule);
+    border-radius:6px;
+    background:#fff;
+    resize:vertical;
+  }
+  .wc{
+    display:flex;
+    justify-content:space-between;
+    font-size:0.82rem;
+    color:var(--ink-soft);
+    margin-top:6px;
+  }
+  .wc .ok{color:var(--good);font-weight:600;}
+
+  .summary{
+    margin-top:36px;
+    padding:20px;
+    border:2px solid var(--ink);
+    border-radius:8px;
+    text-align:center;
+    background:var(--paper-deep);
+  }
+  .summary h2{
+    font-family:Georgia,serif;
+    margin:0 0 6px;
+    font-size:1.3rem;
+  }
+  .summary .big{
+    font-size:2.4rem;
+    font-weight:700;
+    color:var(--amber-deep);
+    font-family:Georgia,serif;
+  }
+  .summary p{color:var(--ink-soft);font-size:0.88rem;margin:8px 0 0;}
+
+  footer{
+    text-align:center;
+    font-size:0.78rem;
+    color:var(--ink-soft);
+    margin-top:30px;
+  }
+</style>
+</head>
+<body>
+  <div class="m-0 p-3 font-sans bg-gray-100">
+  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="kicker">English Practice Worksheet</div>
+    <h1>The Energy Sources</h1>
+    <p>Reading, language use, grammar, vocabulary and writing — worked into a version you can check as you go.</p>
+  </header>
+
+  <!-- PART 1: READING -->
+  <div class="part" id="part1">
+    <div class="part-head">
+      <div class="part-num">1</div>
+      <div class="part-title">Reading — fill the gaps</div>
+    </div>
+    <div class="part-sub">Choose a word from the box for each numbered gap. Gap 1 is done for you.</div>
+
+    <div class="bank" id="bank1">
+      <span data-w="coal">coal</span><span data-w="development">development</span><span data-w="pessimistic">pessimistic</span>
+      <span data-w="electricity">electricity</span><span data-w="power">power</span><span data-w="mines">mines</span>
+      <span data-w="oil">oil</span><span data-w="well">well</span><span data-w="Gas">Gas</span>
+      <span data-w="energy">energy</span><span data-w="atom">atom</span>
+    </div>
+
+    <div class="passage">
+      In the world today, using many kinds of energy (1) <b class="given">coal</b> was produced to run the factories of the first big industrial country. Coalminers work long hard hours in the coal dark
+      <select data-blank="2"></select>
+      to bring this black rock above the ground. They called it black gold. Oil and gas have been found. Today big
+      <select data-blank="3"></select>
+      companies still spend millions of dollars looking for oil, and when they find it a new oil
+      <select data-blank="4"></select>
+      is started and the company makes even more millions. 
+      <select data-blank="5"></select>
+      also can be found underneath the earth, gas, too, can be used for
+      <select data-blank="6"></select>
+      . It is very good for heating and cooking. It is incredible to think that from the nucleus of atom, one of the smallest things in the world, can come an enormous amount of energy. This is called
+      <select data-blank="7"></select>
+      energy, and can either be controlled in a nuclear power station to create electricity for millions of homes, or it can be used in war to destroy millions of homes. Water from fast running rivers is another source of energy. By building a large dam to control the water, millions of kilowatts of power can be produced. This is called hydroelectric power. Many countries get most of their energy from hydroelectric
+      <select data-blank="8"></select>
+      . In the future, much of our energy will come from the sun and wind — they are called solar and wind energy. Solar panels on the roof can already produce enough energy to heat and provide
+      <select data-blank="9"></select>
+      for a house. The optimistic think we will develop other things for energy, and the
+      <select data-blank="10"></select>
+      think the opposite — that they will all run out in the next 400 years. What do you think? We will develop these energy sources with a sustainable
+      <select data-blank="11"></select>
+      of science, also for social welfare.
+    </div>
+
+    <div class="part-check">
+      <button class="btn" onclick="checkPart1()">Check answers</button>
+      <button class="btn secondary" onclick="revealPart1()">Show answer key</button>
+      <span class="score-pill" id="score1">0 / 10 checked</span>
+    </div>
+  </div>
+
+  <!-- PART 2: LANGUAGE USE -->
+  <div class="part" id="part2">
+    <div class="part-head">
+      <div class="part-num">2</div>
+      <div class="part-title">Language use — match the sentence halves</div>
+    </div>
+    <div class="part-sub">Match each beginning in A with the best ending in B. One ending in the box below is extra.</div>
+
+    <div class="bank-b">
+      <div><b>a.</b> I would help people.</div>
+      <div><b>b.</b> if I had to work overtime every day.</div>
+      <div><b>c.</b> if I had a car.</div>
+      <div><b>d.</b> he would be beautiful.</div>
+      <div><b>e.</b> I would take it again.</div>
+      <div><b>f.</b> if I were bald.</div>
+      <div><b>g.</b> if I had a toothache.</div>
+    </div>
+
+    <div id="part2list">
+      <div class="match-row">
+        <div class="stem"><em>Example —</em> I could give them a ride…</div>
+        <select disabled><option selected>c</option></select>
+      </div>
+    </div>
+
+    <div class="part-check">
+      <button class="btn" onclick="checkPart2()">Check answers</button>
+      <span class="score-pill" id="score2">0 / 6 checked</span>
+    </div>
+  </div>
+
+  <!-- PART 3: GRAMMAR -->
+  <div class="part" id="part3">
+    <div class="part-head">
+      <div class="part-num">3</div>
+      <div class="part-title">Grammar — choose the correct linking word</div>
+    </div>
+    <div class="part-sub">Only one answer is correct in each item.</div>
+
+    <div class="mcq">
+      <div class="stem"><span class="example-tag">Example</span> I have decided to buy a car ……… I can go to work easily.</div>
+      <div class="options">
+        <button class="opt" disabled>A. in case</button>
+        <button class="opt correct" disabled>B. so that</button>
+        <button class="opt" disabled>C. provided that</button>
+        <button class="opt" disabled>D. although</button>
+      </div>
+    </div>
+
+    <div id="part3list"></div>
+
+    <div class="part-check">
+      <button class="btn" onclick="checkPart3()">Check answers</button>
+      <span class="score-pill" id="score3">0 / 5 checked</span>
+    </div>
+  </div>
+
+  <!-- PART 4: VOCABULARY -->
+  <div class="part" id="part4">
+    <div class="part-head">
+      <div class="part-num">4</div>
+      <div class="part-title">Vocabulary — find the odd one out</div>
+    </div>
+    <div class="part-sub">Tap the word that does not belong with the other three.</div>
+
+    <div id="part4list"></div>
+
+    <div class="part-check">
+      <button class="btn" onclick="checkPart4()">Check answers</button>
+      <span class="score-pill" id="score4">0 / 9 checked</span>
+    </div>
+  </div>
+
+  <!-- PART 5: WRITING -->
+  <div class="part" id="part5">
+    <div class="part-head">
+      <div class="part-num">5</div>
+      <div class="part-title">Writing</div>
+    </div>
+    <div class="part-sub">People do many different things to keep healthy. What do you do for good health? Use specific reasons and examples to support your answer. Write at least 150 words.</div>
+    <textarea id="essay" placeholder="Start writing here…"></textarea>
+    <div class="wc"><span id="wcCount">0 words</span><span id="wcGoal">goal: 150 words</span></div>
+  </div>
+
+  <div class="summary">
+    <h2>Overall score</h2>
+    <div class="big" id="overallScore">0 / 30</div>
+    <p>Check each part above — this updates automatically.</p>
+  </div>
+
+  <footer>Made for practice — based on your worksheet. Answer keys reflect the most natural fit for each gap.</footer>
+</div>
+
+<script>
+/* ---------- PART 1 ---------- */
+const p1Answers = {2:"mines",3:"oil",4:"well",5:"Gas",6:"power",7:"atom",8:"energy",9:"electricity",10:"pessimistic",11:"development"};
+const wordList = ["coal","development","pessimistic","electricity","power","mines","oil","well","Gas","energy","atom"];
+document.querySelectorAll('#part1 select[data-blank]').forEach(sel=>{
+  const blank = sel.getAttribute('data-blank');
+  let opts = '<option value="">— choose —</option>';
+  wordList.forEach(w=>{ opts += `<option value="${w}">${w}</option>`; });
+  sel.innerHTML = opts;
+});
+function checkPart1(){
+  let correct = 0;
+  document.querySelectorAll('#part1 select[data-blank]').forEach(sel=>{
+    const blank = sel.getAttribute('data-blank');
+    sel.classList.remove('correct','wrong');
+    if(sel.value === p1Answers[blank]){ sel.classList.add('correct'); correct++; }
+    else if(sel.value !== ""){ sel.classList.add('wrong'); }
+  });
+  document.getElementById('score1').textContent = correct + " / 10 correct";
+  document.getElementById('score1').classList.toggle('done', correct===10);
+  updateOverall();
+}
+function revealPart1(){
+  document.querySelectorAll('#part1 select[data-blank]').forEach(sel=>{
+    const blank = sel.getAttribute('data-blank');
+    sel.value = p1Answers[blank];
+  });
+  checkPart1();
+}
+
+/* ---------- PART 2 ---------- */
+const p2Data = [
+  {stem:"If my brother were a girl…", answer:"d"},
+  {stem:"If I were prime minister…", answer:"a"},
+  {stem:"I would go to the dentist…", answer:"g"},
+  {stem:"I would buy a wig…", answer:"f"},
+  {stem:"I would quit my job…", answer:"b"}
+];
+// insert row1 (If my brother were a girl) plus above; note item numbering 2-6 in original, we show 5 remaining rows since example was #1
+const p2list = document.getElementById('part2list');
+const letters = ["a","b","c","d","e","f","g"];
+p2Data.forEach((item,i)=>{
+  const row = document.createElement('div');
+  row.className = 'match-row';
+  let opts = '<option value="">–</option>';
+  letters.forEach(l=> opts += `<option value="${l}">${l}</option>`);
+  row.innerHTML = `<div class="stem">${i+2}. ${item.stem}</div><select data-ans="${item.answer}">${opts}</select>`;
+  p2list.appendChild(row);
+});
+function checkPart2(){
+  let correct = 0;
+  document.querySelectorAll('#part2list select[data-ans]').forEach(sel=>{
+    sel.classList.remove('correct','wrong');
+    if(sel.value === sel.getAttribute('data-ans')){ sel.classList.add('correct'); correct++; }
+    else if(sel.value !== ""){ sel.classList.add('wrong'); }
+  });
+  document.getElementById('score2').textContent = correct + " / 6 correct";
+  document.getElementById('score2').classList.toggle('done', correct===6);
+  updateOverall();
+}
+
+/* ---------- PART 3 ---------- */
+const p3Data = [
+  {stem:"1- Nary looks at her husband ……… she hasn't seen him before.", opts:["as if","where","when","because"], answer:0},
+  {stem:"2- Dara decided to give up smoking ……… he had had a heart attack two times.", opts:["in case","although","because","even if"], answer:2},
+  {stem:"3- ……… she was walking along the garden, she found a very rare flower.", opts:["because","provided that","so that","while"], answer:3},
+  {stem:"4- ……… my father woke up, he realized that he had forgotten to turn off the light.", opts:["when","unless","while","even though"], answer:0},
+  {stem:"5- You must wear your helmet while riding a motorbike ……… you may hurt seriously in case of an accident.", opts:["but","although","even though","otherwise"], answer:3}
+];
+const p3list = document.getElementById('part3list');
+const letterABCD = ["A","B","C","D"];
+p3Data.forEach((item,i)=>{
+  const box = document.createElement('div');
+  box.className = 'mcq';
+  let optsHtml = '<div class="options">';
+  item.opts.forEach((o,j)=>{
+    optsHtml += `<button class="opt" data-idx="${j}" onclick="selectOpt(this,${i})">${letterABCD[j]}. ${o}</button>`;
+  });
+  optsHtml += '</div>';
+  box.innerHTML = `<div class="stem">${item.stem}</div>${optsHtml}`;
+  box.setAttribute('data-qi', i);
+  p3list.appendChild(box);
+});
+function selectOpt(btn, qi){
+  const box = btn.closest('.mcq');
+  box.querySelectorAll('.opt').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  box.setAttribute('data-selected', btn.getAttribute('data-idx'));
+}
+function checkPart3(){
+  let correct = 0;
+  document.querySelectorAll('#part3list .mcq').forEach(box=>{
+    const qi = parseInt(box.getAttribute('data-qi'));
+    const sel = box.getAttribute('data-selected');
+    box.querySelectorAll('.opt').forEach((b,j)=>{
+      b.classList.remove('correct','wrong');
+      if(j === p3Data[qi].answer) {} // mark after check below
+    });
+    if(sel !== null){
+      const selIdx = parseInt(sel);
+      if(selIdx === p3Data[qi].answer){
+        box.querySelector(`.opt[data-idx="${selIdx}"]`).classList.add('correct');
+        correct++;
+      } else {
+        box.querySelector(`.opt[data-idx="${selIdx}"]`).classList.add('wrong');
+        box.querySelector(`.opt[data-idx="${p3Data[qi].answer}"]`).classList.add('correct');
+      }
+    }
+  });
+  document.getElementById('score3').textContent = correct + " / 5 correct";
+  document.getElementById('score3').classList.toggle('done', correct===5);
+  updateOverall();
+}
+
+/* ---------- PART 4 ---------- */
+const p4Data = [
+  {opts:["pineapple","jackfruit","carrot","orange"], answer:2},
+  {opts:["zebra","wolf","dolphin","leopard"], answer:2},
+  {opts:["science lab","computer lab","library","school"], answer:3},
+  {opts:["avocado","cucumber","grape","mangosteen"], answer:1},
+  {opts:["crocodile","hen","cock","pigeon"], answer:0},
+  {opts:["accounting","accountant","cashier","purchaser"], answer:0},
+  {opts:["doctor","dentist","clinic","surgeon"], answer:2},
+  {opts:["disaster","drawing","illustration","sketch"], answer:0},
+  {opts:["job","work","employment","employer"], answer:3}
+];
+const p4list = document.getElementById('part4list');
+p4Data.forEach((item,i)=>{
+  const row = document.createElement('div');
+  row.className = 'voc-item';
+  row.setAttribute('data-qi', i);
+  let optsHtml = '<div class="voc-opts">';
+  item.opts.forEach((o,j)=>{
+    optsHtml += `<button class="voc-opt" data-idx="${j}" onclick="selectVoc(this,${i})">${o}</button>`;
+  });
+  optsHtml += '</div>';
+  row.innerHTML = `<div class="voc-num">${i+1}.</div>${optsHtml}`;
+  p4list.appendChild(row);
+});
+function selectVoc(btn, qi){
+  const row = btn.closest('.voc-item');
+  row.querySelectorAll('.voc-opt').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  row.setAttribute('data-selected', btn.getAttribute('data-idx'));
+}
+function checkPart4(){
+  let correct = 0;
+  document.querySelectorAll('#part4list .voc-item').forEach(row=>{
+    const qi = parseInt(row.getAttribute('data-qi'));
+    const sel = row.getAttribute('data-selected');
+    row.querySelectorAll('.voc-opt').forEach(b=>b.classList.remove('correct','wrong'));
+    if(sel !== null){
+      const selIdx = parseInt(sel);
+      if(selIdx === p4Data[qi].answer){
+        row.querySelector(`.voc-opt[data-idx="${selIdx}"]`).classList.add('correct');
+        correct++;
+      } else {
+        row.querySelector(`.voc-opt[data-idx="${selIdx}"]`).classList.add('wrong');
+        row.querySelector(`.voc-opt[data-idx="${p4Data[qi].answer}"]`).classList.add('correct');
+      }
+    }
+  });
+  document.getElementById('score4').textContent = correct + " / 9 correct";
+  document.getElementById('score4').classList.toggle('done', correct===9);
+  updateOverall();
+}
+
+/* ---------- PART 5 ---------- */
+const essay = document.getElementById('essay');
+essay.addEventListener('input', ()=>{
+  const words = essay.value.trim().split(/\s+/).filter(Boolean).length;
+  const wc = document.getElementById('wcCount');
+  wc.textContent = words + " words";
+  wc.classList.toggle('ok', words >= 150);
+});
+
+/* ---------- OVERALL ---------- */
+function updateOverall(){
+  const s1 = parseInt(document.getElementById('score1').textContent) || 0;
+  const s2 = parseInt(document.getElementById('score2').textContent) || 0;
+  const s3 = parseInt(document.getElementById('score3').textContent) || 0;
+  const s4 = parseInt(document.getElementById('score4').textContent) || 0;
+  document.getElementById('overallScore').textContent = (s1+s2+s3+s4) + " / 30";
+}
+</script>
+</body>
+</html>

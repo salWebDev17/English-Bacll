@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Practice Workbook</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EEF0E8;
+    --surface:#FFFFFF;
+    --surface-alt:#F6F7F1;
+    --ink:#1E2420;
+    --ink-soft:#5B6355;
+    --accent:#2B6E63;
+    --accent-dark:#1D5049;
+    --accent-warm:#C97A2B;
+    --success:#3F8F5F;
+    --success-bg:#E7F3EA;
+    --error:#B24444;
+    --error-bg:#FBEAEA;
+    --border:#D8DCD0;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Fraunces', Georgia, serif; margin:0; color:var(--ink); font-weight:600;}
+  .app{max-width:760px; margin:0 auto; padding:22px 16px 60px;}
+
+  /* Header */
+  .app-header{padding-bottom:16px; border-bottom:1px solid var(--border); margin-bottom:18px;}
+  .app-header h1{font-size:1.7rem; letter-spacing:-0.01em;}
+  .app-header p{margin:8px 0 0; color:var(--ink-soft); font-size:0.95rem; max-width:52ch;}
+
+  .progress-panel{margin-top:16px; background:var(--surface); border:1px solid var(--border); border-radius:4px; padding:12px 14px;}
+  .progress-row{display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; color:var(--ink-soft); padding:3px 0;}
+  .progress-row span.mark{font-variant-numeric:tabular-nums; color:var(--ink); font-weight:500;}
+  .progress-track{height:6px; background:var(--surface-alt); border-radius:3px; margin-top:10px; overflow:hidden; border:1px solid var(--border);}
+  .progress-fill{height:100%; background:var(--accent-warm); width:0%; transition:width 0.4s ease;}
+  .progress-total{margin-top:8px; font-size:0.9rem; font-weight:500;}
+
+  /* Tabs */
+  .tabs{display:flex; gap:4px; overflow-x:auto; margin-bottom:20px; -ms-overflow-style:none; scrollbar-width:none;}
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab{
+    flex:0 0 auto; background:none; border:none; cursor:pointer;
+    font-family:'IBM Plex Sans', sans-serif; font-size:0.9rem; color:var(--ink-soft);
+    padding:9px 12px; border-bottom:3px solid transparent; white-space:nowrap;
+  }
+  .tab .n{color:var(--ink-soft); margin-right:4px;}
+  .tab.active{color:var(--ink); font-weight:600; border-bottom-color:var(--accent);}
+  .tab.done::after{content:"✓"; color:var(--success); margin-left:6px; font-weight:600;}
+
+  .section{display:none;}
+  .section.active{display:block; animation:fadein 0.25s ease;}
+  @keyframes fadein{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+
+  .section-title{font-size:1.25rem; margin-bottom:4px;}
+  .section-sub{color:var(--ink-soft); font-size:0.9rem; margin:0 0 18px;}
+
+  /* Reading */
+  .word-bank{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px;}
+  .chip{background:var(--surface-alt); border:1px solid var(--border); border-radius:3px; padding:4px 9px; font-size:0.82rem; color:var(--ink-soft);}
+  .chip.used{text-decoration:line-through; opacity:0.55;}
+  .passage{background:var(--surface); border:1px solid var(--border); border-radius:4px; padding:18px 18px 6px; font-size:0.98rem;}
+  .passage p{margin:0 0 14px;}
+  .filled{background:var(--success-bg); color:var(--success); font-weight:600; padding:1px 6px; border-radius:3px;}
+  select.blank-select{
+    font-family:inherit; font-size:0.92rem; padding:2px 6px; margin:0 2px;
+    border:1px solid var(--accent); border-radius:3px; background:var(--surface-alt); color:var(--ink);
+    max-width:150px;
+  }
+  select.blank-select.correct{border-color:var(--success); background:var(--success-bg); color:var(--success);}
+  select.blank-select.incorrect{border-color:var(--error); background:var(--error-bg); color:var(--error);}
+  .correction{font-size:0.78rem; color:var(--error); display:block; margin:2px 0 10px;}
+
+  /* Matching */
+  .match-row{display:flex; flex-direction:column; gap:6px; padding:12px 0; border-bottom:1px solid var(--border);}
+  .match-row:last-child{border-bottom:none;}
+  .match-sentence{font-weight:500;}
+  .match-sentence .n{color:var(--accent-warm); margin-right:6px; font-weight:600;}
+  select.match-select{
+    font-family:inherit; font-size:0.9rem; padding:7px 8px; border:1px solid var(--border); border-radius:3px;
+    background:var(--surface); color:var(--ink); width:100%;
+  }
+  select.match-select.correct{border-color:var(--success); background:var(--success-bg);}
+  select.match-select.incorrect{border-color:var(--error); background:var(--error-bg);}
+  @media(min-width:640px){
+    .match-row{flex-direction:row; align-items:center; gap:16px;}
+    .match-sentence{flex:1;}
+    select.match-select{width:280px;}
+  }
+
+  /* MCQ blocks */
+  .q-block{padding:14px 0 16px; border-bottom:1px solid var(--border);}
+  .q-block:last-child{border-bottom:none;}
+  .q-text{margin:0 0 10px; font-weight:500;}
+  .q-text .n{display:inline-block; min-width:20px; height:20px; line-height:20px; text-align:center; background:var(--accent); color:#fff; border-radius:3px; font-size:0.78rem; margin-right:8px; font-weight:600;}
+  .blank-line{border-bottom:1px solid var(--ink-soft); padding:0 8px;}
+  .opts{display:flex; flex-wrap:wrap; gap:8px;}
+  .opt{position:relative;}
+  .opt input{position:absolute; opacity:0; width:0; height:0;}
+  .opt span{
+    display:inline-block; padding:7px 12px; border:1px solid var(--border); border-radius:3px;
+    font-size:0.88rem; cursor:pointer; background:var(--surface); color:var(--ink);
+  }
+  .opt input:checked + span{border-color:var(--accent); background:var(--accent); color:#fff;}
+  .opt input:focus-visible + span{outline:2px solid var(--accent-dark); outline-offset:2px;}
+  .opt.correct span{border-color:var(--success); background:var(--success-bg); color:var(--success);}
+  .opt.incorrect span{border-color:var(--error); background:var(--error-bg); color:var(--error);}
+  .q-feedback{font-size:0.82rem; margin-top:8px; color:var(--ink-soft);}
+
+  /* Buttons */
+  .btn-row{display:flex; gap:10px; margin-top:18px; flex-wrap:wrap;}
+  button.primary, button.ghost{
+    font-family:inherit; font-size:0.9rem; font-weight:600; padding:10px 18px; border-radius:3px; cursor:pointer;
+  }
+  button.primary{background:var(--accent); color:#fff; border:1px solid var(--accent);}
+  button.primary:hover{background:var(--accent-dark);}
+  button.ghost{background:none; color:var(--ink-soft); border:1px solid var(--border);}
+  button.ghost:hover{border-color:var(--ink-soft); color:var(--ink);}
+  button:focus-visible{outline:2px solid var(--accent-dark); outline-offset:2px;}
+
+  .result-banner{margin-top:16px; padding:12px 14px; border-radius:4px; font-weight:600; font-size:0.95rem; display:none;}
+  .result-banner.show{display:block;}
+  .result-banner.good{background:var(--success-bg); color:var(--success);}
+  .result-banner.mid{background:#FBF3E5; color:var(--accent-warm);}
+
+  /* Writing */
+  .prompt-box{background:var(--surface); border:1px solid var(--border); border-radius:4px; padding:16px; margin-bottom:16px; font-size:0.95rem;}
+  details.tips{margin-bottom:16px; background:var(--surface-alt); border:1px solid var(--border); border-radius:4px; padding:10px 14px;}
+  details.tips summary{cursor:pointer; font-weight:600; font-size:0.9rem;}
+  details.tips ul{margin:10px 0 2px; padding-left:20px; font-size:0.9rem; color:var(--ink-soft);}
+  textarea{
+    width:100%; min-height:220px; font-family:inherit; font-size:0.95rem; padding:14px;
+    border:1px solid var(--border); border-radius:4px; resize:vertical; background:var(--surface); color:var(--ink);
+  }
+  textarea:focus-visible{outline:2px solid var(--accent-dark); outline-offset:1px;}
+  .word-count-row{display:flex; justify-content:space-between; align-items:center; margin-top:8px; font-size:0.85rem; color:var(--ink-soft);}
+  .word-count-row .count.ok{color:var(--success); font-weight:600;}
+  .word-count-row .count.low{color:var(--accent-warm); font-weight:600;}
+
+  footer.note{margin-top:30px; font-size:0.8rem; color:var(--ink-soft); text-align:center;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+</style>
+</head>
+<body>
+   <div class="m-0 p-3 font-sans bg-gray-100">
+  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
+
+<div class="app">
+
+  <header class="app-header">
+    <h1>English Practice Workbook</h1>
+    <p>Five parts, the same as your exam paper: reading, language use, grammar, vocabulary, and writing — 50 marks in total. Work through each part, then check your answers.</p>
+    <div class="progress-panel">
+      <div class="progress-row"><span>Reading</span><span class="mark" id="mk-reading">— / 10</span></div>
+      <div class="progress-row"><span>Language use</span><span class="mark" id="mk-language">— / 10</span></div>
+      <div class="progress-row"><span>Grammar</span><span class="mark" id="mk-grammar">— / 10</span></div>
+      <div class="progress-row"><span>Vocabulary</span><span class="mark" id="mk-vocab">— / 8</span></div>
+      <div class="progress-row"><span>Writing</span><span class="mark" id="mk-writing">self-check / 12</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="progress-total" id="progress-total">0 of 38 auto-marked points checked so far</div>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button class="tab active" data-section="reading"><span class="n">1</span>Reading</button>
+    <button class="tab" data-section="language"><span class="n">2</span>Language use</button>
+    <button class="tab" data-section="grammar"><span class="n">3</span>Grammar</button>
+    <button class="tab" data-section="vocab"><span class="n">4</span>Vocabulary</button>
+    <button class="tab" data-section="writing"><span class="n">5</span>Writing</button>
+  </nav>
+
+  <!-- READING -->
+  <section class="section active" id="section-reading">
+    <h2 class="section-title">Part 1 — Reading</h2>
+    <p class="section-sub">Fill each gap in "The Consequences of Fire Use" using a word from the bank. Each word is used once.</p>
+    <div class="word-bank" id="word-bank"></div>
+    <div class="passage" id="passage"></div>
+    <div class="btn-row">
+      <button class="primary" id="check-reading">Check answers</button>
+      <button class="ghost" id="reset-reading">Reset</button>
+    </div>
+    <div class="result-banner" id="result-reading"></div>
+  </section>
+
+  <!-- LANGUAGE USE -->
+  <section class="section" id="section-language">
+    <h2 class="section-title">Part 2 — Language use</h2>
+    <p class="section-sub">Match each line on the left with the best reply. Item 1 is done for you.</p>
+    <div id="match-list"></div>
+    <div class="btn-row">
+      <button class="primary" id="check-language">Check answers</button>
+      <button class="ghost" id="reset-language">Reset</button>
+    </div>
+    <div class="result-banner" id="result-language"></div>
+  </section>
+
+  <!-- GRAMMAR -->
+  <section class="section" id="section-grammar">
+    <h2 class="section-title">Part 3 — Grammar</h2>
+    <p class="section-sub">Choose the one correct answer for each sentence.</p>
+    <div id="grammar-list"></div>
+    <div class="btn-row">
+      <button class="primary" id="check-grammar">Check answers</button>
+      <button class="ghost" id="reset-grammar">Reset</button>
+    </div>
+    <div class="result-banner" id="result-grammar"></div>
+  </section>
+
+  <!-- VOCABULARY -->
+  <section class="section" id="section-vocab">
+    <h2 class="section-title">Part 4 — Vocabulary</h2>
+    <p class="section-sub">Choose the word that best fits each gap.</p>
+    <div id="vocab-list"></div>
+    <div class="btn-row">
+      <button class="primary" id="check-vocab">Check answers</button>
+      <button class="ghost" id="reset-vocab">Reset</button>
+    </div>
+    <div class="result-banner" id="result-vocab"></div>
+  </section>
+
+  <!-- WRITING -->
+  <section class="section" id="section-writing">
+    <h2 class="section-title">Part 5 — Writing</h2>
+    <p class="section-sub">This part isn't auto-graded — use it to draft and time yourself, then review against the tips below.</p>
+    <div class="prompt-box">All parents and teachers want to educate their children and students to behave well, to become good students, good people, and good leaders in the future. Describe what good behaviors good students must do. Write at least 150 words.</div>
+    <details class="tips">
+      <summary>Need ideas before you start?</summary>
+      <ul>
+        <li>Respect teachers, parents, and classmates</li>
+        <li>Arrive on time and follow school rules</li>
+        <li>Study hard and complete homework honestly</li>
+        <li>Help and cooperate with others</li>
+        <li>Stay away from bad habits and bad influences</li>
+        <li>Take responsibility for your own actions</li>
+        <li>Structure: an opening sentence, 3–4 behaviors each with a short example, then a closing sentence</li>
+      </ul>
+    </details>
+    <textarea id="writing-area" placeholder="Start writing here..."></textarea>
+    <div class="word-count-row">
+      <span id="word-count">0 words</span>
+      <span>Target: 150+ words</span>
+    </div>
+  </section>
+
+  <footer class="note">Built from your exam paper for practice. Double-check tricky items with your teacher.</footer>
+</div>
+
+<script>
+// ---------- DATA ----------
+const WORD_OPTIONS = ["disappeared","disaster","drought","electricity","fish","nothing","points","properly","sun","sunlight"];
+const READING_ANSWERS = {2:"fish",3:"sun",4:"disaster",5:"disappeared",6:"nothing",7:"points",8:"electricity",9:"properly",10:"sunlight",11:"drought"};
+
+const PASSAGE_PARTS = [
+  {t:'All people around the world need '}, {filled:'fire'},
+  {t:", so fire must be very important for anyone. However, all animals and insects, "}, {blank:2},
+  {t:", also need fire for their lives. In the universe, when we say \u201cfire\u201d, it really means the \u201c"}, {blank:3},
+  {t:"\u201d.\n\nImagine if we didn't have the sun on earth — what would happen? The "}, {blank:4},
+  {t:" would be incredible to measure. We don't know how the world would be; lives on earth would be "}, {blank:5},
+  {t:", and water would run out. In the end the earth would become dark and black forever. In Hinduism, fire is a god — one of the four gods that support and create people's lives.\n\nFire is a core thing that supplies people's lives, so does it have any consequences for people or the earth? The honest answer must be that "}, {blank:6},
+  {t:" is perfect — as fire is also a thing, it must have negative "}, {blank:7},
+  {t:" too. So what negative points does it have? When you are careless with fire at home, things such as "}, {blank:8},
+  {t:" can shock you, or overuse can make it explode. The fire in a cooker, an incense stick, or a candle — if you don't manage it "}, {blank:9},
+  {t:" — will destroy you and burn your house down.\n\nLike the sun, in some parts of the world that get too much "}, {blank:10},
+  {t:" and too little water, "}, {blank:11},
+  {t:" sets in, the climate changes, and it makes their part of the world hotter and hotter.\n\nIn conclusion, fire exists for human beings, so you must know how to make good use of it for your life and for the world."}
+];
+
+const LANGUAGE_OPTIONS = {A:"Sorry to hear that.",B:"Yes, of course.",C:"Oh, what a pity!",D:"I've got a headache.",E:"Yes, I'm looking for a red pen.",F:"No, neither did I.",G:"Ah well! That's life."};
+const LANGUAGE_ITEMS = [
+  {num:2, sentence:"I don't know Thida was married.", answer:"F"},
+  {num:3, sentence:"Can I help you, sir?", answer:"E"},
+  {num:4, sentence:"I have lost my bicycle.", answer:"C"},
+  {num:5, sentence:"I can't come to your party.", answer:"A"},
+  {num:6, sentence:"You couldn't give me a hand, could you?", answer:"B"}
+];
+
+const GRAMMAR_ITEMS = [
+  {num:1, q:"No one of our representatives ______ to participate in the final draft.", options:{a:"chosen",b:"were choosing",c:"have been chosen",d:"has been chosen"}, answer:"d"},
+  {num:2, q:"If Dara had found the wallet, we ______ you right away.", options:{a:"would have called",b:"called",c:"would call",d:"would calling"}, answer:"a"},
+  {num:3, q:"The patient ______ examined by the doctor.", options:{a:"were",b:"is being",c:"has",d:"have been"}, answer:"b"},
+  {num:4, q:"Health care ______ have been rising, but so has the quality.", options:{a:"cost",b:"costs",c:"costing",d:"costly"}, answer:"b"},
+  {num:5, q:"She wasn't able to identify the man she ______ last night.", options:{a:"sees",b:"was seen",c:"will see",d:"had seen"}, answer:"d"}
+];
+
+const VOCAB_ITEMS = [
+  {num:1, q:"At election time, every speech is calculated to win ______.", options:{a:"choices",b:"votes",c:"wishes",d:"preferences"}, answer:"b"},
+  {num:2, q:"We were unable to reach an agreement because of the ______ between two groups.", options:{a:"contact",b:"concern",c:"connection",d:"conflict"}, answer:"d"},
+  {num:3, q:"After several hours, the doctor was finally able to give us his ______: Dara had broken his ankle.", options:{a:"diagnosis",b:"disease",c:"symptoms",d:"signs"}, answer:"a"},
+  {num:4, q:"This artist helps to preserve our local ______ by using traditional themes in his work.", options:{a:"culture",b:"creation",c:"events",d:"skills"}, answer:"a"},
+  {num:5, q:"I don't really appreciate classical music — I prefer the ______ arts, such as painting and sculpture.", options:{a:"festival",b:"cinema",c:"visual",d:"performing"}, answer:"c"},
+  {num:6, q:"I ______ on the news that the price of gas is going up again.", options:{a:"looked",b:"heard",c:"listened",d:"watched"}, answer:"b"},
+  {num:7, q:"It'll take you over an hour to get to the center in ______ hour.", options:{a:"rush",b:"busy",c:"run",d:"crowded"}, answer:"a"},
+  {num:8, q:"Global warming is likely to result in more ______ because of an increase in rainfall.", options:{a:"waves",b:"droughts",c:"storms",d:"flood"}, answer:"d"}
+];
+
+// ---------- STATE ----------
+const scores = {reading:null, language:null, grammar:null, vocab:null};
+const maxMarks = {reading:10, language:10, grammar:10, vocab:8};
+
+// ---------- TABS ----------
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('section-'+tab.dataset.section).classList.add('active');
+  });
+});
+
+// ---------- READING RENDER ----------
+function renderReading(){
+  const bank = document.getElementById('word-bank');
+  bank.innerHTML = '<span class="chip used">fire</span>' + WORD_OPTIONS.map(w=>`<span class="chip">${w}</span>`).join('');
+
+  const optionsHTML = '<option value="">choose\u2026</option>' + WORD_OPTIONS.map(w=>`<option value="${w}">${w}</option>`).join('');
+  let html = '<p>';
+  PASSAGE_PARTS.forEach(part=>{
+    if(part.t !== undefined){
+      html += part.t.replace(/\n\n/g, '</p><p>');
+    } else if(part.filled){
+      html += `<span class="filled">${part.filled}</span>`;
+    } else if(part.blank){
+      html += `<select class="blank-select" data-num="${part.blank}">${optionsHTML}</select><span class="correction" data-num="${part.blank}" hidden></span>`;
+    }
+  });
+  html += '</p>';
+  document.getElementById('passage').innerHTML = html;
+}
+renderReading();
+
+document.getElementById('check-reading').addEventListener('click', ()=>{
+  let correct = 0;
+  document.querySelectorAll('#passage .blank-select').forEach(sel=>{
+    const num = sel.dataset.num;
+    const val = sel.value;
+    const ans = READING_ANSWERS[num];
+    const note = document.querySelector(`.correction[data-num="${num}"]`);
+    sel.classList.remove('correct','incorrect');
+    if(val === ans){
+      sel.classList.add('correct');
+      correct++;
+      note.hidden = true;
+    } else {
+      sel.classList.add('incorrect');
+      note.hidden = false;
+      note.textContent = `Correct answer: ${ans}`;
+    }
+  });
+  scores.reading = correct;
+  showResult('reading', correct, 10);
+  updateOverall();
+});
+document.getElementById('reset-reading').addEventListener('click', ()=>{
+  renderReading();
+  hideResult('reading');
+  scores.reading = null;
+  updateOverall();
+});
+
+// ---------- LANGUAGE USE RENDER ----------
+function renderLanguage(){
+  const list = document.getElementById('match-list');
+  const optionsHTML = '<option value="">choose a reply\u2026</option>' + Object.entries(LANGUAGE_OPTIONS).map(([k,v])=>`<option value="${k}">${k}. ${v}</option>`).join('');
+  let html = `<div class="match-row">
+    <div class="match-sentence"><span class="n">1</span>What's wrong with you?</div>
+    <select class="match-select" disabled><option>D. I've got a headache. (example)</option></select>
+  </div>`;
+  LANGUAGE_ITEMS.forEach(item=>{
+    html += `<div class="match-row">
+      <div class="match-sentence"><span class="n">${item.num}</span>${item.sentence}</div>
+      <select class="match-select" data-num="${item.num}">${optionsHTML}</select>
+    </div>`;
+  });
+  list.innerHTML = html;
+}
+renderLanguage();
+
+document.getElementById('check-language').addEventListener('click', ()=>{
+  let correct = 0;
+  LANGUAGE_ITEMS.forEach(item=>{
+    const sel = document.querySelector(`.match-select[data-num="${item.num}"]`);
+    sel.classList.remove('correct','incorrect');
+    if(sel.value === item.answer){
+      sel.classList.add('correct');
+      correct++;
+    } else {
+      sel.classList.add('incorrect');
+    }
+  });
+  scores.language = Math.round((correct/LANGUAGE_ITEMS.length)*10);
+  showResult('language', correct, LANGUAGE_ITEMS.length, scores.language, 10);
+  updateOverall();
+});
+document.getElementById('reset-language').addEventListener('click', ()=>{
+  renderLanguage();
+  hideResult('language');
+  scores.language = null;
+  updateOverall();
+});
+
+// ---------- GRAMMAR & VOCAB (shared renderer) ----------
+function renderMCQ(items, containerId, prefix){
+  const list = document.getElementById(containerId);
+  list.innerHTML = items.map(item=>`
+    <div class="q-block" data-num="${item.num}">
+      <p class="q-text"><span class="n">${item.num}</span>${item.q}</p>
+      <div class="opts">
+        ${Object.entries(item.options).map(([k,v])=>`
+          <label class="opt">
+            <input type="radio" name="${prefix}${item.num}" value="${k}">
+            <span>${k}. ${v}</span>
+          </label>`).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+renderMCQ(GRAMMAR_ITEMS, 'grammar-list', 'gm');
+renderMCQ(VOCAB_ITEMS, 'vocab-list', 'vc');
+
+function checkMCQ(items, containerId, prefix, key, perMark){
+  let correct = 0;
+  items.forEach(item=>{
+    const block = document.querySelector(`#${containerId} .q-block[data-num="${item.num}"]`);
+    const opts = block.querySelectorAll('.opt');
+    const checked = block.querySelector('input:checked');
+    opts.forEach(o=>o.classList.remove('correct','incorrect'));
+    opts.forEach(o=>{
+      const input = o.querySelector('input');
+      if(input.value === item.answer) o.classList.add('correct');
+    });
+    if(checked && checked.value === item.answer){
+      correct++;
+    } else if(checked){
+      checked.closest('.opt').classList.add('incorrect');
+    }
+  });
+  scores[key] = correct * perMark;
+  showResult(key, correct, items.length, scores[key], items.length*perMark);
+  updateOverall();
+}
+
+document.getElementById('check-grammar').addEventListener('click', ()=>{
+  checkMCQ(GRAMMAR_ITEMS, 'grammar-list', 'gm', 'grammar', 2);
+});
+document.getElementById('reset-grammar').addEventListener('click', ()=>{
+  renderMCQ(GRAMMAR_ITEMS, 'grammar-list', 'gm');
+  hideResult('grammar');
+  scores.grammar = null;
+  updateOverall();
+});
+document.getElementById('check-vocab').addEventListener('click', ()=>{
+  checkMCQ(VOCAB_ITEMS, 'vocab-list', 'vc', 'vocab', 1);
+});
+document.getElementById('reset-vocab').addEventListener('click', ()=>{
+  renderMCQ(VOCAB_ITEMS, 'vocab-list', 'vc');
+  hideResult('vocab');
+  scores.vocab = null;
+  updateOverall();
+});
+
+// ---------- RESULT BANNERS ----------
+function showResult(key, correctCount, outOf, mark, maxMark){
+  const el = document.getElementById('result-'+key);
+  el.classList.add('show');
+  const m = (mark !== undefined) ? mark : correctCount;
+  const mx = (maxMark !== undefined) ? maxMark : outOf;
+  el.classList.toggle('good', m/mx >= 0.7);
+  el.classList.toggle('mid', m/mx < 0.7);
+  el.textContent = `${correctCount} of ${outOf} correct — ${m}/${mx} marks`;
+}
+function hideResult(key){
+  const el = document.getElementById('result-'+key);
+  el.classList.remove('show');
+  el.textContent = '';
+}
+
+// ---------- OVERALL PROGRESS ----------
+function updateOverall(){
+  const labelMap = {reading:'mk-reading', language:'mk-language', grammar:'mk-grammar', vocab:'mk-vocab'};
+  let earned = 0, possible = 0, checkedCount = 0;
+  Object.keys(maxMarks).forEach(key=>{
+    possible += maxMarks[key];
+    const el = document.getElementById(labelMap[key]);
+    if(scores[key] !== null){
+      earned += scores[key];
+      checkedCount++;
+      el.textContent = `${scores[key]} / ${maxMarks[key]}`;
+    } else {
+      el.textContent = `— / ${maxMarks[key]}`;
+    }
+  });
+  document.getElementById('progress-fill').style.width = (possible ? (earned/possible*100) : 0) + '%';
+  document.getElementById('progress-total').textContent = `${earned} of ${possible} auto-marked points earned (${checkedCount} of 4 parts checked)`;
+  document.querySelectorAll('.tab').forEach(tab=>{
+    const key = tab.dataset.section;
+    if(scores[key] !== undefined && scores[key] !== null){
+      tab.classList.add('done');
+    } else if(key !== 'writing'){
+      tab.classList.remove('done');
+    }
+  });
+}
+updateOverall();
+
+// ---------- WRITING WORD COUNT ----------
+const writingArea = document.getElementById('writing-area');
+const wordCountEl = document.getElementById('word-count');
+writingArea.addEventListener('input', ()=>{
+  const text = writingArea.value.trim();
+  const words = text.length ? text.split(/\s+/).length : 0;
+  wordCountEl.textContent = `${words} word${words===1?'':'s'}`;
+  wordCountEl.classList.toggle('ok', words >= 150);
+  wordCountEl.classList.toggle('low', words > 0 && words < 150);
+});
+</script>
+</body>
+</html>

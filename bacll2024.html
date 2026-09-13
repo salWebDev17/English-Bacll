@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Practice — Reading, Grammar & Vocabulary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,500;0,600;0,700;1,500&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Khmer:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F2E9;
+    --paper-dark:#EDE6D6;
+    --ink:#242019;
+    --ink-soft:#5B5445;
+    --moss:#3E5C46;
+    --moss-deep:#28402F;
+    --clay:#B4562F;
+    --gold:#C79A3E;
+    --line:#D8CFB8;
+    --right:#3E5C46;
+    --right-bg:#E4EBDF;
+    --wrong:#A6402C;
+    --wrong-bg:#F3E1D9;
+    --radius:3px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px);
+    background-size: 100% 34px;
+    color:var(--ink);
+    font-family:'Noto Sans','Noto Sans Khmer',sans-serif;
+    line-height:1.55;
+    padding:0 0 80px 0;
+  }
+  .khmer{ font-family:'Noto Sans Khmer','Noto Sans',sans-serif; }
+
+  header.masthead{
+    background:var(--moss-deep);
+    color:var(--paper);
+    padding:36px 20px 28px;
+    background-image: radial-gradient(circle at 85% 20%, rgba(199,154,62,0.18), transparent 55%);
+  }
+  .masthead-inner{ max-width:760px; margin:0 auto; }
+  .eyebrow-row{ display:flex; align-items:baseline; gap:10px; margin-bottom:10px;}
+  .eyebrow-row .dot{ width:7px; height:7px; border-radius:50%; background:var(--gold); flex:none;}
+  .eyebrow-row span.small{ font-size:13px; color:#D9D2BE; letter-spacing:.02em;}
+  h1.title{
+    font-family:'Noto Serif','Noto Sans Khmer',serif;
+    font-weight:700;
+    font-size:clamp(26px,5vw,36px);
+    margin:0 0 6px 0;
+    line-height:1.2;
+  }
+  .subtitle{ color:#C9C2AC; font-size:15px; max-width:52ch;}
+  .meta-strip{
+    display:flex; flex-wrap:wrap; gap:18px; margin-top:20px;
+    font-size:13px; color:#D9D2BE;
+  }
+  .meta-strip div{ border-left:2px solid var(--gold); padding-left:10px;}
+  .meta-strip b{ display:block; color:var(--paper); font-weight:600; font-size:14px;}
+
+  main{ max-width:760px; margin:0 auto; padding:0 20px; }
+
+  .progress-wrap{
+    position:sticky; top:0; z-index:20;
+    background:var(--paper); padding:14px 20px 10px;
+    margin:0 -20px; border-bottom:1px solid var(--line);
+  }
+  .progress-track{
+    height:6px; background:var(--paper-dark); border-radius:99px; overflow:hidden;
+  }
+  .progress-fill{
+    height:100%; width:0%; background:var(--moss); transition:width .4s ease;
+    border-radius:99px;
+  }
+  .progress-label{ font-size:12px; color:var(--ink-soft); margin-top:6px; display:flex; justify-content:space-between;}
+
+  section.part{
+    margin-top:44px;
+    padding-top:8px;
+  }
+  .part-head{
+    display:flex; align-items:baseline; gap:12px; margin-bottom:6px;
+  }
+  .part-num{
+    font-family:'Noto Serif',serif; font-weight:700; font-size:34px; color:var(--gold);
+    line-height:1;
+  }
+  h2.part-title{
+    font-family:'Noto Serif',serif; font-weight:600; font-size:21px; margin:0;
+  }
+  .part-points{ font-size:13px; color:var(--ink-soft); margin-left:auto; white-space:nowrap;}
+  .part-instructions{
+    font-size:14.5px; color:var(--ink-soft); margin:6px 0 20px 0; max-width:60ch;
+  }
+
+  /* word bank */
+  .wordbank{
+    display:flex; flex-wrap:wrap; gap:8px;
+    background:var(--paper-dark); border:1px solid var(--line);
+    padding:14px; border-radius:var(--radius); margin-bottom:22px;
+  }
+  .wb-chip{
+    font-size:14px; padding:5px 12px; border-radius:99px;
+    border:1px solid var(--line); background:var(--paper);
+    color:var(--ink-soft); transition: opacity .2s, text-decoration .2s;
+  }
+  .wb-chip.used{ text-decoration:line-through; opacity:.45; }
+
+  .passage{
+    font-size:16px; line-height:2.1;
+  }
+  .passage p{ margin:0 0 18px 0; }
+  input.blank{
+    font-family:'Noto Sans',sans-serif;
+    font-size:15px;
+    width:118px;
+    padding:3px 6px;
+    border:none;
+    border-bottom:2px solid var(--ink-soft);
+    background:transparent;
+    text-align:center;
+    color:var(--moss-deep);
+    font-weight:600;
+    outline:none;
+  }
+  input.blank:focus{ border-bottom-color:var(--clay); }
+  input.blank.correct{ border-bottom-color:var(--right); background:var(--right-bg); border-radius:3px 3px 0 0;}
+  input.blank.incorrect{ border-bottom-color:var(--wrong); background:var(--wrong-bg); border-radius:3px 3px 0 0;}
+  .given{
+    font-style:italic; font-weight:700; color:var(--ink-soft);
+    border-bottom:2px dotted var(--ink-soft); padding:0 4px;
+  }
+
+  .qcard{
+    border:1px solid var(--line);
+    border-left:3px solid var(--paper-dark);
+    background:var(--paper);
+    padding:16px 18px;
+    margin-bottom:14px;
+    border-radius:0 var(--radius) var(--radius) 0;
+    transition: border-left-color .25s;
+  }
+  .qcard.answered-correct{ border-left-color:var(--right); }
+  .qcard.answered-incorrect{ border-left-color:var(--wrong); }
+  .qnum{ font-weight:700; color:var(--moss-deep); margin-right:4px;}
+  .qtext{ font-size:15.5px; margin:0 0 12px 0; }
+  .options{
+    display:grid; grid-template-columns:1fr 1fr; gap:8px;
+  }
+  @media (max-width:480px){ .options{ grid-template-columns:1fr; } }
+  .opt{
+    display:flex; align-items:center; gap:9px;
+    padding:9px 11px; border:1px solid var(--line); border-radius:var(--radius);
+    background:var(--paper); cursor:pointer; font-size:14.5px;
+    text-align:left; color:var(--ink); transition:background .15s,border-color .15s;
+  }
+  .opt:hover{ background:var(--paper-dark); }
+  .opt .letter{
+    font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:500;
+    width:18px; height:18px; border-radius:50%; border:1px solid var(--ink-soft);
+    display:flex; align-items:center; justify-content:center; flex:none; color:var(--ink-soft);
+  }
+  .opt.selected{ border-color:var(--ink-soft); background:var(--paper-dark); }
+  .opt.correct{ background:var(--right-bg); border-color:var(--right); }
+  .opt.correct .letter{ background:var(--right); border-color:var(--right); color:#fff;}
+  .opt.incorrect{ background:var(--wrong-bg); border-color:var(--wrong); }
+  .opt.incorrect .letter{ background:var(--wrong); border-color:var(--wrong); color:#fff;}
+  .opt[disabled]{ cursor:default; }
+
+  .check-row{
+    display:flex; align-items:center; gap:14px; margin-top:28px;
+  }
+  button.check-btn{
+    font-family:'Noto Sans',sans-serif; font-weight:600; font-size:14.5px;
+    background:var(--moss-deep); color:var(--paper); border:none;
+    padding:11px 22px; border-radius:var(--radius); cursor:pointer;
+    transition:background .15s;
+  }
+  button.check-btn:hover{ background:var(--moss); }
+  button.reset-btn{
+    font-family:'Noto Sans',sans-serif; font-size:13.5px; color:var(--ink-soft);
+    background:none; border:none; text-decoration:underline; cursor:pointer; padding:0;
+  }
+  .score-pill{
+    font-family:'JetBrains Mono',monospace; font-size:13px;
+    padding:6px 12px; border-radius:99px; background:var(--paper-dark);
+    color:var(--ink-soft); display:none;
+  }
+  .score-pill.show{ display:inline-block; }
+
+  /* writing */
+  .writing-prompt{
+    background:var(--paper-dark); border:1px solid var(--line);
+    padding:16px 18px; border-radius:var(--radius); margin-bottom:16px;
+    font-size:15px;
+  }
+  .writing-prompt b{ color:var(--clay); }
+  textarea.essay{
+    width:100%; min-height:220px; font-family:'Noto Sans',sans-serif;
+    font-size:15px; line-height:1.7; padding:14px; border:1px solid var(--line);
+    border-radius:var(--radius); background:var(--paper); color:var(--ink);
+    resize:vertical; outline:none;
+  }
+  textarea.essay:focus{ border-color:var(--moss); }
+  .word-count-row{
+    display:flex; justify-content:space-between; margin-top:8px; font-size:13px; color:var(--ink-soft);
+  }
+  .word-count-row span.count{ font-family:'JetBrains Mono',monospace; font-weight:500; }
+  .word-count-row span.count.ok{ color:var(--right); }
+
+  footer.done{
+    text-align:center; margin-top:56px; padding:24px 20px;
+    color:var(--ink-soft); font-size:13px; border-top:1px solid var(--line);
+  }
+
+  .summary-banner{
+    display:none; margin-top:36px; padding:20px; border-radius:var(--radius);
+    background:var(--moss-deep); color:var(--paper);
+    font-family:'Noto Serif',serif;
+  }
+  .summary-banner.show{ display:block; }
+  .summary-banner .big{ font-size:28px; font-weight:700; color:var(--gold); }
+</style>
+</head>
+<body>
+  <div class="m-0 p-3 font-sans bg-gray-100">
+  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="eyebrow-row"><div class="dot"></div><span class="small khmer">ប្រធានសម្រាប់ធ្វើលំហាត់</span></div>
+    <h1 class="title">English Practice Paper</h1>
+    <p class="subtitle khmer">Reading, Grammar &amp; Vocabulary — based on your exam. Answer inline and check yourself instantly.</p>
+    <div class="meta-strip">
+      <div><b>Time</b>60 minutes</div>
+      <div><b>Total</b>50 points</div>
+      <div><b>Parts</b>4</div>
+    </div>
+  </div>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label"><span id="progressText">0 of 21 answered</span><span id="scoreText"></span></div>
+</div>
+
+<main>
+
+  <!-- PART 1 READING -->
+  <section class="part" id="part1">
+    <div class="part-head">
+      <span class="part-num">1</span>
+      <h2 class="part-title">Reading</h2>
+      <span class="part-points">10 points</span>
+    </div>
+    <p class="part-instructions">Read the text and fill the gaps with words from the box. Gap 1 has been done as an example.</p>
+
+    <div class="wordbank" id="wordbank">
+      <span class="wb-chip used">disease</span>
+      <span class="wb-chip" data-word="loses">loses</span>
+      <span class="wb-chip" data-word="appear">appear</span>
+      <span class="wb-chip" data-word="bites">bites</span>
+      <span class="wb-chip" data-word="breed">breed</span>
+      <span class="wb-chip" data-word="keep">keep</span>
+      <span class="wb-chip" data-word="stagnant">stagnant</span>
+      <span class="wb-chip" data-word="skin">skin</span>
+      <span class="wb-chip" data-word="follow">follow</span>
+      <span class="wb-chip" data-word="carried">carried</span>
+      <span class="wb-chip" data-word="need">need</span>
+    </div>
+
+    <div class="passage">
+      <p>
+        Malaria is a serious <span class="given">(1) disease</span> that attacks people of all ages. It is caused by germs
+        (2) <input class="blank" data-answer="carried" data-n="2" maxlength="12">
+        by mosquitoes. If a mosquito
+        (3) <input class="blank" data-answer="bites" data-n="3" maxlength="12">
+        a person, the germs will be injected beneath the
+        (4) <input class="blank" data-answer="skin" data-n="4" maxlength="12">
+        and a tiny red spot will soon
+        (5) <input class="blank" data-answer="appear" data-n="5" maxlength="12">.
+        When the person is injected, he develops a high fever and other symptoms, such as vomiting, will soon
+        (6) <input class="blank" data-answer="follow" data-n="6" maxlength="12">.
+        He may be so sick that he
+        (7) <input class="blank" data-answer="loses" data-n="7" maxlength="12">
+        consciousness.
+      </p>
+      <p>
+        Mosquitoes, usually
+        (8) <input class="blank" data-answer="breed" data-n="8" maxlength="12">
+        in still ponds or drains or even in the containers holding
+        (9) <input class="blank" data-answer="stagnant" data-n="9" maxlength="12">
+        water. They
+        (10) <input class="blank" data-answer="need" data-n="10" maxlength="12">
+        the still water to lay their eggs and to
+        (11) <input class="blank" data-answer="keep" data-n="11" maxlength="12">
+        them safe.
+      </p>
+    </div>
+
+    <div class="check-row">
+      <button class="check-btn" data-check="reading">Check Part 1</button>
+      <span class="score-pill" id="score-reading"></span>
+    </div>
+  </section>
+
+  <!-- PART 2 GRAMMAR -->
+  <section class="part" id="part2">
+    <div class="part-head">
+      <span class="part-num">2</span>
+      <h2 class="part-title">Grammar</h2>
+      <span class="part-points">15 points</span>
+    </div>
+    <p class="part-instructions">Choose the letter of the correct answer for each sentence.</p>
+
+    <div id="grammarQs"></div>
+
+    <div class="check-row">
+      <button class="check-btn" data-check="grammar">Check Part 2</button>
+      <span class="score-pill" id="score-grammar"></span>
+    </div>
+  </section>
+
+  <!-- PART 3 VOCAB -->
+  <section class="part" id="part3">
+    <div class="part-head">
+      <span class="part-num">3</span>
+      <h2 class="part-title">Vocabulary</h2>
+      <span class="part-points">15 points</span>
+    </div>
+    <p class="part-instructions">Choose the letter of the correct answer for each sentence.</p>
+
+    <div id="vocabQs"></div>
+
+    <div class="check-row">
+      <button class="check-btn" data-check="vocab">Check Part 3</button>
+      <span class="score-pill" id="score-vocab"></span>
+    </div>
+  </section>
+
+  <!-- PART 4 WRITING -->
+  <section class="part" id="part4">
+    <div class="part-head">
+      <span class="part-num">4</span>
+      <h2 class="part-title">Writing</h2>
+      <span class="part-points">10 points</span>
+    </div>
+    <div class="writing-prompt">
+      Write an essay describing <b>"A Road Accident."</b> At least 80 words. Include: where and when it happened, what you saw, and what happened afterward.
+    </div>
+    <textarea class="essay" id="essay" placeholder="Start writing here…"></textarea>
+    <div class="word-count-row">
+      <span>Minimum 80 words</span>
+      <span class="count" id="wordCount">0 words</span>
+    </div>
+  </section>
+
+  <div class="summary-banner" id="summaryBanner">
+    <div class="khmer" style="font-size:13px; color:#D9D2BE; margin-bottom:4px;">លទ្ធផលសរុប</div>
+    <div>Total score so far: <span class="big" id="totalScore">0</span> / 40</div>
+    <div style="font-size:13.5px; color:#D9D2BE; margin-top:6px;">(Writing is scored separately — read it over yourself.)</div>
+  </div>
+
+  <footer class="done khmer">
+    សូមព្យាយាមធ្វើម្តងទៀត ប្រសិនបើចម្លើយខុស — Practice makes perfect.
+  </footer>
+</main>
+
+<script>
+const grammarData = [
+  { q: "You broke the glass, ……………… ?", options: {a:"haven't you", b:"didn't you", c:"have you", d:"did you"}, correct:"b" },
+  { q: "My father is quite fat now, but he ……………… be fat years ago.", options: {a:"didn't use to", b:"doesn't use to", c:"didn't use", d:"use not"}, correct:"a" },
+  { q: "A lot of accidents ……………… by drunk drivers.", options: {a:"are caused", b:"are cause", c:"have cause", d:"have caused"}, correct:"a" },
+  { q: "All flights to Siem Reap ……………… cancelled because of the bad weather.", options: {a:"have been", b:"have being", c:"are been", d:"have"}, correct:"a" },
+  { q: "If he spoke louder, I ……………… understand much better.", options: {a:"would be able", b:"would be able to", c:"could", d:"may"}, correct:"b" }
+];
+
+const vocabData = [
+  { q: "Did you ……………… that book from the school library?", options: {a:"beg", b:"ask", c:"lend", d:"borrow"}, correct:"d" },
+  { q: "My driving license ……………… at the end of this month.", options: {a:"retires", b:"expires", c:"passes out", d:"concludes"}, correct:"b" },
+  { q: "I was very ……………… for all the advice she gave me.", options: {a:"depress", b:"glad", c:"grateful", d:"please"}, correct:"c" },
+  { q: "After a few hours of discussion, we finally reached a ……………… .", options: {a:"compromise", b:"promise", c:"situation", d:"solution"}, correct:"a" },
+  { q: "Many people believe that violent computer games can have a harmful ……………… on children.", options: {a:"affect", b:"effect", c:"damage", d:"involvement"}, correct:"b" }
+];
+
+function buildMC(container, data, prefix){
+  data.forEach((item, i) => {
+    const num = i+1;
+    const card = document.createElement('div');
+    card.className = 'qcard';
+    card.id = `${prefix}-card-${num}`;
+    const optsHtml = Object.entries(item.options).map(([letter, text]) =>
+      `<button class="opt" data-letter="${letter}" data-group="${prefix}-${num}">
+        <span class="letter">${letter}</span><span>${text}</span>
+      </button>`
+    ).join('');
+    card.innerHTML = `
+      <p class="qtext"><span class="qnum">${num}.</span>${item.q}</p>
+      <div class="options">${optsHtml}</div>
+    `;
+    container.appendChild(card);
+  });
+
+  container.addEventListener('click', (e) => {
+    const btn = e.target.closest('.opt');
+    if(!btn || btn.disabled) return;
+    const group = btn.dataset.group;
+    container.querySelectorAll(`[data-group="${group}"]`).forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    updateProgress();
+  });
+
+  container.dataset.prefix = prefix;
+}
+
+buildMC(document.getElementById('grammarQs'), grammarData, 'grammar');
+buildMC(document.getElementById('vocabQs'), vocabData, 'vocab');
+
+function checkReading(){
+  let correct = 0;
+  document.querySelectorAll('#part1 input.blank').forEach(inp => {
+    const given = inp.value.trim().toLowerCase();
+    const answer = inp.dataset.answer.toLowerCase();
+    inp.classList.remove('correct','incorrect');
+    if(given === answer){
+      inp.classList.add('correct');
+      correct++;
+    } else if(given.length){
+      inp.classList.add('incorrect');
+    }
+  });
+  const pill = document.getElementById('score-reading');
+  pill.textContent = `${correct} / 10 correct`;
+  pill.classList.add('show');
+  updateProgress();
+}
+
+function checkMC(prefix, data){
+  let correct = 0;
+  data.forEach((item, i) => {
+    const num = i+1;
+    const card = document.getElementById(`${prefix}-card-${num}`);
+    const selected = card.querySelector('.opt.selected');
+    card.querySelectorAll('.opt').forEach(b => {
+      b.disabled = true;
+      if(b.dataset.letter === item.correct) b.classList.add('correct');
+    });
+    card.classList.remove('answered-correct','answered-incorrect');
+    if(selected){
+      if(selected.dataset.letter === item.correct){
+        correct++;
+        card.classList.add('answered-correct');
+      } else {
+        selected.classList.add('incorrect');
+        card.classList.add('answered-incorrect');
+      }
+    }
+  });
+  const pill = document.getElementById(`score-${prefix}`);
+  pill.textContent = `${correct} / ${data.length} correct`;
+  pill.classList.add('show');
+  updateProgress();
+  updateSummary();
+}
+
+document.querySelector('[data-check="reading"]').addEventListener('click', checkReading);
+document.querySelector('[data-check="grammar"]').addEventListener('click', () => checkMC('grammar', grammarData));
+document.querySelector('[data-check="vocab"]').addEventListener('click', () => checkMC('vocab', vocabData));
+
+document.getElementById('wordbank').addEventListener('click', (e) => {
+  const chip = e.target.closest('.wb-chip');
+  if(!chip || !chip.dataset.word) return;
+  const empty = Array.from(document.querySelectorAll('#part1 input.blank')).find(i => !i.value);
+  if(empty){
+    empty.value = chip.dataset.word;
+    empty.focus();
+    updateProgress();
+  }
+});
+
+const essay = document.getElementById('essay');
+const wordCount = document.getElementById('wordCount');
+essay.addEventListener('input', () => {
+  const words = essay.value.trim().split(/\s+/).filter(Boolean);
+  const n = essay.value.trim() ? words.length : 0;
+  wordCount.textContent = `${n} words`;
+  wordCount.classList.toggle('ok', n >= 80);
+  updateProgress();
+});
+
+function updateProgress(){
+  let answered = 0;
+  document.querySelectorAll('#part1 input.blank').forEach(i => { if(i.value.trim()) answered++; });
+  document.querySelectorAll('#grammarQs .qcard').forEach(c => { if(c.querySelector('.opt.selected')) answered++; });
+  document.querySelectorAll('#vocabQs .qcard').forEach(c => { if(c.querySelector('.opt.selected')) answered++; });
+  if(essay.value.trim()) answered++;
+  const total = 22;
+  const pct = Math.round((answered/total)*100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = `${answered} of ${total} answered`;
+}
+
+function updateSummary(){
+  const g = document.getElementById('score-grammar').classList.contains('show');
+  const v = document.getElementById('score-vocab').classList.contains('show');
+  const r = document.getElementById('score-reading').classList.contains('show');
+  if(!(g && v && r)) return;
+  let rCorrect = 0;
+  document.querySelectorAll('#part1 input.blank').forEach(inp => { if(inp.classList.contains('correct')) rCorrect++; });
+  let gCorrect = (document.getElementById('score-grammar').textContent.match(/^(\d+)/) || [0,0])[1]*1;
+  let vCorrect = (document.getElementById('score-vocab').textContent.match(/^(\d+)/) || [0,0])[1]*1;
+  const total = rCorrect + gCorrect*3 + vCorrect*3; // scaled to points: reading 10 total(1pt each), grammar 15(3pt each), vocab 15(3pt each)
+  document.getElementById('totalScore').textContent = total;
+  document.getElementById('summaryBanner').classList.add('show');
+}
+
+updateProgress();
+</script>
+
+</body>
+</html>

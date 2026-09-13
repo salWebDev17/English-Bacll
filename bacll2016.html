@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English exam practice</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+
+  :root{
+    --paper:#F6F2E8;
+    --paper-2:#EFE9DA;
+    --ink:#211C15;
+    --ink-soft:#5B554A;
+    --maroon:#8C2A33;
+    --maroon-dark:#651E25;
+    --gold:#A9843F;
+    --green:#3E6E4F;
+    --green-bg:#E7EFE6;
+    --red:#B0392F;
+    --red-bg:#F6E7E4;
+    --line:#D8CFB9;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper-2);
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+    padding:32px 14px 80px;
+  }
+  .sheet{
+    max-width:760px;
+    margin:0 auto;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:hidden;
+  }
+  .band{
+    background:var(--maroon);
+    color:#F6EFE4;
+    padding:22px 24px 20px;
+    position:relative;
+  }
+  .band::after{
+    content:"";
+    position:absolute;
+    left:0;right:0;bottom:-6px;
+    height:6px;
+    background:repeating-linear-gradient(90deg,var(--gold) 0 14px, transparent 14px 24px);
+    opacity:.55;
+  }
+  .eyebrow{
+    font-size:12.5px;
+    letter-spacing:.02em;
+    color:#E8C9A8;
+    margin:0 0 6px;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:26px;
+    margin:0 0 8px;
+    line-height:1.25;
+  }
+  .meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:4px 18px;
+    font-size:13px;
+    color:#E7D9C6;
+  }
+  .body-pad{padding:26px 24px 8px;}
+  .part{
+    margin-bottom:34px;
+    padding-bottom:26px;
+    border-bottom:1px dashed var(--line);
+  }
+  .part:last-of-type{border-bottom:none;}
+  .part-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:6px;
+  }
+  h2{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:19px;
+    margin:0;
+    color:var(--maroon-dark);
+  }
+  .points{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    white-space:nowrap;
+  }
+  .instructions{
+    font-size:14px;
+    color:var(--ink-soft);
+    margin:6px 0 16px;
+    line-height:1.55;
+  }
+  .wordbank{
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:12px 14px;
+    font-size:13.5px;
+    color:var(--ink-soft);
+    line-height:2;
+    margin-bottom:18px;
+  }
+  .wordbank b{color:var(--ink);font-weight:500;}
+  .passage{
+    font-family:'Fraunces',serif;
+    font-size:16.5px;
+    line-height:2.1;
+    color:var(--ink);
+  }
+  .passage-title{
+    display:block;
+    text-align:center;
+    font-weight:600;
+    font-style:italic;
+    margin-bottom:14px;
+    font-size:17px;
+  }
+  select.blank{
+    font-family:'Inter',sans-serif;
+    font-size:14px;
+    font-weight:500;
+    padding:3px 26px 3px 8px;
+    border-radius:6px;
+    border:1.5px solid var(--gold);
+    background:#fff;
+    color:var(--maroon-dark);
+    margin:0 2px;
+  }
+  select.blank.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);}
+  select.blank.incorrect{border-color:var(--red);background:var(--red-bg);color:var(--red);}
+  .q{
+    margin-bottom:20px;
+  }
+  .q-text{
+    font-size:15px;
+    margin:0 0 10px;
+    line-height:1.6;
+  }
+  .q-text .num{color:var(--maroon);font-weight:600;margin-right:4px;}
+  .options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  @media (max-width:480px){.options{grid-template-columns:1fr;}}
+  .opt{
+    position:relative;
+  }
+  .opt input{
+    position:absolute;
+    opacity:0;
+    width:100%;height:100%;
+    margin:0;
+    cursor:pointer;
+  }
+  .opt label{
+    display:block;
+    border:1.5px solid var(--line);
+    border-radius:8px;
+    padding:9px 12px;
+    font-size:14px;
+    background:#fff;
+    cursor:pointer;
+  }
+  .opt input:checked + label{
+    border-color:var(--maroon);
+    background:#FBEFE9;
+    color:var(--maroon-dark);
+    font-weight:500;
+  }
+  .opt.correct label{border-color:var(--green)!important;background:var(--green-bg)!important;color:var(--green)!important;font-weight:500;}
+  .opt.incorrect label{border-color:var(--red)!important;background:var(--red-bg)!important;color:var(--red)!important;}
+  .feedback-note{
+    font-size:12.5px;
+    margin-top:6px;
+    color:var(--red);
+  }
+  textarea{
+    width:100%;
+    min-height:170px;
+    font-family:'Inter',sans-serif;
+    font-size:14.5px;
+    line-height:1.6;
+    padding:12px 14px;
+    border-radius:var(--radius);
+    border:1.5px solid var(--line);
+    resize:vertical;
+    background:#fff;
+    color:var(--ink);
+  }
+  textarea:focus{outline:none;border-color:var(--gold);}
+  .wordcount{
+    display:flex;
+    justify-content:space-between;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin-top:6px;
+  }
+  .wordcount.ok{color:var(--green);}
+  .actions{
+    display:flex;
+    gap:10px;
+    padding:4px 24px 28px;
+  }
+  button{
+    font-family:'Inter',sans-serif;
+    font-size:14.5px;
+    font-weight:500;
+    padding:11px 18px;
+    border-radius:8px;
+    border:1.5px solid var(--maroon);
+    cursor:pointer;
+    background:var(--maroon);
+    color:#fff;
+  }
+  button.secondary{
+    background:transparent;
+    color:var(--maroon-dark);
+  }
+  button:active{transform:scale(.98);}
+  #top-btn{
+    position:fixed;
+    right:18px;
+    bottom:22px;
+    width:46px;
+    height:46px;
+    border-radius:50%;
+    border:1.5px solid var(--maroon);
+    background:var(--maroon);
+    color:#fff;
+    font-size:19px;
+    line-height:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0;
+    box-shadow:0 2px 8px rgba(33,28,21,.25);
+    opacity:0;
+    transform:translateY(8px);
+    pointer-events:none;
+    transition:opacity .2s ease, transform .2s ease;
+  }
+  #top-btn.show{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+  #score-panel{
+    display:none;
+    margin:0 24px 26px;
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:16px 18px;
+  }
+  #score-panel.show{display:block;}
+  .score-title{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:17px;
+    margin:0 0 10px;
+  }
+  .score-row{
+    display:flex;
+    justify-content:space-between;
+    font-size:14px;
+    padding:4px 0;
+    color:var(--ink-soft);
+  }
+  .score-row b{color:var(--ink);font-weight:500;}
+  .score-total{
+    border-top:1px solid var(--line);
+    margin-top:8px;
+    padding-top:10px;
+    display:flex;
+    justify-content:space-between;
+    font-size:15.5px;
+    font-weight:600;
+    color:var(--maroon-dark);
+  }
+</style>
+</head>
+<body>
+  <div class="m-0 p-3 font-sans bg-gray-100">
+  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
+  </div>
+<div class="sheet">
+
+  <div class="band">
+    <p class="eyebrow">Beginning-of-year exam &middot; interactive practice</p>
+    <h1>English language practice test</h1>
+    <div class="meta">
+      <span>Original date: 22 August 2016</span>
+      <span>Subject: English</span>
+      <span>Time: 60 minutes</span>
+      <span>50 points</span>
+    </div>
+  </div>
+
+  <div class="body-pad">
+
+    <div class="part" id="part1">
+      <div class="part-head"><h2>Part 1 &middot; Reading</h2><span class="points">10 points</span></div>
+      <p class="instructions">Read the text and fill each gap with a word from the box. Gap 1 has been done for you as an example.</p>
+      <div class="wordbank">practising &middot; raincoat &middot; change &middot; be able &middot; offered &middot; nothing &middot; <b>tennis (example)</b> &middot; soaked &middot; relax &middot; forget &middot; drink</div>
+      <p class="passage">
+        <span class="passage-title">A friend in the rain</span>
+        Last week I was walking home after playing <b>tennis</b> when it started raining very heavily. 'Oh no, I will get
+        <select class="blank" data-gap="2"></select>
+        before I reach home,' I thought. 'I wish I had remembered to bring my
+        <select class="blank" data-gap="3"></select>.'
+        But unfortunately I had left it at home. 'How stupid of me! I always
+        <select class="blank" data-gap="4"></select>
+        to bring it with me.' Luckily just then a friend of mine passed in the car and
+        <select class="blank" data-gap="5"></select>
+        me a lift. 'Are you going home?' he asked, 'or do we want to go for a
+        <select class="blank" data-gap="6"></select>?'
+        'I think I'd rather you take me home,' I said. If I don't
+        <select class="blank" data-gap="7"></select>
+        my clothes, I know I will fall ill, and then I won't
+        <select class="blank" data-gap="8"></select>
+        to play in the tennis tournament next week. And I have been
+        <select class="blank" data-gap="9"></select>
+        hard for the last month.' 'I will wait for you to change if you like,' he told me. 'I think it's time you
+        <select class="blank" data-gap="10"></select>
+        for a change. You have been worrying too much about things lately. And people who worry too much fall ill more easily. It's got
+        <select class="blank" data-gap="11"></select>
+        to do with the rain!'
+      </p>
+    </div>
+
+    <div class="part" id="part2">
+      <div class="part-head"><h2>Part 2 &middot; Grammar</h2><span class="points">15 points</span></div>
+      <p class="instructions">Choose the correct letter, a, b, c or d. Question 1 below is your first item &mdash; the printed example (enough) is not repeated here.</p>
+      <div id="grammar-qs"></div>
+    </div>
+
+    <div class="part" id="part3">
+      <div class="part-head"><h2>Part 3 &middot; Vocabulary</h2><span class="points">15 points</span></div>
+      <p class="instructions">Choose the correct letter, a, b, c or d.</p>
+      <div id="vocab-qs"></div>
+    </div>
+
+    <div class="part" id="part4" style="border-bottom:none;">
+      <div class="part-head"><h2>Part 4 &middot; Writing</h2><span class="points">10 points</span></div>
+      <p class="instructions">Write an essay, <em>'Life in the countryside'</em>, at least 80 words. This part is not auto-graded &mdash; use the word counter to check your length, then ask for feedback.</p>
+      <textarea id="essay" placeholder="Life in the countryside is..."></textarea>
+      <div class="wordcount"><span id="wc">0 words</span><span id="wc-goal">goal: 80+ words</span></div>
+    </div>
+
+  </div>
+
+  <div id="score-panel">
+    <p class="score-title">Your results</p>
+    <div class="score-row"><span>Part 1 &middot; Reading</span><b id="s1">0 / 10</b></div>
+    <div class="score-row"><span>Part 2 &middot; Grammar</span><b id="s2">0 / 15</b></div>
+    <div class="score-row"><span>Part 3 &middot; Vocabulary</span><b id="s3">0 / 15</b></div>
+    <div class="score-total"><span>Total (excl. writing)</span><span id="stotal">0 / 40</span></div>
+  </div>
+
+  <div class="actions">
+    <button id="check-btn">Check answers</button>
+    <button class="secondary" id="reset-btn">Reset</button>
+  </div>
+
+</div>
+
+<button id="top-btn" aria-label="Back to top">&uarr;</button>
+
+<script>
+const wordbank = ["practising","raincoat","change","be able","offered","nothing","tennis","soaked","relax","forget","drink"];
+const readingAnswers = {2:"soaked",3:"raincoat",4:"forget",5:"offered",6:"drink",7:"change",8:"be able",9:"practising",10:"relax",11:"nothing"};
+
+document.querySelectorAll('select.blank').forEach(sel=>{
+  const opt0=document.createElement('option');
+  opt0.value=""; opt0.textContent="choose...";
+  sel.appendChild(opt0);
+  wordbank.forEach(w=>{
+    const o=document.createElement('option');
+    o.value=w; o.textContent=w;
+    sel.appendChild(o);
+  });
+});
+
+const grammarData = [
+  {q:"You must have something to eat before ___ to school.", opts:{a:"go",b:"going",c:"to go",d:"of go"}, ans:"b"},
+  {q:"You have never seen this before, ___ you?", opts:{a:"haven't",b:"don't",c:"do",d:"have"}, ans:"d"},
+  {q:"This problem ___ by this clever boy last night.", opts:{a:"will be solved",b:"is solved",c:"was solved",d:"solved"}, ans:"c"},
+  {q:"What ___ you do if you won a lot of money?", opts:{a:"will",b:"must",c:"would",d:"have"}, ans:"c"},
+  {q:"She was cleaning her teeth when the phone ___.", opts:{a:"was going to ring",b:"was ringing",c:"rang",d:"ring"}, ans:"c"}
+];
+
+const vocabData = [
+  {q:"What are you going to do when you ___ school?", opts:{a:"conclude",b:"end",c:"complete",d:"leave"}, ans:"d"},
+  {q:"The hotel services are bad, so we should write a ___ to the manager.", opts:{a:"complaint",b:"message",c:"information",d:"essay"}, ans:"a"},
+  {q:"Bopha cried out with ___ at the beautiful present Mr. Kimseng gave her.", opts:{a:"depress",b:"horror",c:"anger",d:"delight"}, ans:"d"},
+  {q:"Is it possible to ___ now for next term's evening classes?", opts:{a:"send",b:"enrol",c:"join in",d:"enter"}, ans:"b"},
+  {q:"Most parents find it difficult to ___ their children nowadays.", opts:{a:"bring up",b:"develop",c:"grow up",d:"set up"}, ans:"a"}
+];
+
+function renderMCQ(container, data, prefix){
+  data.forEach((item, i)=>{
+    const num=i+1;
+    const wrap=document.createElement('div');
+    wrap.className='q';
+    wrap.innerHTML = `<p class="q-text"><span class="num">${num}.</span>${item.q}</p>
+      <div class="options">
+        ${Object.entries(item.opts).map(([k,v])=>`
+          <div class="opt" data-letter="${k}">
+            <input type="radio" name="${prefix}${num}" id="${prefix}${num}${k}" value="${k}">
+            <label for="${prefix}${num}${k}">${k}. ${v}</label>
+          </div>`).join('')}
+      </div>
+      <p class="feedback-note" style="display:none;">Not answered &mdash; marked as incorrect.</p>`;
+    container.appendChild(wrap);
+  });
+}
+renderMCQ(document.getElementById('grammar-qs'), grammarData, 'g');
+renderMCQ(document.getElementById('vocab-qs'), vocabData, 'v');
+
+const essay = document.getElementById('essay');
+const wc = document.getElementById('wc');
+const wcGoal = document.getElementById('wc-goal');
+essay.addEventListener('input', ()=>{
+  const words = essay.value.trim().split(/\s+/).filter(Boolean);
+  const n = essay.value.trim() ? words.length : 0;
+  wc.textContent = n + ' words';
+  if(n>=80){ wc.parentElement.classList.add('ok'); wcGoal.textContent='goal reached'; }
+  else { wc.parentElement.classList.remove('ok'); wcGoal.textContent='goal: 80+ words'; }
+});
+
+document.getElementById('check-btn').addEventListener('click', ()=>{
+  let score1=0, score2=0, score3=0;
+
+  document.querySelectorAll('select.blank').forEach(sel=>{
+    const gap = sel.getAttribute('data-gap');
+    sel.classList.remove('correct','incorrect');
+    if(sel.value === readingAnswers[gap]){ sel.classList.add('correct'); score1++; }
+    else { sel.classList.add('incorrect'); }
+  });
+
+  function gradeMCQ(container, data, prefix){
+    let correctCount=0;
+    container.querySelectorAll('.q').forEach((qEl, i)=>{
+      const item=data[i];
+      const num=i+1;
+      const chosen = qEl.querySelector(`input[name="${prefix}${num}"]:checked`);
+      const note = qEl.querySelector('.feedback-note');
+      qEl.querySelectorAll('.opt').forEach(o=>o.classList.remove('correct','incorrect'));
+      const correctOpt = qEl.querySelector(`.opt[data-letter="${item.ans}"]`);
+      if(chosen){
+        note.style.display='none';
+        if(chosen.value===item.ans){ correctOpt.classList.add('correct'); correctCount++; }
+        else {
+          qEl.querySelector(`.opt[data-letter="${chosen.value}"]`).classList.add('incorrect');
+          correctOpt.classList.add('correct');
+        }
+      } else {
+        note.style.display='block';
+        correctOpt.classList.add('correct');
+      }
+    });
+    return correctCount;
+  }
+  score2 = gradeMCQ(document.getElementById('grammar-qs'), grammarData, 'g');
+  score3 = gradeMCQ(document.getElementById('vocab-qs'), vocabData, 'v');
+
+  const p1 = Math.round((score1/10)*100)/10;
+  document.getElementById('s1').textContent = `${score1} / 10`;
+  document.getElementById('s2').textContent = `${score2*3} / 15`;
+  document.getElementById('s3').textContent = `${score3*3} / 15`;
+  document.getElementById('stotal').textContent = `${score1 + score2*3 + score3*3} / 40`;
+  const panel=document.getElementById('score-panel');
+  panel.classList.add('show');
+  panel.scrollIntoView({behavior:'smooth', block:'nearest'});
+});
+
+const topBtn = document.getElementById('top-btn');
+window.addEventListener('scroll', ()=>{
+  if(window.scrollY > 400){ topBtn.classList.add('show'); }
+  else { topBtn.classList.remove('show'); }
+});
+topBtn.addEventListener('click', ()=>{
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+document.getElementById('reset-btn').addEventListener('click', ()=>{
+  document.querySelectorAll('select.blank').forEach(s=>{s.value=""; s.classList.remove('correct','incorrect');});
+  document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('correct','incorrect'));
+  document.querySelectorAll('.feedback-note').forEach(n=>n.style.display='none');
+  essay.value='';
+  wc.textContent='0 words';
+  wcGoal.textContent='goal: 80+ words';
+  wc.parentElement.classList.remove('ok');
+  document.getElementById('score-panel').classList.remove('show');
+});
+</script>
+</body>
+</html>

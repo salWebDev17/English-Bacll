@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Exam Practice</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root{
+    --paper:#F6F3EC;
+    --ink:#2B2A28;
+    --rule:#D8D2C2;
+    --accent:#2F5D50;
+    --accent-light:#DCEAE5;
+    --wrong:#B5493F;
+    --wrong-light:#F6E3E1;
+    --correct:#2F5D50;
+    --correct-light:#DCEAE5;
+    --pending:#8C8776;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Iowan Old Style','Georgia',serif;
+    line-height:1.5;
+    padding:0 0 80px 0;
+  }
+  header{
+    padding:36px 24px 20px;
+    border-bottom:2px solid var(--ink);
+    max-width:760px;
+    margin:0 auto;
+  }
+  header h1{
+    font-size:1.7rem;
+    margin:0 0 6px;
+    font-weight:600;
+    letter-spacing:0.2px;
+  }
+  header p{
+    margin:0;
+    color:#5c584c;
+    font-size:0.95rem;
+    max-width:60ch;
+  }
+  main{
+    max-width:760px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+  section.part{
+    margin-top:44px;
+  }
+  .part-title{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    border-bottom:1px solid var(--rule);
+    padding-bottom:8px;
+    margin-bottom:22px;
+  }
+  .part-title h2{
+    font-size:1.15rem;
+    margin:0;
+    font-weight:600;
+  }
+  .part-title span{
+    font-size:0.85rem;
+    color:var(--pending);
+    font-style:italic;
+  }
+  .passage{
+    background:#fff;
+    border:1px solid var(--rule);
+    padding:20px 22px;
+    font-size:0.98rem;
+    margin-bottom:24px;
+  }
+  .passage p{ margin:0 0 12px; }
+  .passage p:last-child{ margin-bottom:0; }
+  .word-bank{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:18px;
+  }
+  .word-bank span{
+    border:1px solid var(--ink);
+    padding:4px 10px;
+    font-size:0.85rem;
+    border-radius:2px;
+    background:#fff;
+  }
+  .blank-select{
+    font-family:inherit;
+    font-size:0.95rem;
+    padding:2px 6px;
+    border:none;
+    border-bottom:2px solid var(--ink);
+    background:transparent;
+    color:var(--accent);
+    font-weight:600;
+    min-width:110px;
+  }
+  .blank-select.answered-correct{ border-bottom-color:var(--correct); color:var(--correct); }
+  .blank-select.answered-wrong{ border-bottom-color:var(--wrong); color:var(--wrong); }
+
+  .q-block{
+    margin-bottom:26px;
+  }
+  .q-stem{
+    font-size:1rem;
+    margin-bottom:10px;
+  }
+  .q-stem .num{ font-weight:600; margin-right:4px; }
+  .options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  @media (max-width:480px){
+    .options{ grid-template-columns:1fr; }
+  }
+  .opt{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    border:1px solid var(--rule);
+    background:#fff;
+    padding:9px 12px;
+    cursor:pointer;
+    font-size:0.94rem;
+    text-align:left;
+    transition:background 0.15s, border-color 0.15s;
+  }
+  .opt:hover{ border-color:var(--ink); }
+  .opt.selected{ border-color:var(--accent); background:var(--accent-light); }
+  .opt.correct{ border-color:var(--correct); background:var(--correct-light); }
+  .opt.incorrect{ border-color:var(--wrong); background:var(--wrong-light); }
+  .opt .letter{
+    font-weight:700;
+    width:18px;
+  }
+  .opt.disabled{ cursor:default; }
+
+  .short-answer textarea{
+    width:100%;
+    font-family:inherit;
+    font-size:0.95rem;
+    border:1px solid var(--rule);
+    padding:10px 12px;
+    background:#fff;
+    resize:vertical;
+    min-height:50px;
+  }
+  .short-answer{ margin-bottom:20px; }
+  .short-answer label{
+    display:block;
+    margin-bottom:8px;
+    font-size:0.98rem;
+  }
+
+  .match-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:6px;
+    font-size:0.92rem;
+  }
+  .match-table th{
+    text-align:left;
+    border-bottom:1px solid var(--ink);
+    padding:6px 8px;
+    font-size:0.82rem;
+    text-transform:none;
+    color:#5c584c;
+  }
+  .match-table td{
+    padding:7px 8px;
+    border-bottom:1px solid var(--rule);
+    vertical-align:top;
+  }
+  .match-table select{
+    font-family:inherit;
+    padding:3px 6px;
+    border:1px solid var(--ink);
+    background:#fff;
+  }
+  .match-table select.answered-correct{ border-color:var(--correct); color:var(--correct); }
+  .match-table select.answered-wrong{ border-color:var(--wrong); color:var(--wrong); }
+  .b-key{ font-weight:600; margin-right:4px; }
+
+  .check-btn{
+    margin-top:8px;
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    padding:9px 20px;
+    font-family:inherit;
+    font-size:0.92rem;
+    cursor:pointer;
+  }
+  .check-btn:hover{ background:var(--accent); }
+
+  .feedback{
+    margin-top:8px;
+    font-size:0.88rem;
+    font-style:italic;
+    color:var(--pending);
+  }
+
+  .writing-box textarea{
+    width:100%;
+    min-height:220px;
+    font-family:inherit;
+    font-size:0.98rem;
+    border:1px solid var(--rule);
+    padding:14px;
+    background:#fff;
+    resize:vertical;
+  }
+  .word-count{
+    text-align:right;
+    font-size:0.82rem;
+    color:var(--pending);
+    margin-top:6px;
+  }
+  .prompt-box{
+    border-left:3px solid var(--accent);
+    background:var(--accent-light);
+    padding:14px 16px;
+    margin-bottom:14px;
+    font-size:0.98rem;
+  }
+
+  .score-bar{
+    position:sticky;
+    top:0;
+    background:var(--paper);
+    border-bottom:2px solid var(--ink);
+    padding:10px 24px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    max-width:760px;
+    margin:0 auto;
+    z-index:5;
+    font-size:0.9rem;
+  }
+  .score-bar strong{ color:var(--accent); }
+  .reveal-btn{
+    background:none;
+    border:1px solid var(--ink);
+    padding:6px 14px;
+    font-family:inherit;
+    font-size:0.85rem;
+    cursor:pointer;
+  }
+  .reveal-btn:hover{ background:var(--ink); color:var(--paper); }
+</style>
+</head>
+<body>
+  <div class="m-0 p-3 font-sans bg-gray-100">
+  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
+  </div>
+<header>
+  <h1>English Exam — Practice Mode</h1>
+  <p>Work through each part below. Selections and typed answers check themselves as you go; writing is self-review against a checklist at the end.</p>
+</header>
+
+<div class="score-bar">
+  <div>Auto-checked score: <strong id="scoreDisplay">0 / 0</strong></div>
+  <button class="reveal-btn" id="revealAll">Reveal all answers</button>
+</div>
+
+<main>
+
+<!-- PART I A: Vocabulary -->
+<section class="part" id="part1a">
+  <div class="part-title"><h2>Part I.A — Vocabulary (10 marks)</h2><span>fill the blanks</span></div>
+  <div class="word-bank">
+    <span>A. culture</span><span>B. succeed</span><span>C. profit</span><span>D. persuade</span>
+    <span>E. competitive</span><span>F. medium</span><span>G. demand</span><span>H. businesses</span>
+    <span>I. attractive</span><span>J. Advertisements</span><span>K. consumers</span>
+  </div>
+  <div class="passage" id="advPassage">
+    <p><strong>ADVERTISEMENTS</strong></p>
+    <p>Business is very (1) <em>competitive</em> nowadays. If a business wants to (2) <select class="blank-select" data-q="p1a-2" data-answer="B"></select>, therefore, it must be advertised through the (3) <select class="blank-select" data-q="p1a-3" data-answer="F"></select>, including television, radio, magazines, and newspaper, together with the people involved in their production.</p>
+    <p>Advertisements can be used to advertise (4) <select class="blank-select" data-q="p1a-4" data-answer="H"></select>, products, jobs and courses, as well as provide information about other subjects like health and the environment.</p>
+    <p>(5) <select class="blank-select" data-q="p1a-5" data-answer="J"></select> can have two main purposes. The first purpose is to tell (6) <select class="blank-select" data-q="p1a-6" data-answer="K"></select> about the goods want to sell, in order to (7) <select class="blank-select" data-q="p1a-7" data-answer="D"></select> them to buy as well as to create a (8) <select class="blank-select" data-q="p1a-8" data-answer="G"></select>. So, the advertisements must be (9) <select class="blank-select" data-q="p1a-9" data-answer="I"></select> and shown that opinion is fact. Customers will then believe that our advertisement is not only reasonable but also true.</p>
+    <p>The second purpose is to sell goods in big amount and make a good (10) <select class="blank-select" data-q="p1a-10" data-answer="C"></select>.</p>
+    <p>From the technical point of view, advertising is more or less the same, but an advertisement that works in one country or area mightn't necessarily work in another. This is because of their own (11) <select class="blank-select" data-q="p1a-11" data-answer="A"></select> and society.</p>
+  </div>
+</section>
+
+<!-- PART I B: Comprehension -->
+<section class="part" id="part1b">
+  <div class="part-title"><h2>Part I.B — Comprehension Check (5 marks)</h2><span>short answer, self-check</span></div>
+  <div class="short-answer">
+    <label>1. (1 mark) What can you advertise through?</label>
+    <textarea placeholder="Type your answer here"></textarea>
+    <div class="feedback">Sample answer: through television, radio, magazines, and newspaper.</div>
+  </div>
+  <div class="short-answer">
+    <label>2. (2 marks) What can advertisement be used to advertise?</label>
+    <textarea placeholder="Type your answer here"></textarea>
+    <div class="feedback">Sample answer: businesses, products, jobs and courses, and other subjects like health and the environment.</div>
+  </div>
+  <div class="short-answer">
+    <label>3. (2 marks) How many purposes of advertisements are they? What are they?</label>
+    <textarea placeholder="Type your answer here"></textarea>
+    <div class="feedback">Sample answer: Two purposes — to tell consumers about goods and persuade them to buy, and to sell goods in large amounts and make a good profit.</div>
+  </div>
+</section>
+
+<!-- PART II: Matching -->
+<section class="part" id="part2">
+  <div class="part-title"><h2>Part II — Language Use (5 marks)</h2><span>match A with B</span></div>
+  <table class="match-table">
+    <thead><tr><th style="width:60%">Section A</th><th>Section B match</th></tr></thead>
+    <tbody id="matchBody"></tbody>
+  </table>
+  <button class="check-btn" data-check="match">Check matches</button>
+</section>
+
+<!-- PART III: Grammar -->
+<section class="part" id="part3">
+  <div class="part-title"><h2>Part III — Grammar (10 marks)</h2><span>choose one answer</span></div>
+  <div id="grammarQs"></div>
+</section>
+
+<!-- PART IV: Vocabulary in context -->
+<section class="part" id="part4">
+  <div class="part-title"><h2>Part IV — Word Choice (7 marks)</h2><span>choose one answer</span></div>
+  <div id="part4Qs"></div>
+</section>
+
+<!-- PART V: Writing -->
+<section class="part" id="part5">
+  <div class="part-title"><h2>Part V — Writing (13 marks)</h2><span>self-review</span></div>
+  <div class="prompt-box">Write an essay (120–150 words) about <strong>"Advantages of Studying in Foreign Countries."</strong></div>
+  <div class="writing-box">
+    <textarea id="essayBox" placeholder="Write your essay here..."></textarea>
+    <div class="word-count"><span id="wordCount">0</span> words (target: 120–150)</div>
+  </div>
+  <div class="feedback" style="margin-top:12px;">
+    Self-check before you finish: Does it have an introduction, at least 2–3 supporting points (e.g. new culture, better language skills, wider career opportunities, independence), and a short conclusion? Is it within the word range?
+  </div>
+</section>
+
+</main>
+
+<script>
+// ---------- STATE ----------
+let totalAuto = 0, correctAuto = 0;
+
+function updateScore(){
+  document.getElementById('scoreDisplay').textContent = correctAuto + " / " + totalAuto;
+}
+
+// ---------- PART I.A: select blanks ----------
+const p1aOptions = [
+  {v:"A", t:"culture"},{v:"B", t:"succeed"},{v:"C", t:"profit"},{v:"D", t:"persuade"},
+  {v:"E", t:"competitive"},{v:"F", t:"medium"},{v:"G", t:"demand"},{v:"H", t:"businesses"},
+  {v:"I", t:"attractive"},{v:"J", t:"Advertisements"},{v:"K", t:"consumers"}
+];
+document.querySelectorAll('.blank-select').forEach(sel=>{
+  sel.innerHTML = '<option value="">— choose —</option>' + p1aOptions.map(o=>`<option value="${o.v}">${o.v}. ${o.t}</option>`).join('');
+  totalAuto++;
+  sel.addEventListener('change', ()=>{
+    const correctVal = sel.dataset.answer;
+    sel.classList.remove('answered-correct','answered-wrong');
+    if(sel.dataset.checked === "1"){ correctAuto--; }
+    if(sel.value === correctVal){
+      sel.classList.add('answered-correct');
+      correctAuto++;
+      sel.dataset.checked = "1";
+    } else if(sel.value !== ""){
+      sel.classList.add('answered-wrong');
+      sel.dataset.checked = "0";
+    } else {
+      sel.dataset.checked = "0";
+    }
+    updateScore();
+  });
+});
+
+// ---------- PART II: matching ----------
+const sectionA = [
+  "I don't know where Pasteur Street is.",
+  "It is easy to cut down a tree,",
+  "I can hear a knock on the door.",
+  "By the time we get to the cinema,",
+  "There's somebody behind us.",
+  "If I didn't do my job properly,"
+];
+const sectionBOptions = [
+  {v:"A", t:"the film will already have started."},
+  {v:"B", t:"I think we are being followed."},
+  {v:"C", t:"I would be sacked."},
+  {v:"D", t:"but it's not so easy to grow one."},
+  {v:"E", t:"she wouldn't be tired all the time."},
+  {v:"F", t:"Why don't you go to answer it?"},
+  {v:"G", t:"Then you ought to look at the map."}
+];
+const matchAnswers = {1:"G", 2:"D", 3:"F", 4:"A", 5:"B", 6:"C"};
+const matchBody = document.getElementById('matchBody');
+sectionA.forEach((text, i)=>{
+  const num = i+1;
+  const tr = document.createElement('tr');
+  const optsHtml = '<option value="">—</option>' + sectionBOptions.map(o=>`<option value="${o.v}">${o.v}. ${o.t}</option>`).join('');
+  tr.innerHTML = `<td><span class="b-key">${num}.</span> ${text}</td>
+    <td><select data-num="${num}" ${num===1 ? 'disabled' : ''}>${optsHtml}</select></td>`;
+  matchBody.appendChild(tr);
+  if(num===1){
+    tr.querySelector('select').value = "G";
+    tr.querySelector('select').classList.add('answered-correct');
+  }
+});
+document.querySelector('[data-check="match"]').addEventListener('click', ()=>{
+  let firstCheck = matchBody.dataset.checked !== "1";
+  document.querySelectorAll('#matchBody select:not([disabled])').forEach(sel=>{
+    const num = sel.dataset.num;
+    sel.classList.remove('answered-correct','answered-wrong');
+    if(firstCheck) totalAuto++;
+    if(sel.value === matchAnswers[num]){
+      sel.classList.add('answered-correct');
+      correctAuto++;
+    } else {
+      sel.classList.add('answered-wrong');
+    }
+  });
+  matchBody.dataset.checked = "1";
+  updateScore();
+});
+
+// ---------- PART III: Grammar ----------
+const grammarQs = [
+  {q:"1. Samnang did not go to school ……… he was ill.", opts:{A:"if",B:"though",C:"because",D:"but"}, ans:"C", done:true},
+  {q:"2. If it does not stop raining, the road ……….", opts:{A:"have been flooded",B:"would be have flooded",C:"would be flooded",D:"will be flooded"}, ans:"C"},
+  {q:"3. I feel tired because I ……… for hours.", opts:{A:"was working",B:"am working",C:"have been working",D:"has worked"}, ans:"C"},
+  {q:"4. Let's go out for dancing, ………?", opts:{A:"are we",B:"do not we",C:"will we",D:"shall we"}, ans:"D"},
+  {q:"5. Do you know the man ……… sits next to you?", opts:{A:"whom",B:"whose",C:"who",D:"which"}, ans:"C"},
+  {q:"6. My brother and I ……… hard to support our family ever since we were children.", opts:{A:"have worked",B:"work",C:"were working",D:"worked"}, ans:"A"},
+];
+
+const part4Qs = [
+  {q:"1. What are you going to buy your friend ……… her birthday?", opts:{A:"to",B:"for",C:"during",D:"at"}, ans:"B", done:true},
+  {q:"2. She never really ……… her parents for not having allowed her to go to university.", opts:{A:"forgave",B:"forgot",C:"pardoned",D:"excused"}, ans:"A"},
+  {q:"3. My parent often does ……… with people from Korea.", opts:{A:"affairs",B:"finances",C:"economy",D:"business"}, ans:"D"},
+  {q:"4. Is it possible to ……… now for the next term's evening classes?", opts:{A:"participate",B:"join in",C:"enroll",D:"enter"}, ans:"C"},
+  {q:"5. ……… the national election is conducted this year, the Grade 9 national examinations won't be delayed.", opts:{A:"Unless",B:"If",C:"If not",D:"Even if"}, ans:"D"},
+  {q:"6. My work got worse and worse. Unless I ……… I'll fail my exam at the end of the year.", opts:{A:"improve",B:"get well",C:"increase",D:"get back"}, ans:"A"},
+  {q:"7. At work, Vuthy always arrives on time, he's so ……….", opts:{A:"timeless",B:"punctual",C:"boring",D:"careful"}, ans:"B"},
+  {q:"8. I really want to have my bedroom ……… next week.", opts:{A:"repaired",B:"reparing",C:"repair",D:"to repair"}, ans:"A"},
+];
+
+function renderMCQ(list, container){
+  list.forEach((item, idx)=>{
+    if(!item.done) totalAuto++;
+    const block = document.createElement('div');
+    block.className = 'q-block';
+    const stem = document.createElement('div');
+    stem.className = 'q-stem';
+    stem.textContent = item.q;
+    block.appendChild(stem);
+    const optsDiv = document.createElement('div');
+    optsDiv.className = 'options';
+    Object.entries(item.opts).forEach(([letter, text])=>{
+      const btn = document.createElement('button');
+      btn.className = 'opt';
+      btn.innerHTML = `<span class="letter">${letter}.</span> <span>${text}</span>`;
+      if(item.done){
+        btn.disabled = true;
+        btn.classList.add('disabled');
+        if(letter === item.ans) btn.classList.add('correct');
+      } else {
+        btn.addEventListener('click', ()=>{
+          if(btn.dataset.locked) return;
+          const siblings = optsDiv.querySelectorAll('.opt');
+          siblings.forEach(s=>s.dataset.locked = "1");
+          if(letter === item.ans){
+            btn.classList.add('correct');
+            correctAuto++;
+          } else {
+            btn.classList.add('incorrect');
+            siblings.forEach(s=>{
+              if(s.querySelector('.letter').textContent.trim() === item.ans + '.'){
+                s.classList.add('correct');
+              }
+            });
+          }
+          updateScore();
+        });
+      }
+      optsDiv.appendChild(btn);
+    });
+    block.appendChild(optsDiv);
+    container.appendChild(block);
+  });
+}
+
+renderMCQ(grammarQs, document.getElementById('grammarQs'));
+renderMCQ(part4Qs, document.getElementById('part4Qs'));
+
+// account for the two "done" example correct answers already shown (not counted in totals, not in score)
+
+updateScore();
+
+// ---------- word count ----------
+const essayBox = document.getElementById('essayBox');
+const wordCount = document.getElementById('wordCount');
+essayBox.addEventListener('input', ()=>{
+  const words = essayBox.value.trim().split(/\s+/).filter(w=>w.length>0);
+  wordCount.textContent = essayBox.value.trim() === "" ? 0 : words.length;
+});
+
+// ---------- reveal all ----------
+document.getElementById('revealAll').addEventListener('click', ()=>{
+  document.querySelectorAll('.blank-select').forEach(sel=>{
+    sel.value = sel.dataset.answer;
+    sel.dispatchEvent(new Event('change'));
+  });
+  document.querySelector('[data-check="match"]').click();
+  document.querySelectorAll('#grammarQs .opt, #part4Qs .opt').forEach(btn=>{
+    if(!btn.disabled) btn.click();
+  });
+});
+</script>
+
+</body>
+</html>

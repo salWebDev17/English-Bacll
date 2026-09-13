@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Practice — Learning How to Learn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F2E9;
+    --paper-line:#DFD6C1;
+    --ink:#2B2A25;
+    --ink-soft:#6B6558;
+    --teal:#1E6B63;
+    --teal-deep:#134A44;
+    --ochre:#B8823A;
+    --correct:#3E7A44;
+    --correct-bg:#E4EFDF;
+    --wrong:#B0473A;
+    --wrong-bg:#F5E2DE;
+    --card:#FFFDF8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.55;
+    background-image:
+      linear-gradient(var(--paper-line) 1px, transparent 1px);
+    background-size: 100% 2.1em;
+    background-position: 0 7.2em;
+  }
+  .wrap{
+    max-width:680px;
+    margin:0 auto;
+    padding:0 24px 80px;
+  }
+  header{
+    padding:48px 0 28px;
+    border-bottom:2px solid var(--ink);
+    margin-bottom:8px;
+  }
+  header .eyebrow{
+    font-size:13px;
+    color:var(--ochre);
+    letter-spacing:0.02em;
+    margin-bottom:6px;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:34px;
+    margin:0 0 8px;
+    color:var(--teal-deep);
+    line-height:1.15;
+  }
+  header p{
+    margin:0;
+    color:var(--ink-soft);
+    font-size:15px;
+    max-width:50ch;
+  }
+  .progress-bar{
+    position:sticky;
+    top:0;
+    background:var(--paper);
+    padding:14px 0;
+    z-index:5;
+    border-bottom:1px solid var(--paper-line);
+  }
+  .progress-track{
+    height:6px;
+    background:#E7DFCB;
+    border-radius:3px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--teal);
+    width:0%;
+    transition:width .3s ease;
+  }
+  .progress-label{
+    display:flex;
+    justify-content:space-between;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-top:6px;
+  }
+  section.part{
+    margin-top:44px;
+  }
+  .part-title{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:22px;
+    color:var(--teal-deep);
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin-bottom:4px;
+  }
+  .part-points{
+    font-size:13px;
+    color:var(--ochre);
+    font-weight:500;
+  }
+  .part-instructions{
+    font-size:14px;
+    color:var(--ink-soft);
+    margin-bottom:20px;
+  }
+  .passage{
+    background:var(--card);
+    border:1px solid var(--paper-line);
+    border-radius:4px;
+    padding:22px 22px 8px;
+    font-size:15px;
+  }
+  .passage h3{
+    font-family:'Fraunces',serif;
+    text-align:center;
+    font-size:17px;
+    margin:0 0 14px;
+    color:var(--teal-deep);
+  }
+  .passage select{
+    font-family:'Inter',sans-serif;
+    font-size:14px;
+    font-weight:600;
+    padding:2px 6px;
+    border:none;
+    border-bottom:2px solid var(--ink-soft);
+    background:transparent;
+    color:var(--teal-deep);
+    margin:0 2px;
+  }
+  .passage select.correct{
+    border-bottom-color:var(--correct);
+    color:var(--correct);
+    background:var(--correct-bg);
+  }
+  .passage select.wrong{
+    border-bottom-color:var(--wrong);
+    color:var(--wrong);
+    background:var(--wrong-bg);
+  }
+  .wordbank{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:18px 0 22px;
+    padding:14px;
+    background:var(--card);
+    border:1px dashed var(--paper-line);
+    border-radius:4px;
+  }
+  .wordbank span{
+    font-size:13px;
+    padding:4px 10px;
+    border:1px solid var(--paper-line);
+    border-radius:100px;
+    color:var(--ink-soft);
+    background:#fff;
+  }
+  .wordbank span.used{
+    text-decoration:line-through;
+    opacity:0.45;
+  }
+  .qcard{
+    background:var(--card);
+    border:1px solid var(--paper-line);
+    border-radius:4px;
+    padding:18px 20px;
+    margin-bottom:14px;
+  }
+  .qcard .qtext{
+    font-size:15px;
+    font-weight:600;
+    margin-bottom:12px;
+  }
+  .qnum{
+    color:var(--ochre);
+    font-weight:700;
+    margin-right:6px;
+  }
+  .options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  .opt{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:9px 12px;
+    border:1px solid var(--paper-line);
+    border-radius:4px;
+    cursor:pointer;
+    font-size:14px;
+    background:#fff;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .opt:hover{border-color:var(--teal);}
+  .opt input{accent-color:var(--teal);}
+  .opt.selected{border-color:var(--teal);background:#EDF5F3;}
+  .opt.correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct);}
+  .opt.wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong);}
+  .example-tag{
+    display:inline-block;
+    font-size:11px;
+    color:var(--ink-soft);
+    border:1px solid var(--paper-line);
+    border-radius:100px;
+    padding:2px 8px;
+    margin-bottom:10px;
+  }
+  .controls{
+    display:flex;
+    gap:12px;
+    margin-top:36px;
+    align-items:center;
+  }
+  button.check{
+    background:var(--teal);
+    color:#fff;
+    border:none;
+    padding:13px 26px;
+    border-radius:4px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    font-family:'Inter',sans-serif;
+  }
+  button.check:hover{background:var(--teal-deep);}
+  button.reset{
+    background:transparent;
+    border:1px solid var(--paper-line);
+    color:var(--ink-soft);
+    padding:13px 20px;
+    border-radius:4px;
+    font-size:14px;
+    cursor:pointer;
+    font-family:'Inter',sans-serif;
+  }
+  button.reset:hover{border-color:var(--ink-soft);color:var(--ink);}
+  .result-banner{
+    margin-top:20px;
+    padding:18px 22px;
+    border-radius:4px;
+    display:none;
+  }
+  .result-banner.show{display:block;}
+  .result-score{
+    font-family:'Fraunces',serif;
+    font-size:28px;
+    font-weight:600;
+    margin-bottom:4px;
+  }
+  .result-note{
+    font-size:14px;
+    color:var(--ink-soft);
+  }
+  .writing-box{
+    background:var(--card);
+    border:1px solid var(--paper-line);
+    border-radius:4px;
+    padding:20px 22px;
+  }
+  .writing-box textarea{
+    width:100%;
+    min-height:220px;
+    border:1px solid var(--paper-line);
+    border-radius:4px;
+    padding:14px;
+    font-family:'Inter',sans-serif;
+    font-size:14px;
+    resize:vertical;
+    background:#fff;
+    color:var(--ink);
+  }
+  .wc{
+    display:flex;
+    justify-content:space-between;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-top:8px;
+  }
+  .wc .ok{color:var(--correct);}
+  footer{
+    margin-top:56px;
+    padding-top:20px;
+    border-top:1px solid var(--paper-line);
+    font-size:12px;
+    color:var(--ink-soft);
+    text-align:center;
+  }
+  @media (max-width:480px){
+    .options{grid-template-columns:1fr;}
+    h1{font-size:27px;}
+  }
+</style>
+</head>
+<body>
+  <div class="m-0 p-3 font-sans bg-gray-100">
+  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
+
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Practice test</div>
+    <h1>Learning How to Learn</h1>
+    <p>Same reading, grammar and vocabulary questions as your paper test — check your answers instantly here before the real thing.</p>
+  </header>
+
+  <div class="progress-bar">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label"><span id="progressText">0 of 21 answered</span><span id="progressPct">0%</span></div>
+  </div>
+
+  <!-- PART 1 READING -->
+  <section class="part" id="part1">
+    <div class="part-title">Part 1 · Reading <span class="part-points">10 points</span></div>
+    <div class="part-instructions">Read the text and fill the gaps by choosing a word from the box. Gap one has been done for you.</div>
+
+    <div class="wordbank" id="wordbank">
+      <span data-word="timetable">timetable</span>
+      <span data-word="help">help</span>
+      <span data-word="information">information</span>
+      <span data-word="taught">taught</span>
+      <span data-word="afterwards">afterwards</span>
+      <span data-word="memorise">memorise</span>
+      <span data-word="heart">heart</span>
+      <span data-word="look">look</span>
+      <span class="used" data-word="subject">subject</span>
+      <span data-word="understanding">understanding</span>
+      <span data-word="waste">waste</span>
+    </div>
+
+    <div class="passage">
+      <h3>Learning how to learn</h3>
+      <p>
+        There is usually one important (1)<em>subject</em> missing from school
+        <select data-blank="2"></select>. Very few students are
+        <select data-blank="3"></select> how to organize their learning, and how to make the best use of their time.
+        Let's take some simple examples. Do you know how to
+        <select data-blank="4"></select> up words in a dictionary, and do you understand all the
+        <select data-blank="5"></select> the dictionary contains? Can you make notes quickly, and can you understand them
+        <select data-blank="6"></select>? For some reasons, many schools give learners no
+        <select data-blank="7"></select> with these matters. Teachers ask students to
+        <select data-blank="8"></select> pages from books, or tell them to write ten pages, but don't explain how to do it.
+        Learning by <select data-blank="9"></select> can be useful, but it is more important to have a genuine
+        <select data-blank="10"></select> of a subject. You can
+        <select data-blank="11"></select> a lot of time memorizing books, without understanding anything about the subject.
+      </p>
+    </div>
+  </section>
+
+  <!-- PART 2 GRAMMAR -->
+  <section class="part" id="part2">
+    <div class="part-title">Part 2 · Grammar <span class="part-points">15 points</span></div>
+    <div class="part-instructions">There are four answers after each statement. Only one is correct.</div>
+    <div id="grammarQs"></div>
+  </section>
+
+  <!-- PART 3 VOCABULARY -->
+  <section class="part" id="part3">
+    <div class="part-title">Part 3 · Vocabulary <span class="part-points">15 points</span></div>
+    <div class="part-instructions">There are four answers after each statement. Only one is correct.</div>
+    <div id="vocabQs"></div>
+  </section>
+
+  <div class="controls">
+    <button class="check" id="checkBtn">Check my answers</button>
+    <button class="reset" id="resetBtn">Reset</button>
+  </div>
+
+  <div class="result-banner" id="resultBanner">
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-note" id="resultNote"></div>
+  </div>
+
+  <!-- PART 4 WRITING -->
+  <section class="part" id="part4">
+    <div class="part-title">Part 4 · Writing <span class="part-points">10 points</span></div>
+    <div class="part-instructions">Write an essay: "The Value of Higher Education" — at least 180 words.</div>
+    <div class="writing-box">
+      <textarea id="essay" placeholder="Start writing your essay here..."></textarea>
+      <div class="wc"><span id="wordCount">0 words</span><span id="wordTarget">Target: 180 words</span></div>
+    </div>
+  </section>
+
+  <footer>Practice page generated from your uploaded exam · answers are for self-checking only</footer>
+</div>
+
+<script>
+// ---------- DATA ----------
+const readingAnswers = {
+  2:"timetable", 3:"taught", 4:"look", 5:"information",
+  6:"afterwards", 7:"help", 8:"memorise", 9:"heart",
+  10:"understanding", 11:"waste"
+};
+const wordbankWords = ["timetable","help","information","taught","afterwards","memorise","heart","look","understanding","waste"];
+
+const grammarQs = [
+  {q:"We ………… with the prime minister for dinner at the Sunway Hotel tonight.",
+   opts:{a:"will be met", b:"have been met", c:"were met", d:"are meeting"}, correct:"d"},
+  {q:"Mr Sambath ………… his vacation after the project is completed.",
+   opts:{a:"will take", b:"took", c:"has taken", d:"taking"}, correct:"a"},
+  {q:"Mr Chantha ………… for the day when the phone call came.",
+   opts:{a:"has already left", b:"already leaves", c:"already left", d:"had already left"}, correct:"d"},
+  {q:"If we keep ………… like this, we should be done before the deadline.",
+   opts:{a:"working", b:"worked", c:"to work", d:"work"}, correct:"a"},
+  {q:"The benefits programme ………… in the next few months.",
+   opts:{a:"had changed", b:"were changed", c:"will be changed", d:"changed"}, correct:"c"},
+];
+
+const vocabQs = [
+  {q:"At the age of 60, Mr. Vuth retired and lived off his ………….",
+   opts:{a:"salary", b:"allowance", c:"grant", d:"pension"}, correct:"d"},
+  {q:"Please confirm your reservation in ………….",
+   opts:{a:"letter", b:"writing", c:"words", d:"paper"}, correct:"b"},
+  {q:"Everybody knew Samnang had ………… a crime but nobody wanted to tell the police.",
+   opts:{a:"committed", b:"done", c:"made", d:"performed"}, correct:"a"},
+  {q:"The researchers ………… many experiments to find the most effective materials.",
+   opts:{a:"considered", b:"confirmed", c:"concerned", d:"conducted"}, correct:"d"},
+  {q:"I ………… on the news that the price of gas is going up again.",
+   opts:{a:"looked", b:"listened", c:"heard", d:"watched"}, correct:"c"},
+];
+
+// ---------- BUILD READING SELECTS ----------
+document.querySelectorAll('#part1 select[data-blank]').forEach(sel=>{
+  const placeholder = document.createElement('option');
+  placeholder.value=""; placeholder.textContent="……………";
+  sel.appendChild(placeholder);
+  wordbankWords.forEach(w=>{
+    const o=document.createElement('option');
+    o.value=w; o.textContent=w;
+    sel.appendChild(o);
+  });
+});
+
+// ---------- BUILD MCQ CARDS ----------
+function buildMCQ(container, list, prefix){
+  list.forEach((item,i)=>{
+    const card=document.createElement('div');
+    card.className='qcard';
+    card.dataset.correct=item.correct;
+    card.dataset.name=prefix+i;
+
+    const qt=document.createElement('div');
+    qt.className='qtext';
+    qt.innerHTML=`<span class="qnum">${i+1}.</span>${item.q}`;
+    card.appendChild(qt);
+
+    const opts=document.createElement('div');
+    opts.className='options';
+    Object.entries(item.opts).forEach(([letter,text])=>{
+      const label=document.createElement('label');
+      label.className='opt';
+      label.innerHTML=`<input type="radio" name="${prefix}${i}" value="${letter}"><span><strong>${letter}.</strong> ${text}</span>`;
+      label.querySelector('input').addEventListener('change', ()=>{
+        opts.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
+        label.classList.add('selected');
+        updateProgress();
+      });
+      opts.appendChild(label);
+    });
+    card.appendChild(opts);
+    container.appendChild(card);
+  });
+}
+buildMCQ(document.getElementById('grammarQs'), grammarQs, 'g');
+buildMCQ(document.getElementById('vocabQs'), vocabQs, 'v');
+
+// ---------- PROGRESS ----------
+const totalItems = 10 + grammarQs.length + vocabQs.length; // 10 blanks + 5 + 5
+function updateProgress(){
+  let answered=0;
+  document.querySelectorAll('#part1 select[data-blank]').forEach(s=>{ if(s.value) answered++; });
+  document.querySelectorAll('.qcard').forEach(c=>{
+    if(c.querySelector('input[type=radio]:checked')) answered++;
+  });
+  const pct = Math.round((answered/totalItems)*100);
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressText').textContent = `${answered} of ${totalItems} answered`;
+  document.getElementById('progressPct').textContent = pct+'%';
+}
+document.querySelectorAll('#part1 select[data-blank]').forEach(s=>s.addEventListener('change', updateProgress));
+updateProgress();
+
+// ---------- CHECK ANSWERS ----------
+document.getElementById('checkBtn').addEventListener('click', ()=>{
+  let correctCount=0, total=0;
+
+  // reading
+  document.querySelectorAll('#part1 select[data-blank]').forEach(sel=>{
+    total++;
+    const blank = sel.dataset.blank;
+    sel.classList.remove('correct','wrong');
+    if(sel.value === readingAnswers[blank]){
+      sel.classList.add('correct'); correctCount++;
+    } else if(sel.value){
+      sel.classList.add('wrong');
+    }
+  });
+
+  // mcqs
+  document.querySelectorAll('.qcard').forEach(card=>{
+    total++;
+    const correctLetter = card.dataset.correct;
+    const chosen = card.querySelector('input[type=radio]:checked');
+    card.querySelectorAll('.opt').forEach(o=>o.classList.remove('correct','wrong'));
+    const correctLabel = card.querySelector(`input[value="${correctLetter}"]`)?.closest('.opt');
+    if(chosen){
+      const chosenLabel = chosen.closest('.opt');
+      if(chosen.value === correctLetter){
+        chosenLabel.classList.add('correct');
+        correctCount++;
+      } else {
+        chosenLabel.classList.add('wrong');
+        if(correctLabel) correctLabel.classList.add('correct');
+      }
+    } else {
+      if(correctLabel) correctLabel.classList.add('correct');
+    }
+  });
+
+  const pctScore = Math.round((correctCount/total)*100);
+  const banner=document.getElementById('resultBanner');
+  banner.classList.add('show');
+  banner.style.background = pctScore>=70 ? 'var(--correct-bg)' : 'var(--wrong-bg)';
+  document.getElementById('resultScore').style.color = pctScore>=70 ? 'var(--correct)':'var(--wrong)';
+  document.getElementById('resultScore').textContent = `${correctCount} / ${total} correct (${pctScore}%)`;
+  document.getElementById('resultNote').textContent = pctScore>=70
+    ? "Solid work — review anything marked in red, then try Part 4."
+    : "Take another look at the highlighted answers, then try again.";
+  banner.scrollIntoView({behavior:'smooth', block:'nearest'});
+});
+
+// ---------- RESET ----------
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  document.querySelectorAll('#part1 select[data-blank]').forEach(s=>{ s.value=""; s.classList.remove('correct','wrong'); });
+  document.querySelectorAll('.qcard').forEach(c=>{
+    c.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
+    c.querySelectorAll('.opt').forEach(o=>o.classList.remove('correct','wrong','selected'));
+  });
+  document.getElementById('resultBanner').classList.remove('show');
+  updateProgress();
+});
+
+// ---------- WRITING WORD COUNT ----------
+const essay=document.getElementById('essay');
+const wordCountEl=document.getElementById('wordCount');
+essay.addEventListener('input', ()=>{
+  const words = essay.value.trim().split(/\s+/).filter(Boolean);
+  const n = essay.value.trim()==="" ? 0 : words.length;
+  wordCountEl.textContent = n+' words';
+  wordCountEl.className = n>=180 ? 'ok' : '';
+});
+</script>
+</body>
+</html>

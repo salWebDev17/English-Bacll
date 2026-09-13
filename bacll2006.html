@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Test 2 — Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EDE6D6;
+    --surface:#F8F4EA;
+    --surface-2:#F1EADA;
+    --ink:#2B2620;
+    --ink-soft:#5C5347;
+    --accent:#A6653B;
+    --accent-dark:#7C4A29;
+    --line:#D8CDB8;
+    --good:#4F7859;
+    --good-bg:#E4EEE1;
+    --bad:#B23A2E;
+    --bad-bg:#F4E3DE;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces',serif;
+    color:var(--ink);
+    margin:0;
+    font-weight:600;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 20px 80px;}
+
+  /* Hero */
+  .hero{
+    position:relative;
+    padding:52px 20px 40px;
+    background:linear-gradient(180deg,#E3D8BE 0%, var(--bg) 100%);
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+  }
+  .hero-inner{max-width:760px;margin:0 auto;position:relative;z-index:2;}
+  .hero svg{position:absolute;right:-30px;bottom:-10px;width:260px;height:auto;opacity:0.35;z-index:1;}
+  .eyebrow{font-family:'Fraunces',serif;font-style:italic;color:var(--accent-dark);font-size:15px;margin-bottom:10px;}
+  .hero h1{font-size:34px;letter-spacing:-0.01em;max-width:480px;}
+  .hero p{margin-top:10px;color:var(--ink-soft);max-width:440px;font-size:15px;}
+
+  .progress-nav{
+    display:flex;gap:6px;flex-wrap:wrap;margin-top:22px;
+  }
+  .progress-nav a{
+    text-decoration:none;
+    font-size:13px;
+    color:var(--ink);
+    background:var(--surface);
+    border:1px solid var(--line);
+    padding:6px 12px;
+    border-radius:20px;
+    transition:background .15s, border-color .15s;
+  }
+  .progress-nav a:hover{border-color:var(--accent);}
+  .progress-nav a .dot{
+    display:inline-block;width:6px;height:6px;border-radius:50%;
+    background:var(--line);margin-right:6px;vertical-align:middle;
+  }
+  .progress-nav a.done .dot{background:var(--good);}
+
+  /* Sections */
+  section.card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:4px;
+    margin-top:28px;
+    padding:26px 22px;
+  }
+  .sec-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    border-bottom:1px solid var(--line);
+    padding-bottom:12px;margin-bottom:18px;
+    gap:12px;
+  }
+  .sec-head .num{
+    font-family:'Fraunces',serif;font-style:italic;color:var(--accent-dark);font-size:14px;
+  }
+  .sec-head h2{font-size:21px;}
+  .marks{font-size:13px;color:var(--ink-soft);white-space:nowrap;}
+  .instructions{font-size:14px;color:var(--ink-soft);margin-bottom:16px;}
+
+  .wordbox{
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:12px 14px;
+    font-size:14px;
+    margin-bottom:18px;
+    columns:2;
+    column-gap:20px;
+  }
+  .wordbox div{break-inside:avoid;margin-bottom:4px;}
+  .wordbox b{color:var(--accent-dark);}
+
+  .passage{font-size:15.5px;line-height:1.85;}
+  .passage p{margin:0 0 14px;}
+
+  select.blank{
+    font-family:'Inter',sans-serif;
+    font-size:14px;
+    font-weight:600;
+    color:var(--accent-dark);
+    background:var(--surface-2);
+    border:1px solid var(--accent);
+    border-radius:3px;
+    padding:2px 6px;
+    margin:0 2px;
+  }
+  select.blank.given{
+    color:var(--good);border-color:var(--good);background:var(--good-bg);
+  }
+  select.blank.correct{border-color:var(--good);background:var(--good-bg);color:var(--good);}
+  select.blank.incorrect{border-color:var(--bad);background:var(--bad-bg);color:var(--bad);}
+
+  .match-table{width:100%;border-collapse:collapse;font-size:14.5px;margin-bottom:6px;}
+  .match-table td{padding:9px 6px;border-bottom:1px solid var(--line);vertical-align:top;}
+  .match-table td.a-col{width:56%;}
+  .match-table td.b-col{color:var(--ink-soft);width:34%;}
+  .match-table td.c-col{width:10%;text-align:center;}
+  .match-num{font-weight:600;color:var(--accent-dark);margin-right:4px;}
+
+  .q-block{margin-bottom:22px;}
+  .q-block:last-child{margin-bottom:0;}
+  .q-text{font-size:15px;margin-bottom:9px;}
+  .q-text .qn{font-weight:600;color:var(--accent-dark);margin-right:4px;}
+  .options{display:flex;flex-direction:column;gap:7px;}
+  label.opt{
+    display:flex;align-items:center;gap:9px;
+    font-size:14.5px;
+    padding:7px 10px;
+    border:1px solid var(--line);
+    border-radius:4px;
+    background:var(--surface-2);
+    cursor:pointer;
+    transition:border-color .15s;
+  }
+  label.opt:hover{border-color:var(--accent);}
+  label.opt input{accent-color:var(--accent);}
+  label.opt.correct{border-color:var(--good);background:var(--good-bg);}
+  label.opt.incorrect{border-color:var(--bad);background:var(--bad-bg);}
+
+  .btn{
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:14px;
+    color:#fff;
+    background:var(--accent);
+    border:none;
+    border-radius:4px;
+    padding:11px 20px;
+    cursor:pointer;
+    transition:background .15s;
+  }
+  .btn:hover{background:var(--accent-dark);}
+  .btn.ghost{
+    background:transparent;color:var(--accent-dark);border:1px solid var(--accent);
+  }
+  .btn.ghost:hover{background:var(--surface-2);}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
+
+  .result-line{
+    margin-top:16px;font-size:14.5px;font-weight:600;
+    padding:10px 12px;border-radius:4px;
+  }
+  .result-line.show-good{background:var(--good-bg);color:var(--good);}
+  .result-line.show-mixed{background:var(--surface-2);color:var(--ink);}
+
+  textarea{
+    width:100%;min-height:280px;
+    font-family:'Inter',sans-serif;font-size:14.5px;line-height:1.7;
+    color:var(--ink);background:var(--surface-2);
+    border:1px solid var(--line);border-radius:4px;
+    padding:14px;resize:vertical;
+  }
+  textarea:focus{outline:none;border-color:var(--accent);}
+  .wc{margin-top:8px;font-size:13.5px;color:var(--ink-soft);}
+  .wc.ok{color:var(--good);font-weight:600;}
+  .wc.warn{color:var(--accent-dark);font-weight:600;}
+
+  ul.prompts{font-size:14.5px;color:var(--ink-soft);margin:0 0 16px;padding-left:18px;}
+  ul.prompts li{margin-bottom:4px;}
+
+  .summary{
+    position:sticky;bottom:14px;
+    margin-top:32px;
+    background:var(--ink);
+    color:var(--surface);
+    border-radius:8px;
+    padding:16px 20px;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:12px;
+    box-shadow:0 6px 22px rgba(43,38,32,0.25);
+  }
+  .summary .label{font-size:13px;color:#D8CDB8;}
+  .summary .score{font-family:'Fraunces',serif;font-size:22px;}
+  .summary button{
+    background:var(--accent);color:#fff;border:none;border-radius:4px;
+    padding:9px 16px;font-family:'Inter',sans-serif;font-weight:600;font-size:13.5px;cursor:pointer;
+  }
+  .summary button:hover{background:#C17A4C;}
+
+  footer{text-align:center;font-size:12.5px;color:var(--ink-soft);margin-top:36px;}
+
+  @media (max-width:480px){
+    .hero h1{font-size:27px;}
+    .wordbox{columns:1;}
+    .hero svg{width:170px;}
+  }
+</style>
+</head>
+<body>
+  <div class="m-0 p-3 font-sans bg-gray-100">
+  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">សម័យប្រឡង ២១ មិថុនា ២០០៧ · Test 2, Grade 8</div>
+    <h1>English Test Practice</h1>
+    <p>Work through all five sections, then check your answers section by section. Your score updates as you go.</p>
+    <div class="progress-nav" id="progressNav">
+      <a href="#s1" data-sec="1"><span class="dot"></span>Reading</a>
+      <a href="#s2" data-sec="2"><span class="dot"></span>Language Use</a>
+      <a href="#s3" data-sec="3"><span class="dot"></span>Grammar</a>
+      <a href="#s4" data-sec="4"><span class="dot"></span>Vocabulary</a>
+      <a href="#s5" data-sec="5"><span class="dot"></span>Writing</a>
+    </div>
+  </div>
+  <svg viewBox="0 0 300 160" fill="none">
+    <path d="M20 160 L20 90 L35 90 L35 70 L45 70 L45 55 L55 70 L55 90 L70 90 L70 160 Z" fill="#7C4A29"/>
+    <path d="M100 160 L100 70 L118 70 L118 45 L130 45 L130 25 L142 45 L142 70 L160 70 L160 160 Z" fill="#A6653B"/>
+    <path d="M195 160 L195 95 L208 95 L208 78 L218 78 L218 62 L228 78 L228 95 L241 95 L241 160 Z" fill="#7C4A29"/>
+    <rect x="0" y="158" width="300" height="4" fill="#7C4A29"/>
+  </svg>
+</div>
+
+<div class="wrap">
+
+  <!-- SECTION 1 : READING -->
+  <section class="card" id="s1">
+    <div class="sec-head">
+      <div><div class="num">Section 1</div><h2>Reading</h2></div>
+      <div class="marks">10 marks</div>
+    </div>
+    <div class="instructions">Read the text and fill in the blanks with the appropriate words from the box. The first one has been done for you.</div>
+
+    <div class="wordbox">
+      <div><b>A</b> defeated</div>
+      <div><b>B</b> abandoned</div>
+      <div><b>C</b> constructions</div>
+      <div><b>D</b> enormous</div>
+      <div><b>E</b> rediscovered</div>
+      <div><b>F</b> created</div>
+      <div><b>G</b> forgotten</div>
+      <div><b>H</b> powerful</div>
+      <div><b>I</b> withdrew</div>
+      <div><b>J</b> collapse</div>
+      <div><b>K</b> decorated</div>
+    </div>
+
+    <div class="passage">
+      <h3 style="text-align:center;font-size:18px;margin-bottom:14px;">THE HISTORY OF ANGKOR</h3>
+      <p>
+        Angkor Wat is (1) <select class="blank given" disabled><option>D</option></select> building and one of the most beautiful classic Khmer architectures. It's one of the largest religious (2) <select class="blank" data-q="q2"></select> in the world. The outside wall measures 1km from west to east, by 800 metres from north to south. From the main entrance, across the water to the base of the tower is total of 570 metres; and the height of the main tower is 65 metres. The Angkor Wat was (3) <select class="blank" data-q="q3"></select> by stones, sandstones mostly, which could have been cut from Phnom Kulen. The roof of the inside wall was surrounded by columns made of stone. These walls were (4) <select class="blank" data-q="q4"></select> with pictures from Ramayana.
+      </p>
+      <p>
+        Under Jayavarman the Seventh, Angkor became more (5) <select class="blank" data-q="q5"></select> than ever. After that, however, it slowly grew weaker until its final (6) <select class="blank" data-q="q6"></select>, when it was attacked and (7) <select class="blank" data-q="q7"></select> by the Siamese. Consequently, it was (8) <select class="blank" data-q="q8"></select> and, in order to find a safer place, the king (9) <select class="blank" data-q="q9"></select> from the region and moved south to what is now Phnom Penh. Angkor had been (10) <select class="blank" data-q="q10"></select> for generations before it was (11) <select class="blank" data-q="q11"></select> in the nineteenth century.
+      </p>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn" onclick="checkSection(1)">Check answers</button>
+      <button class="btn ghost" onclick="revealSection(1)">Show answers</button>
+    </div>
+    <div class="result-line" id="result-1" style="display:none;"></div>
+  </section>
+
+  <!-- SECTION 2 : LANGUAGE USE -->
+  <section class="card" id="s2">
+    <div class="sec-head">
+      <div><div class="num">Section 2</div><h2>Language Use</h2></div>
+      <div class="marks">6 marks</div>
+    </div>
+    <div class="instructions">Match the statements in A with the most suitable ones in B. Example: 1 is done for you.</div>
+
+    <table class="match-table">
+      <tr>
+        <td class="a-col"><span class="match-num">1.</span> He parked his car in the wrong place,</td>
+        <td class="b-col"><b>e.</b> so he had to pay a parking fine.</td>
+        <td class="c-col">1 ⇒ e</td>
+      </tr>
+      <tr>
+        <td class="a-col"><span class="match-num">2.</span> The number of young people who</td>
+        <td class="b-col">______ has risen now.</td>
+        <td class="c-col"><select class="blank" data-q="m2"></select></td>
+      </tr>
+      <tr>
+        <td class="a-col"><span class="match-num">3.</span> A house was broken into last week.</td>
+        <td class="b-col">______</td>
+        <td class="c-col"><select class="blank" data-q="m3"></select></td>
+      </tr>
+      <tr>
+        <td class="a-col"><span class="match-num">4.</span> A witness is someone who</td>
+        <td class="b-col">______</td>
+        <td class="c-col"><select class="blank" data-q="m4"></select></td>
+      </tr>
+      <tr>
+        <td class="a-col"><span class="match-num">5.</span> I was late for work this morning</td>
+        <td class="b-col">______</td>
+        <td class="c-col"><select class="blank" data-q="m5"></select></td>
+      </tr>
+      <tr>
+        <td class="a-col"><span class="match-num">6.</span> There was an outburst of clapping</td>
+        <td class="b-col">______</td>
+        <td class="c-col"><select class="blank" data-q="m6"></select></td>
+      </tr>
+      <tr>
+        <td class="a-col"><span class="match-num">7.</span> If she had become a politician,</td>
+        <td class="b-col">______</td>
+        <td class="c-col"><select class="blank" data-q="m7"></select></td>
+      </tr>
+    </table>
+
+    <div class="wordbox" style="columns:1;margin-top:12px;">
+      <div><b>a.</b> It's the third burglary in this area.</div>
+      <div><b>b.</b> because my bike has broken down.</div>
+      <div><b>c.</b> sees a crime being committed.</div>
+      <div><b>d.</b> as he rose to receive the Prize.</div>
+      <div><b>f.</b> she would have fought for women's rights.</div>
+      <div><b>g.</b> he was happy to join the party.</div>
+      <div><b>h.</b> commit the crime has risen now.</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn" onclick="checkSection(2)">Check answers</button>
+      <button class="btn ghost" onclick="revealSection(2)">Show answers</button>
+    </div>
+    <div class="result-line" id="result-2" style="display:none;"></div>
+  </section>
+
+  <!-- SECTION 3 : GRAMMAR -->
+  <section class="card" id="s3">
+    <div class="sec-head">
+      <div><div class="num">Section 3</div><h2>Grammar</h2></div>
+      <div class="marks">11 marks</div>
+    </div>
+    <div class="instructions">Choose the alternative that best fits into the blank.</div>
+    <div id="grammar-block"></div>
+    <div class="btn-row">
+      <button class="btn" onclick="checkSection(3)">Check answers</button>
+      <button class="btn ghost" onclick="revealSection(3)">Show answers</button>
+    </div>
+    <div class="result-line" id="result-3" style="display:none;"></div>
+  </section>
+
+  <!-- SECTION 4 : VOCABULARY -->
+  <section class="card" id="s4">
+    <div class="sec-head">
+      <div><div class="num">Section 4</div><h2>Vocabulary</h2></div>
+      <div class="marks">7 marks</div>
+    </div>
+    <div class="instructions">Choose a word from the alternatives to fill each gap.</div>
+    <div id="vocab-block"></div>
+    <div class="btn-row">
+      <button class="btn" onclick="checkSection(4)">Check answers</button>
+      <button class="btn ghost" onclick="revealSection(4)">Show answers</button>
+    </div>
+    <div class="result-line" id="result-4" style="display:none;"></div>
+  </section>
+
+  <!-- SECTION 5 : WRITING -->
+  <section class="card" id="s5">
+    <div class="sec-head">
+      <div><div class="num">Section 5</div><h2>Writing</h2></div>
+      <div class="marks">16 marks</div>
+    </div>
+    <div class="instructions">Write a story about a journey inside Cambodia. It can be about a real trip or one you imagine. (Write between 150–180 words.)</div>
+    <p style="font-size:14.5px;color:var(--ink-soft);margin-bottom:6px;">Your writing might include:</p>
+    <ul class="prompts">
+      <li>Who organized the journey (it can be someone or you, or you with other people)</li>
+      <li>Where the trip was up to</li>
+      <li>What transport they used (bicycle, boat, car, etc.)</li>
+      <li>How long the journey took</li>
+      <li>What difficulties there were along the way</li>
+      <li>What they enjoyed on their journey</li>
+    </ul>
+    <textarea id="essay" placeholder="Start writing your story here..." oninput="updateWordCount()"></textarea>
+    <div class="wc" id="wordCount">0 words</div>
+  </section>
+
+  <footer>Practice tool for personal study · not an official exam.</footer>
+</div>
+
+<div class="summary">
+  <div>
+    <div class="label">Total checked so far</div>
+    <div class="score" id="totalScore">0 / 0</div>
+  </div>
+  <button onclick="checkAll()">Check everything</button>
+</div>
+
+<script>
+/* ---------- ANSWER KEYS ---------- */
+const readingOptions = {
+  q2:"C", q3:"F", q4:"K", q5:"H", q6:"J", q7:"A", q8:"B", q9:"I", q10:"G", q11:"E"
+};
+const readingLabels = {
+  A:"A. defeated", B:"B. abandoned", C:"C. constructions", D:"D. enormous",
+  E:"E. rediscovered", F:"F. created", G:"G. forgotten", H:"H. powerful",
+  I:"I. withdrew", J:"J. collapse", K:"K. decorated"
+};
+
+const matchOptions = { m2:"h", m3:"a", m4:"c", m5:"b", m6:"d", m7:"f" };
+const matchLabels = {
+  a:"a. It's the third burglary in this area.",
+  b:"b. because my bike has broken down.",
+  c:"c. sees a crime being committed.",
+  d:"d. as he rose to receive the Prize.",
+  f:"f. she would have fought for women's rights.",
+  g:"g. he was happy to join the party.",
+  h:"h. commit the crime has risen now."
+};
+
+const grammarQs = [
+  {q:"I'm afraid I really couldn't eat any more. I'm ……………", opts:["fed up","full","filled up","famished"], correct:1},
+  {q:"Don't tell Sokha about Chan and Mom. You know he can't …………… a secret.", opts:["hold","save","keep","stop"], correct:2},
+  {q:"Have you seen a mug anywhere? We seem to be one …………", opts:["short","missed","less","under"], correct:0},
+  {q:"If the animals came when they were called, the men …………… them easily without running.", opts:["would have caught","would catch","will catch","catch"], correct:1},
+  {q:"If people did not die and leave the earth, the earth …………… crowded.", opts:["will be","would be","is","would have been"], correct:1},
+  {q:"This conflict must …………… immediately, because it causes much consequence.", opts:["be solved","is solved","are solved","was solved"], correct:0},
+  {q:"Phnom Penh is now spreading west …………… the eye can see.", opts:["as long as","as far as","as near as","as good as"], correct:1},
+  {q:"I would have spent my money for charity if I …………… billions of US dollars.", opts:["have had","had had","had","have"], correct:1},
+  {q:"She had seen people who …………… in poverty all their lives.", opts:["were living","had been living","are living","have been living"], correct:1},
+  {q:"Heavy snow …………… the train for several hours.", opts:["cancelled","postponed","stopped","delayed"], correct:3},
+  {q:"We arrived …………… Phnom Penh at 4.30 in the morning.", opts:["to","at","for","in"], correct:3},
+  {q:"I didn't see you …………… the party last weekend.", opts:["on","by","to","at"], correct:3}
+];
+
+const vocabQs = [
+  {q:"How …………… is it from here to the city centre?", opts:["long","far","distant","near"], correct:1},
+  {q:"Most countries still maintain system of …………… national service, when all men must serve for a period of time in the armed forces.", opts:["voluntary","compulsory","necessary","forced"], correct:1},
+  {q:"When there is a discussion in class, you will only get full value from it if you …………… in an argument.", opts:["participate","share","practise","involve"], correct:0},
+  {q:"It was his …………… to become a doctor but somehow, he ended up as an actor.", opts:["intention","confusion","illusion","selection"], correct:0},
+  {q:"In certain rural areas it is still necessary to …………… the diet of children with certain proteins and vitamins.", opts:["prevent","increase","aid","supplement"], correct:3},
+  {q:"Large areas of agricultural land were badly …………… by the dust fallout.", opts:["involved","collapsed","determined","affected"], correct:3},
+  {q:"The prediction about the cause of the typhoon was not at all ……………", opts:["accurate","assessed","estimated","analysed"], correct:0},
+  {q:"It was several days after the shooting before all the facts were …………… to the press.", opts:["released","abandoned","selected","investigated"], correct:0}
+];
+
+/* ---------- BUILD DYNAMIC BLOCKS ---------- */
+function buildSelect(sel, optionsObj, prefix){
+  sel.innerHTML = '<option value="">— choose —</option>' +
+    Object.keys(optionsObj).map(k => `<option value="${k}">${prefix[k]}</option>`).join('');
+}
+document.querySelectorAll('select[data-q^="q"]').forEach(sel=>{
+  buildSelect(sel, readingLabels, readingLabels);
+});
+document.querySelectorAll('select[data-q^="m"]').forEach(sel=>{
+  buildSelect(sel, matchLabels, matchLabels);
+});
+
+function buildMCQ(container, list, prefix){
+  container.innerHTML = list.map((item, i)=>{
+    const opts = item.opts.map((o,j)=>{
+      const letter = String.fromCharCode(65+j);
+      return `<label class="opt" data-idx="${j}">
+        <input type="radio" name="${prefix}${i}" value="${j}">
+        ${letter}. ${o}
+      </label>`;
+    }).join('');
+    return `<div class="q-block" data-qi="${i}">
+      <div class="q-text"><span class="qn">${i+1}.</span>${item.q}</div>
+      <div class="options">${opts}</div>
+    </div>`;
+  }).join('');
+}
+buildMCQ(document.getElementById('grammar-block'), grammarQs, 'g');
+buildMCQ(document.getElementById('vocab-block'), vocabQs, 'v');
+
+/* ---------- CHECKING LOGIC ---------- */
+let sectionScores = {1:null,2:null,3:null,4:null,5:null};
+
+function checkSection(n){
+  if(n===1) sectionScores[1] = checkReading();
+  if(n===2) sectionScores[2] = checkMatching();
+  if(n===3) sectionScores[3] = checkMCQ(document.getElementById('grammar-block'), grammarQs);
+  if(n===4) sectionScores[4] = checkMCQ(document.getElementById('vocab-block'), vocabQs);
+  renderResult(n);
+  updateTotal();
+}
+
+function checkReading(){
+  let correct=0, total=Object.keys(readingOptions).length;
+  document.querySelectorAll('select[data-q^="q"]').forEach(sel=>{
+    const key = sel.dataset.q;
+    const right = readingOptions[key];
+    sel.classList.remove('correct','incorrect');
+    if(sel.value === right){ sel.classList.add('correct'); correct++; }
+    else if(sel.value !== ""){ sel.classList.add('incorrect'); }
+  });
+  return {correct, total};
+}
+function revealReading(){
+  document.querySelectorAll('select[data-q^="q"]').forEach(sel=>{
+    sel.value = readingOptions[sel.dataset.q];
+    sel.classList.remove('incorrect'); sel.classList.add('correct');
+  });
+  sectionScores[1] = {correct:Object.keys(readingOptions).length, total:Object.keys(readingOptions).length};
+  renderResult(1); updateTotal();
+}
+
+function checkMatching(){
+  let correct=0, total=Object.keys(matchOptions).length;
+  document.querySelectorAll('select[data-q^="m"]').forEach(sel=>{
+    const key = sel.dataset.q;
+    const right = matchOptions[key];
+    sel.classList.remove('correct','incorrect');
+    if(sel.value === right){ sel.classList.add('correct'); correct++; }
+    else if(sel.value !== ""){ sel.classList.add('incorrect'); }
+  });
+  return {correct, total};
+}
+function revealMatching(){
+  document.querySelectorAll('select[data-q^="m"]').forEach(sel=>{
+    sel.value = matchOptions[sel.dataset.q];
+    sel.classList.remove('incorrect'); sel.classList.add('correct');
+  });
+  sectionScores[2] = {correct:Object.keys(matchOptions).length, total:Object.keys(matchOptions).length};
+  renderResult(2); updateTotal();
+}
+
+function checkMCQ(container, list){
+  let correct=0;
+  list.forEach((item,i)=>{
+    const block = container.querySelector(`.q-block[data-qi="${i}"]`);
+    const labels = block.querySelectorAll('.opt');
+    labels.forEach(l=>l.classList.remove('correct','incorrect'));
+    const checked = block.querySelector('input:checked');
+    labels[item.correct].classList.add('correct');
+    if(checked){
+      const val = parseInt(checked.value);
+      if(val === item.correct){ correct++; }
+      else { labels[val].classList.add('incorrect'); }
+    }
+  });
+  return {correct, total:list.length};
+}
+function revealMCQ(container, list){
+  list.forEach((item,i)=>{
+    const block = container.querySelector(`.q-block[data-qi="${i}"]`);
+    const inputs = block.querySelectorAll('input');
+    inputs[item.correct].checked = true;
+    const labels = block.querySelectorAll('.opt');
+    labels.forEach(l=>l.classList.remove('correct','incorrect'));
+    labels[item.correct].classList.add('correct');
+  });
+}
+
+function revealSection(n){
+  if(n===1) revealReading();
+  if(n===2) revealMatching();
+  if(n===3){ revealMCQ(document.getElementById('grammar-block'), grammarQs); sectionScores[3]={correct:grammarQs.length,total:grammarQs.length}; renderResult(3); }
+  if(n===4){ revealMCQ(document.getElementById('vocab-block'), vocabQs); sectionScores[4]={correct:vocabQs.length,total:vocabQs.length}; renderResult(4); }
+  updateTotal();
+}
+
+function renderResult(n){
+  const el = document.getElementById('result-'+n);
+  const s = sectionScores[n];
+  if(!s) return;
+  el.style.display='block';
+  el.className = 'result-line ' + (s.correct===s.total ? 'show-good' : 'show-mixed');
+  el.textContent = `Score: ${s.correct} / ${s.total} correct`;
+  const nav = document.querySelector(`.progress-nav a[data-sec="${n}"]`);
+  if(nav && s.correct===s.total) nav.classList.add('done'); else if(nav) nav.classList.remove('done');
+}
+
+function updateTotal(){
+  let correct=0, total=0;
+  [1,2,3,4].forEach(n=>{
+    if(sectionScores[n]){ correct += sectionScores[n].correct; total += sectionScores[n].total; }
+  });
+  document.getElementById('totalScore').textContent = `${correct} / ${total || 34}`;
+}
+
+function checkAll(){
+  checkSection(1); checkSection(2); checkSection(3); checkSection(4);
+  document.getElementById('s1').scrollIntoView({behavior:'smooth'});
+}
+
+/* ---------- WRITING WORD COUNT ---------- */
+function updateWordCount(){
+  const text = document.getElementById('essay').value.trim();
+  const words = text.length ? text.split(/\s+/).length : 0;
+  const wc = document.getElementById('wordCount');
+  wc.textContent = `${words} words`;
+  wc.className = 'wc';
+  if(words>=150 && words<=180) wc.classList.add('ok');
+  else if(words>0) wc.classList.add('warn');
+}
+</script>
+</body>
+</html>
