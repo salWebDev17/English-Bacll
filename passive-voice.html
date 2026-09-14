@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Passive Voice Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="passive-voice.css">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div id="app">
+  <header>
+    <h1>Passive Voice Practice</h1>
+    <svg class="underline" viewBox="0 0 210 14"><path d="M4 9c40-8 80-8 120-3 25 3 50-2 80-4"/></svg>
+    <p class="subtitle">100 active sentences, 10 to a page. Pick the correct passive form, check your work, and watch the score climb.</p>
+    <div class="scorebar">
+      <div class="score-total">Total score: <span id="totalScore">0</span> / 100</div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+  </header>
+
+  <nav class="pager" id="pagerTop"></nav>
+
+  <main id="cards"></main>
+
+  <div class="actions">
+    <button id="checkBtn" class="btn btn-check">Check answers</button>
+    <button id="showBtn" class="btn btn-show">Show answers</button>
+  </div>
+
+  <div class="pagefoot">
+    <button id="prevBtn" class="btn-nav">← Prev</button>
+    <span id="pageLabel">Page 1 of 10</span>
+    <button id="nextBtn" class="btn-nav">Next →</button>
+  </div>
+
+  <div class="resetline"><button id="resetBtn">Reset all progress</button></div>
+</div>
+  <script src="passive-voice.js">
+  </script>
+</body>
+</html>

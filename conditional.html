@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="conditional.css">
+<title>100 Conditional Sentences — Interactive Practice</title>
+<style>
+
+
+</style>
+</head>
+<body>
+<header>
+  <h1>100 Conditional Sentences — Interactive Practice</h1>
+  <p>Grade 10 · Zero, First, Second, Third &amp; Mixed Conditionals</p>
+</header>
+<div class="scorebar">
+  <span class="score">Score: <span id="liveScore">0</span> / 100</span>
+  <button onclick="checkAll()">✅ Check All Answers</button>
+  <button class="secondary" onclick="revealAll()">👁 Show All Answers</button>
+  <button class="secondary" onclick="resetAll()">↺ Reset</button>
+</div>
+<div class="container">
+  <div class="intro-card">
+    <h2>Instructions</h2>
+    <p>Type the correct form of the verb in brackets into each box. Click <b>Check All Answers</b> to see your score, or check section by section. Green = correct, red = incorrect (correct answer shown next to it).</p>
+    <div class="legend">
+      <span class="leg-0">Type 0 — Facts</span>
+      <span class="leg-1">Type 1 — Real Future</span>
+      <span class="leg-2">Type 2 — Unreal Present</span>
+      <span class="leg-3">Type 3 — Unreal Past</span>
+      <span class="leg-m">Mixed</span>
+    </div>
+    <div class="toc">
+      <a href="#s0">Type 0 (1-20)</a>
+      <a href="#s1">Type 1 (21-40)</a>
+      <a href="#s2">Type 2 (41-60)</a>
+      <a href="#s3">Type 3 (61-80)</a>
+      <a href="#sm">Mixed (81-100)</a>
+    </div>
+    <div class="pic">
+      <img src="conditional.png" >
+    </div>
+  </div>
+  <!-- ============ TYPE 0 ============ -->
+  <div class="section" id="s0">
+    <div class="section-header">
+      <span class="section-badge badge-0">TYPE 0</span>
+      <h3 class="section-title">Zero Conditional — General Truths &amp; Facts</h3>
+      <button class="section-check" onclick="checkSection('sec0')">Check section</button>
+    </div>
+    <p class="section-note">Structure: If + present simple, ... present simple.</p>
+    <div class="exercise-list" id="sec0">
+      <div class="exercise"><span class="num">1.</span><span class="prompt">If you <input class="blank-input" data-ans="heat"> (heat) ice, it <input class="blank-input" data-ans="melts"> (melt).</span></div>
+      <div class="exercise"><span class="num">2.</span><span class="prompt">If people <input class="blank-input" data-ans="don't eat|do not eat"> (not eat) for a long time, they <input class="blank-input" data-ans="get"> (get) hungry.</span></div>
+      <div class="exercise"><span class="num">3.</span><span class="prompt">Water <input class="blank-input" data-ans="boils"> (boil) if you <input class="blank-input" data-ans="heat"> (heat) it to 100°C.</span></div>
+      <div class="exercise"><span class="num">4.</span><span class="prompt">If you <input class="blank-input" data-ans="mix"> (mix) red and blue, you <input class="blank-input" data-ans="get"> (get) purple.</span></div>
+      <div class="exercise"><span class="num">5.</span><span class="prompt">Plants <input class="blank-input" data-ans="die"> (die) if they <input class="blank-input" data-ans="don't get|do not get"> (not get) water.</span></div>
+      <div class="exercise"><span class="num">6.</span><span class="prompt">If the sun <input class="blank-input" data-ans="shines"> (shine) on ice, it <input class="blank-input" data-ans="melts"> (melt).</span></div>
+      <div class="exercise"><span class="num">7.</span><span class="prompt">If you <input class="blank-input" data-ans="touch"> (touch) fire, you <input class="blank-input" data-ans="get"> (get) burned.</span></div>
+      <div class="exercise"><span class="num">8.</span><span class="prompt">Metal <input class="blank-input" data-ans="expands"> (expand) if you <input class="blank-input" data-ans="heat"> (heat) it.</span></div>
+      <div class="exercise"><span class="num">9.</span><span class="prompt">If children <input class="blank-input" data-ans="don't sleep|do not sleep"> (not sleep) enough, they <input class="blank-input" data-ans="become"> (become) irritable.</span></div>
+      <div class="exercise"><span class="num">10.</span><span class="prompt">If you <input class="blank-input" data-ans="drop"> (drop) a glass, it usually <input class="blank-input" data-ans="breaks"> (break).</span></div>
+      <div class="exercise"><span class="num">11.</span><span class="prompt">Bees <input class="blank-input" data-ans="sting"> (sting) if they <input class="blank-input" data-ans="feel"> (feel) threatened.</span></div>
+      <div class="exercise"><span class="num">12.</span><span class="prompt">If it <input class="blank-input" data-ans="rains"> (rain), the ground <input class="blank-input" data-ans="gets"> (get) wet.</span></div>
+      <div class="exercise"><span class="num">13.</span><span class="prompt">If you <input class="blank-input" data-ans="freeze"> (freeze) water, it <input class="blank-input" data-ans="turns"> (turn) into ice.</span></div>
+      <div class="exercise"><span class="num">14.</span><span class="prompt">Wood <input class="blank-input" data-ans="floats"> (float) if you <input class="blank-input" data-ans="put"> (put) it in water.</span></div>
+      <div class="exercise"><span class="num">15.</span><span class="prompt">If you <input class="blank-input" data-ans="add"> (add) salt to water, its boiling point <input class="blank-input" data-ans="rises"> (rise).</span></div>
+      <div class="exercise"><span class="num">16.</span><span class="prompt">People <input class="blank-input" data-ans="feel"> (feel) cold if the temperature <input class="blank-input" data-ans="drops"> (drop).</span></div>
+      <div class="exercise"><span class="num">17.</span><span class="prompt">If you <input class="blank-input" data-ans="don't water|do not water"> (not water) flowers, they <input class="blank-input" data-ans="wilt"> (wilt).</span></div>
+      <div class="exercise"><span class="num">18.</span><span class="prompt">If a magnet <input class="blank-input" data-ans="comes"> (come) near iron, it <input class="blank-input" data-ans="attracts"> (attract) it.</span></div>
+      <div class="exercise"><span class="num">19.</span><span class="prompt">Milk <input class="blank-input" data-ans="goes"> (go) sour if you <input class="blank-input" data-ans="leave"> (leave) it out of the fridge.</span></div>
+      <div class="exercise"><span class="num">20.</span><span class="prompt">If you <input class="blank-input" data-ans="cut"> (cut) an onion, your eyes <input class="blank-input" data-ans="water"> (water).</span></div>
+    </div>
+    <p class="section-score" id="score-sec0"></p>
+  </div>
+  <!-- ============ TYPE 1 ============ -->
+  <div class="section" id="s1">
+    <div class="section-header">
+      <span class="section-badge badge-1">TYPE 1</span>
+      <h3 class="section-title">First Conditional — Real / Likely Future</h3>
+      <button class="section-check" onclick="checkSection('sec1')">Check section</button>
+    </div>
+    <p class="section-note">Structure: If + present simple, ... will + base verb.</p>
+    <div class="exercise-list" id="sec1">
+      <div class="exercise"><span class="num">21.</span><span class="prompt">If it <input class="blank-input" data-ans="rains"> (rain) tomorrow, we <input class="blank-input" data-ans="will stay|'ll stay"> (stay) home.</span></div>
+      <div class="exercise"><span class="num">22.</span><span class="prompt">If you <input class="blank-input" data-ans="study"> (study) hard, you <input class="blank-input" data-ans="will pass|'ll pass"> (pass) the exam.</span></div>
+      <div class="exercise"><span class="num">23.</span><span class="prompt">She <input class="blank-input" data-ans="will be|'ll be"> (be) upset if he <input class="blank-input" data-ans="doesn't call|does not call"> (not call) her tonight.</span></div>
+      <div class="exercise"><span class="num">24.</span><span class="prompt">If we <input class="blank-input" data-ans="miss"> (miss) the bus, we <input class="blank-input" data-ans="will be|'ll be"> (be) late.</span></div>
+      <div class="exercise"><span class="num">25.</span><span class="prompt">If you <input class="blank-input" data-ans="don't hurry|do not hurry"> (not hurry), we <input class="blank-input" data-ans="will miss|'ll miss"> (miss) the flight.</span></div>
+      <div class="exercise"><span class="num">26.</span><span class="prompt">I <input class="blank-input" data-ans="will call|'ll call"> (call) you if I <input class="blank-input" data-ans="have"> (have) any news.</span></div>
+      <div class="exercise"><span class="num">27.</span><span class="prompt">If they <input class="blank-input" data-ans="win"> (win) the match, they <input class="blank-input" data-ans="will celebrate|'ll celebrate"> (celebrate) all night.</span></div>
+      <div class="exercise"><span class="num">28.</span><span class="prompt">If he <input class="blank-input" data-ans="apologizes"> (apologize), she <input class="blank-input" data-ans="will forgive|'ll forgive"> (forgive) him.</span></div>
+      <div class="exercise"><span class="num">29.</span><span class="prompt">We <input class="blank-input" data-ans="will go|'ll go"> (go) to the beach if the weather <input class="blank-input" data-ans="is"> (be) nice.</span></div>
+      <div class="exercise"><span class="num">30.</span><span class="prompt">If you <input class="blank-input" data-ans="touch"> (touch) that wire, you <input class="blank-input" data-ans="will get|'ll get"> (get) a shock.</span></div>
+      <div class="exercise"><span class="num">31.</span><span class="prompt">If I <input class="blank-input" data-ans="finish"> (finish) my homework early, I <input class="blank-input" data-ans="will watch|'ll watch"> (watch) a movie.</span></div>
+      <div class="exercise"><span class="num">32.</span><span class="prompt">She <input class="blank-input" data-ans="will fail|'ll fail"> (fail) the test if she <input class="blank-input" data-ans="doesn't revise|does not revise"> (not revise).</span></div>
+      <div class="exercise"><span class="num">33.</span><span class="prompt">If it <input class="blank-input" data-ans="snows"> (snow), schools <input class="blank-input" data-ans="will close|'ll close"> (close).</span></div>
+      <div class="exercise"><span class="num">34.</span><span class="prompt">If you <input class="blank-input" data-ans="ask"> (ask) nicely, he <input class="blank-input" data-ans="will help|'ll help"> (help) you.</span></div>
+      <div class="exercise"><span class="num">35.</span><span class="prompt">We <input class="blank-input" data-ans="will be|'ll be"> (be) late unless we <input class="blank-input" data-ans="leave"> (leave) now.</span></div>
+      <div class="exercise"><span class="num">36.</span><span class="prompt">If you <input class="blank-input" data-ans="eat"> (eat) too much sugar, you <input class="blank-input" data-ans="will feel|'ll feel"> (feel) sick.</span></div>
+      <div class="exercise"><span class="num">37.</span><span class="prompt">If she <input class="blank-input" data-ans="arrives"> (arrive) late again, the boss <input class="blank-input" data-ans="will be|'ll be"> (be) angry.</span></div>
+      <div class="exercise"><span class="num">38.</span><span class="prompt">If we <input class="blank-input" data-ans="plant"> (plant) these seeds now, they <input class="blank-input" data-ans="will grow|'ll grow"> (grow) by spring.</span></div>
+      <div class="exercise"><span class="num">39.</span><span class="prompt">I <input class="blank-input" data-ans="will text|'ll text"> (text) you as soon as I <input class="blank-input" data-ans="arrive"> (arrive).</span></div>
+      <div class="exercise"><span class="num">40.</span><span class="prompt">If he <input class="blank-input" data-ans="doesn't stop|does not stop"> (not stop) smoking, he <input class="blank-input" data-ans="will damage|'ll damage"> (damage) his health.</span></div>
+    </div>
+    <p class="section-score" id="score-sec1"></p>
+  </div>
+  <!-- ============ TYPE 2 ============ -->
+  <div class="section" id="s2">
+    <div class="section-header">
+      <span class="section-badge badge-2">TYPE 2</span>
+      <h3 class="section-title">Second Conditional — Unreal / Hypothetical Present</h3>
+      <button class="section-check" onclick="checkSection('sec2')">Check section</button>
+    </div>
+    <p class="section-note">Structure: If + past simple, ... would + base verb.</p>
+    <div class="exercise-list" id="sec2">
+      <div class="exercise"><span class="num">41.</span><span class="prompt">If I <input class="blank-input" data-ans="won"> (win) the lottery, I <input class="blank-input" data-ans="would travel|'d travel"> (travel) the world.</span></div>
+      <div class="exercise"><span class="num">42.</span><span class="prompt">If she <input class="blank-input" data-ans="were|was"> (be) taller, she <input class="blank-input" data-ans="would join|'d join"> (join) the basketball team.</span></div>
+      <div class="exercise"><span class="num">43.</span><span class="prompt">If I <input class="blank-input" data-ans="were|was"> (be) you, I <input class="blank-input" data-ans="wouldn't say|would not say"> (not say) that.</span></div>
+      <div class="exercise"><span class="num">44.</span><span class="prompt">If we <input class="blank-input" data-ans="had"> (have) more time, we <input class="blank-input" data-ans="would visit|'d visit"> (visit) the museum.</span></div>
+      <div class="exercise"><span class="num">45.</span><span class="prompt">If he <input class="blank-input" data-ans="knew"> (know) her number, he <input class="blank-input" data-ans="would call|'d call"> (call) her.</span></div>
+      <div class="exercise"><span class="num">46.</span><span class="prompt">If they <input class="blank-input" data-ans="lived"> (live) closer, we <input class="blank-input" data-ans="would see|'d see"> (see) them more often.</span></div>
+      <div class="exercise"><span class="num">47.</span><span class="prompt">If I <input class="blank-input" data-ans="didn't have|did not have"> (not have) so much work, I <input class="blank-input" data-ans="would go|'d go"> (go) to the party.</span></div>
+      <div class="exercise"><span class="num">48.</span><span class="prompt">If it <input class="blank-input" data-ans="weren't|wasn't|were not|was not"> (not be) so expensive, I <input class="blank-input" data-ans="would buy|'d buy"> (buy) it.</span></div>
+      <div class="exercise"><span class="num">49.</span><span class="prompt">If she <input class="blank-input" data-ans="spoke"> (speak) French, she <input class="blank-input" data-ans="would get|'d get"> (get) that job.</span></div>
+      <div class="exercise"><span class="num">50.</span><span class="prompt">If I <input class="blank-input" data-ans="were|was"> (be) the president, I <input class="blank-input" data-ans="would change|'d change"> (change) the education system.</span></div>
+      <div class="exercise"><span class="num">51.</span><span class="prompt">If we <input class="blank-input" data-ans="didn't live|did not live"> (not live) in a city, life <input class="blank-input" data-ans="would be|'d be"> (be) quieter.</span></div>
+      <div class="exercise"><span class="num">52.</span><span class="prompt">If he <input class="blank-input" data-ans="trained"> (train) harder, he <input class="blank-input" data-ans="would be|'d be"> (be) a professional athlete.</span></div>
+      <div class="exercise"><span class="num">53.</span><span class="prompt">If you <input class="blank-input" data-ans="had"> (have) a car, would you <input class="blank-input" data-ans="drive"> (drive) to work?</span></div>
+      <div class="exercise"><span class="num">53.</span><span class="prompt">If you <input class="blank-input" data-ans="had"> (have) a car, would you <input class="blank-input" data-ans="drive"> (drive) to work?</span></div>
+      <div class="exercise"><span class="num">54.</span><span class="prompt">If I <input class="blank-input" data-ans="could"> (can) fly, I <input class="blank-input" data-ans="would visit|'d visit"> (visit) every country.</span></div>
+      <div class="exercise"><span class="num">55.</span><span class="prompt">If she <input class="blank-input" data-ans="weren't|wasn't|were not|was not"> (not be) so shy, she <input class="blank-input" data-ans="would make|'d make"> (make) more friends.</span></div>
+      <div class="exercise"><span class="num">56.</span><span class="prompt">If we <input class="blank-input" data-ans="owned"> (own) a dog, the kids <input class="blank-input" data-ans="would be|'d be"> (be) happier.</span></div>
+      <div class="exercise"><span class="num">57.</span><span class="prompt">If I <input class="blank-input" data-ans="understood"> (understand) the question, I <input class="blank-input" data-ans="would answer|'d answer"> (answer) it.</span></div>
+      <div class="exercise"><span class="num">58.</span><span class="prompt">If he <input class="blank-input" data-ans="earned"> (earn) more money, he <input class="blank-input" data-ans="would move|'d move"> (move) to a bigger house.</span></div>
+      <div class="exercise"><span class="num">59.</span><span class="prompt">If they <input class="blank-input" data-ans="asked"> (ask) for help, someone <input class="blank-input" data-ans="would help|'d help"> (help) them.</span></div>
+      <div class="exercise"><span class="num">60.</span><span class="prompt">If I <input class="blank-input" data-ans="weren't|wasn't|were not|was not"> (not be) afraid of heights, I <input class="blank-input" data-ans="would go|'d go"> (go) skydiving.</span></div>
+    </div>
+    <p class="section-score" id="score-sec2"></p>
+  </div>
+  <!-- ============ TYPE 3 ============ -->
+  <div class="section" id="s3">
+    <div class="section-header">
+      <span class="section-badge badge-3">TYPE 3</span>
+      <h3 class="section-title">Third Conditional — Unreal Past (Regrets)</h3>
+      <button class="section-check" onclick="checkSection('sec3')">Check section</button>
+    </div>
+    <p class="section-note">Structure: If + past perfect, ... would have + past participle.</p>
+    <div class="exercise-list" id="sec3">
+      <div class="exercise"><span class="num">61.</span><span class="prompt">If I <input class="blank-input" data-ans="had studied"> (study) harder, I <input class="blank-input" data-ans="would have passed|'d have passed"> (pass) the exam.</span></div>
+      <div class="exercise"><span class="num">62.</span><span class="prompt">If she <input class="blank-input" data-ans="had left"> (leave) earlier, she <input class="blank-input" data-ans="wouldn't have missed|would not have missed"> (not miss) the train.</span></div>
+      <div class="exercise"><span class="num">63.</span><span class="prompt">If we <input class="blank-input" data-ans="had known"> (know) about the traffic, we <input class="blank-input" data-ans="would have taken|'d have taken"> (take) another road.</span></div>
+      <div class="exercise"><span class="num">64.</span><span class="prompt">If he <input class="blank-input" data-ans="hadn't driven|had not driven"> (not drive) so fast, the accident <input class="blank-input" data-ans="wouldn't have happened|would not have happened"> (not happen).</span></div>
+      <div class="exercise"><span class="num">65.</span><span class="prompt">If I <input class="blank-input" data-ans="had seen"> (see) you, I <input class="blank-input" data-ans="would have said|'d have said"> (say) hello.</span></div>
+      <div class="exercise"><span class="num">66.</span><span class="prompt">If they <input class="blank-input" data-ans="had booked"> (book) tickets earlier, they <input class="blank-input" data-ans="would have got|would have gotten|'d have got|'d have gotten"> (get) better seats.</span></div>
+      <div class="exercise"><span class="num">67.</span><span class="prompt">If she <input class="blank-input" data-ans="had listened"> (listen) to advice, she <input class="blank-input" data-ans="wouldn't have lost|would not have lost"> (not lose) her money.</span></div>
+      <div class="exercise"><span class="num">68.</span><span class="prompt">If I <input class="blank-input" data-ans="had had"> (have) enough money, I <input class="blank-input" data-ans="would have bought|'d have bought"> (buy) that house.</span></div>
+      <div class="exercise"><span class="num">69.</span><span class="prompt">If we <input class="blank-input" data-ans="had checked"> (check) the weather, we <input class="blank-input" data-ans="wouldn't have gone|would not have gone"> (not go) hiking.</span></div>
+      <div class="exercise"><span class="num">70.</span><span class="prompt">If he <input class="blank-input" data-ans="had applied"> (apply) for the job, he <input class="blank-input" data-ans="would have got|would have gotten|'d have got|'d have gotten"> (get) it.</span></div>
+      <div class="exercise"><span class="num">71.</span><span class="prompt">If you <input class="blank-input" data-ans="had told"> (tell) me earlier, I <input class="blank-input" data-ans="would have helped|'d have helped"> (help) you.</span></div>
+      <div class="exercise"><span class="num">72.</span><span class="prompt">If she <input class="blank-input" data-ans="hadn't forgotten|had not forgotten"> (not forget) her passport, she <input class="blank-input" data-ans="would have caught|'d have caught"> (catch) the flight.</span></div>
+      <div class="exercise"><span class="num">73.</span><span class="prompt">If I <input class="blank-input" data-ans="had known"> (know) you were coming, I <input class="blank-input" data-ans="would have cleaned|'d have cleaned"> (clean) the house.</span></div>
+      <div class="exercise"><span class="num">74.</span><span class="prompt">If they <input class="blank-input" data-ans="had practiced|had practised"> (practice) more, they <input class="blank-input" data-ans="would have won|'d have won"> (win) the competition.</span></div>
+      <div class="exercise"><span class="num">75.</span><span class="prompt">If he <input class="blank-input" data-ans="had worn"> (wear) a helmet, he <input class="blank-input" data-ans="wouldn't have got hurt|wouldn't have gotten hurt|would not have got hurt|would not have gotten hurt"> (not get) hurt.</span></div>
+      <div class="exercise"><span class="num">76.</span><span class="prompt">If I <input class="blank-input" data-ans="hadn't eaten|had not eaten"> (not eat) that fish, I <input class="blank-input" data-ans="wouldn't have felt|would not have felt"> (not feel) sick.</span></div>
+      <div class="exercise"><span class="num">77.</span><span class="prompt">If we <input class="blank-input" data-ans="had arrived"> (arrive) on time, we <input class="blank-input" data-ans="wouldn't have missed|would not have missed"> (not miss) the beginning of the film.</span></div>
+      <div class="exercise"><span class="num">78.</span><span class="prompt">If she <input class="blank-input" data-ans="had saved"> (save) her money, she <input class="blank-input" data-ans="would have afforded|'d have afforded"> (afford) the trip.</span></div>
+      <div class="exercise"><span class="num">79.</span><span class="prompt">If I <input class="blank-input" data-ans="had been"> (be) more careful, I <input class="blank-input" data-ans="wouldn't have broken|would not have broken"> (not break) the vase.</span></div>
+      <div class="exercise"><span class="num">80.</span><span class="prompt">If he <input class="blank-input" data-ans="had asked"> (ask) for directions, they <input class="blank-input" data-ans="wouldn't have got lost|wouldn't have gotten lost|would not have got lost|would not have gotten lost"> (not get) lost.</span></div>
+    </div>
+    <p class="section-score" id="score-sec3"></p>
+  </div>
+  <!-- ============ MIXED ============ -->
+  <div class="section" id="sm">
+    <div class="section-header">
+      <span class="section-badge badge-m">MIXED</span>
+      <h3 class="section-title">Mixed Conditionals — All Types Combined</h3>
+      <button class="section-check" onclick="checkSection('secm')">Check section</button>
+    </div>
+    <p class="section-note">Decide which type fits each sentence, including mixed-time conditionals (e.g. past condition, present result).</p>
+    <div class="exercise-list" id="secm">
+      <div class="exercise"><span class="num">81.</span><span class="prompt">If she <input class="blank-input" data-ans="hadn't stayed up|had not stayed up"> (not stay up) so late last night, she <input class="blank-input" data-ans="wouldn't be|would not be"> (not be) tired now.</span></div>
+      <div class="exercise"><span class="num">82.</span><span class="prompt">Ice <input class="blank-input" data-ans="melts"> (melt) if you <input class="blank-input" data-ans="leave"> (leave) it in the sun.</span></div>
+      <div class="exercise"><span class="num">83.</span><span class="prompt">If I <input class="blank-input" data-ans="were|was"> (be) you, I <input class="blank-input" data-ans="would apologize|'d apologize"> (apologize) right away.</span></div>
+      <div class="exercise"><span class="num">84.</span><span class="prompt">If we <input class="blank-input" data-ans="hadn't booked|had not booked"> (not book) the hotel yesterday, we <input class="blank-input" data-ans="would have"> (have) nowhere to stay tonight.</span></div>
+      <div class="exercise"><span class="num">85.</span><span class="prompt">If you <input class="blank-input" data-ans="heat"> (heat) water to 100°C, it <input class="blank-input" data-ans="boils"> (boil).</span></div>
+      <div class="exercise"><span class="num">86.</span><span class="prompt">If he <input class="blank-input" data-ans="had trained"> (train) harder when he was young, he <input class="blank-input" data-ans="would be|'d be"> (be) a professional player now.</span></div>
+      <div class="exercise"><span class="num">87.</span><span class="prompt">If it <input class="blank-input" data-ans="rains"> (rain) this weekend, we <input class="blank-input" data-ans="will cancel|'ll cancel"> (cancel) the picnic.</span></div>
+      <div class="exercise"><span class="num">88.</span><span class="prompt">If I <input class="blank-input" data-ans="had"> (have) a million dollars, I <input class="blank-input" data-ans="would quit|'d quit"> (quit) my job.</span></div>
+      <div class="exercise"><span class="num">89.</span><span class="prompt">If she <input class="blank-input" data-ans="hadn't missed|had not missed"> (not miss) the meeting, she <input class="blank-input" data-ans="would know|'d know"> (know) about the changes now.</span></div>
+      <div class="exercise"><span class="num">90.</span><span class="prompt">If you <input class="blank-input" data-ans="don't water|do not water"> (not water) plants, they <input class="blank-input" data-ans="die"> (die).</span></div>
+      <div class="exercise"><span class="num">91.</span><span class="prompt">If they <input class="blank-input" data-ans="invite"> (invite) me, I <input class="blank-input" data-ans="will go|'ll go"> (go) to the wedding next month.</span></div>
+      <div class="exercise"><span class="num">92.</span><span class="prompt">If I <input class="blank-input" data-ans="hadn't lost|had not lost"> (not lose) my job last year, I <input class="blank-input" data-ans="wouldn't be|would not be"> (not be) in this new career now.</span></div>
+      <div class="exercise"><span class="num">93.</span><span class="prompt">If we <input class="blank-input" data-ans="mix"> (mix) yellow and blue, we <input class="blank-input" data-ans="get"> (get) green.</span></div>
+      <div class="exercise"><span class="num">94.</span><span class="prompt">If she <input class="blank-input" data-ans="were|was"> (be) more confident, she <input class="blank-input" data-ans="would apply|'d apply"> (apply) for the promotion next week.</span></div>
+      <div class="exercise"><span class="num">95.</span><span class="prompt">If he <input class="blank-input" data-ans="had studied"> (study) medicine at university, he <input class="blank-input" data-ans="would be|'d be"> (be) a doctor today.</span></div>
+      <div class="exercise"><span class="num">96.</span><span class="prompt">If you <input class="blank-input" data-ans="freeze"> (freeze) water, it <input class="blank-input" data-ans="becomes"> (become) solid.</span></div>
+      <div class="exercise"><span class="num">97.</span><span class="prompt">If we <input class="blank-input" data-ans="leave"> (leave) now, we <input class="blank-input" data-ans="will arrive|'ll arrive"> (arrive) before dark.</span></div>
+      <div class="exercise"><span class="num">98.</span><span class="prompt">If I <input class="blank-input" data-ans="had known"> (know) then what I know now, I <input class="blank-input" data-ans="would have made|'d have made"> (make) different choices.</span></div>
+      <div class="exercise"><span class="num">99.</span><span class="prompt">If he <input class="blank-input" data-ans="hadn't eaten|had not eaten"> (not eat) so much junk food, he <input class="blank-input" data-ans="would be|'d be"> (be) healthier now.</span></div>
+      <div class="exercise"><span class="num">100.</span><span class="prompt">If you <input class="blank-input" data-ans="need"> (need) help tomorrow, just <input class="blank-input" data-ans="ask"> (ask) me.</span></div>
+    </div>
+    <p class="section-score" id="score-secm"></p>
+  </div>
+  <div id="finalResult">
+    <h2>Your Result</h2>
+    <div class="big"><span id="finalScore">0</span> / 100</div>
+    <p id="finalMsg"></p>
+  </div>
+</div>
+<footer>100 Conditional Sentences Worksheet · Interactive Practice · Grade 10 English Grammar</footer>
+<script src="conditional.js">
+</script>
+
+</body>
+</html>
