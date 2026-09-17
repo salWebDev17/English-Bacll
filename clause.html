@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noun Clauses & Relative Clauses Practice</title>
+<style>
+  :root{
+    --bg:#f7f5f2;
+    --card:#ffffff;
+    --ink:#1f2430;
+    --sub:#6b7280;
+    --accent:#4f46e5;
+    --accent-light:#eef2ff;
+    --correct:#16a34a;
+    --correct-bg:#f0fdf4;
+    --wrong:#dc2626;
+    --wrong-bg:#fef2f2;
+    --border:#e5e7eb;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#15161c;
+      --card:#1f2129;
+      --ink:#eef0f4;
+      --sub:#9aa0ac;
+      --accent:#818cf8;
+      --accent-light:#252a45;
+      --correct:#4ade80;
+      --correct-bg:#0f2818;
+      --wrong:#f87171;
+      --wrong-bg:#2a1414;
+      --border:#2e313c;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#15161c;
+    --card:#1f2129;
+    --ink:#eef0f4;
+    --sub:#9aa0ac;
+    --accent:#818cf8;
+    --accent-light:#252a45;
+    --correct:#4ade80;
+    --correct-bg:#0f2818;
+    --wrong:#f87171;
+    --wrong-bg:#2a1414;
+    --border:#2e313c;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    padding:24px 16px 60px;
+  }
+  .wrap{max-width:720px;margin:0 auto;}
+  header{text-align:center;margin-bottom:24px;}
+  h1{font-size:1.5rem;margin:0 0 6px;}
+  .lead{color:var(--sub);font-size:0.95rem;margin:0;}
+  .tabs{display:flex;gap:8px;justify-content:center;margin:20px 0;flex-wrap:wrap;}
+  .tab{
+    padding:8px 16px;border-radius:999px;border:1px solid var(--border);
+    background:var(--card);color:var(--ink);font-size:0.85rem;cursor:pointer;
+  }
+  .tab.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .progress-bar{
+    height:8px;background:var(--border);border-radius:999px;overflow:hidden;margin:0 0 20px;
+  }
+  .progress-fill{height:100%;background:var(--accent);width:0%;transition:width .3s;}
+  .score{
+    text-align:center;color:var(--sub);font-size:0.9rem;margin-bottom:16px;
+  }
+  .card{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    padding:18px 18px 20px;margin-bottom:14px;
+  }
+  .qhead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
+  .qnum{font-size:0.75rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.04em;}
+  .qtype{font-size:0.7rem;color:var(--sub);background:var(--accent-light);padding:3px 8px;border-radius:6px;}
+  .qtext{font-size:1.02rem;line-height:1.5;margin:0 0 14px;}
+  .qtext .blank{
+    display:inline-block;min-width:90px;border-bottom:2px solid var(--sub);
+  }
+  .options{display:grid;gap:8px;}
+  .opt{
+    text-align:left;padding:10px 14px;border-radius:10px;border:1px solid var(--border);
+    background:var(--bg);color:var(--ink);cursor:pointer;font-size:0.95rem;
+    transition:background .15s, border-color .15s;
+  }
+  .opt:hover{border-color:var(--accent);}
+  .opt.selected{border-color:var(--accent);background:var(--accent-light);}
+  .opt.correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct);font-weight:600;}
+  .opt.wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong);font-weight:600;}
+  .opt[disabled]{cursor:default;}
+  .feedback{margin-top:10px;font-size:0.85rem;color:var(--sub);}
+  .feedback strong{color:var(--ink);}
+  footer{text-align:center;margin-top:24px;}
+  .reset-btn{
+    padding:10px 20px;border-radius:10px;border:1px solid var(--border);
+    background:var(--card);color:var(--ink);font-size:0.9rem;cursor:pointer;
+  }
+  .reset-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .summary{
+    text-align:center;padding:20px;background:var(--card);border-radius:14px;
+    border:1px solid var(--border);margin-bottom:16px;display:none;
+  }
+  .summary.show{display:block;}
+  .summary .big{font-size:2rem;font-weight:800;color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Noun Clauses &amp; Relative Clauses</h1>
+    <p class="lead">20 practice questions — 10 noun clauses, 10 relative clauses</p>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" data-filter="all">All (20)</button>
+    <button class="tab" data-filter="noun">Noun Clauses (10)</button>
+    <button class="tab" data-filter="relative">Relative Clauses (10)</button>
+  </div>
+
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="score" id="scoreText">0 of 20 answered · 0 correct</div>
+
+  <div class="summary" id="summary">
+    <div class="big" id="summaryScore">0/20</div>
+    <div>Nice work! Review any items marked in red, then reset to try again.</div>
+  </div>
+
+  <div id="quiz"></div>
+
+  <footer>
+    <button class="reset-btn" id="resetBtn">Reset all answers</button>
+  </footer>
+</div>
+
+<script>
+const questions = [
+  // ---- NOUN CLAUSES (10) ----
+  {
+    type: "noun",
+    text: "I don't know ___ she left the party so early.",
+    options: ["why", "which", "whom", "what"],
+    answer: 0,
+    explain: "A noun clause introduced by 'why' functions as the object of 'know' (why + subject + verb)."
+  },
+  {
+    type: "noun",
+    text: "___ he said surprised everyone in the room.",
+    options: ["That", "What", "Whether", "Who"],
+    answer: 1,
+    explain: "'What he said' is a noun clause acting as the subject of the sentence."
+  },
+  {
+    type: "noun",
+    text: "The teacher explained ___ the experiment had failed.",
+    options: ["who", "why", "which", "whom"],
+    answer: 1,
+    explain: "'Why the experiment had failed' is the noun clause object of 'explained'."
+  },
+  {
+    type: "noun",
+    text: "I'm not sure ___ she will come to the meeting.",
+    options: ["that", "whether", "which", "who"],
+    answer: 1,
+    explain: "'Whether' introduces a noun clause expressing uncertainty (yes/no possibility)."
+  },
+  {
+    type: "noun",
+    text: "It is obvious ___ the plan needs more funding.",
+    answer: 0,
+    options: ["that", "what", "whom", "whose"],
+    explain: "'That the plan needs more funding' is a noun clause serving as the real subject (with 'it' as dummy subject)."
+  },
+  {
+    type: "noun",
+    text: "Can you tell me ___ lives in that house?",
+    options: ["that", "whether", "who", "which"],
+    answer: 2,
+    explain: "'Who lives in that house' is a noun clause; 'who' is both the clause's subject and the question word."
+  },
+  {
+    type: "noun",
+    text: "___ you decide is entirely up to you.",
+    options: ["What", "That", "Who", "Whom"],
+    answer: 0,
+    explain: "'What you decide' is a noun clause functioning as the subject of the sentence."
+  },
+  {
+    type: "noun",
+    text: "She asked me ___ I had finished the report.",
+    options: ["what", "whether", "who", "whose"],
+    answer: 1,
+    explain: "'Whether I had finished the report' reports a yes/no question as a noun clause."
+  },
+  {
+    type: "noun",
+    text: "My biggest worry is ___ we won't have enough time.",
+    options: ["what", "that", "who", "which"],
+    answer: 1,
+    explain: "'That we won't have enough time' is a noun clause complement after the linking verb 'is'."
+  },
+  {
+    type: "noun",
+    text: "Nobody understands ___ the machine suddenly stopped working.",
+    options: ["what", "why", "whose", "whom"],
+    answer: 1,
+    explain: "'Why the machine suddenly stopped working' is the noun clause object of 'understands'."
+  },
+
+  // ---- RELATIVE (ADJECTIVE) CLAUSES (10) ----
+  {
+    type: "relative",
+    text: "The woman ___ lives next door is a doctor.",
+    options: ["who", "whom", "which", "whose"],
+    answer: 0,
+    explain: "'Who' is the relative pronoun for a person acting as the subject of the relative clause."
+  },
+  {
+    type: "relative",
+    text: "This is the book ___ I borrowed from the library.",
+    options: ["who", "which", "whose", "where"],
+    answer: 1,
+    explain: "'Which' refers to a thing (the book) and is the object of 'borrowed'."
+  },
+  {
+    type: "relative",
+    text: "The man ___ car was stolen called the police.",
+    options: ["who", "which", "whose", "whom"],
+    answer: 2,
+    explain: "'Whose' shows possession — the car belongs to the man."
+  },
+  {
+    type: "relative",
+    text: "That is the restaurant ___ we had dinner last night.",
+    options: ["which", "where", "who", "whose"],
+    answer: 1,
+    explain: "'Where' introduces a relative clause referring to a place."
+  },
+  {
+    type: "relative",
+    text: "The teacher ___ I admire most is retiring this year.",
+    options: ["whom", "which", "whose", "where"],
+    answer: 0,
+    explain: "'Whom' refers to a person and is the object of 'admire' (formal usage; 'who' is common informally)."
+  },
+  {
+    type: "relative",
+    text: "I remember the day ___ we first met.",
+    options: ["which", "when", "who", "whose"],
+    answer: 1,
+    explain: "'When' introduces a relative clause referring to a time."
+  },
+  {
+    type: "relative",
+    text: "The company ___ produces this software is based in Seoul.",
+    options: ["who", "which", "whom", "whose"],
+    answer: 1,
+    explain: "'Which' refers to a thing/organization and is the subject of the relative clause."
+  },
+  {
+    type: "relative",
+    text: "Students ___ homework is late will lose points.",
+    options: ["who", "whose", "which", "whom"],
+    answer: 1,
+    explain: "'Whose' shows possession — the homework belongs to the students."
+  },
+  {
+    type: "relative",
+    text: "The reason ___ she quit her job is still unclear.",
+    options: ["why", "where", "whom", "which"],
+    answer: 0,
+    explain: "'Why' introduces a relative clause referring to a reason."
+  },
+  {
+    type: "relative",
+    text: "The children ___ we met at the park were very friendly.",
+    options: ["whose", "which", "whom", "where"],
+    answer: 2,
+    explain: "'Whom' refers to people and is the object of 'met' (formal usage; 'who'/'that' also common)."
+  },
+];
+
+let answers = new Array(questions.length).fill(null);
+let currentFilter = "all";
+
+const quizEl = document.getElementById("quiz");
+const progressFill = document.getElementById("progressFill");
+const scoreText = document.getElementById("scoreText");
+const summary = document.getElementById("summary");
+const summaryScore = document.getElementById("summaryScore");
+
+function render(){
+  quizEl.innerHTML = "";
+  questions.forEach((q, i) => {
+    if(currentFilter !== "all" && q.type !== currentFilter) return;
+
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const parts = q.text.split("___");
+    const displayText = parts[0] + '<span class="blank">______</span>' + (parts[1]||"");
+
+    card.innerHTML = `
+      <div class="qhead">
+        <span class="qnum">Question ${i+1}</span>
+        <span class="qtype">${q.type === "noun" ? "Noun Clause" : "Relative Clause"}</span>
+      </div>
+      <p class="qtext">${displayText}</p>
+      <div class="options" data-qi="${i}"></div>
+      <div class="feedback" data-fb="${i}"></div>
+    `;
+
+    const optsWrap = card.querySelector(".options");
+    q.options.forEach((opt, oi) => {
+      const btn = document.createElement("button");
+      btn.className = "opt";
+      btn.textContent = opt;
+      btn.disabled = answers[i] !== null;
+      if(answers[i] !== null){
+        if(oi === q.answer) btn.classList.add("correct");
+        else if(oi === answers[i]) btn.classList.add("wrong");
+      }
+      btn.addEventListener("click", () => selectAnswer(i, oi));
+      optsWrap.appendChild(btn);
+    });
+
+    const fb = card.querySelector(`[data-fb="${i}"]`);
+    if(answers[i] !== null){
+      const correct = answers[i] === q.answer;
+      fb.innerHTML = `<strong>${correct ? "Correct! " : "Not quite. "}</strong>${q.explain}`;
+    }
+
+    quizEl.appendChild(card);
+  });
+
+  updateProgress();
+}
+
+let audioCtx = null;
+function getAudioCtx(){
+  if(!audioCtx){
+    const AC = window.AudioContext || window.webkitAudioContext;
+    audioCtx = new AC();
+  }
+  if(audioCtx.state === "suspended") audioCtx.resume();
+  return audioCtx;
+}
+
+function playTone(freq, startTime, duration, type, gainPeak){
+  const ctx = getAudioCtx();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = type || "sine";
+  osc.frequency.value = freq;
+  gain.gain.setValueAtTime(0, startTime);
+  gain.gain.linearRampToValueAtTime(gainPeak, startTime + 0.01);
+  gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start(startTime);
+  osc.stop(startTime + duration);
+}
+
+function playCorrectSound(){
+  try{
+    const ctx = getAudioCtx();
+    const now = ctx.currentTime;
+    playTone(523.25, now, 0.14, "sine", 0.18);
+    playTone(659.25, now + 0.1, 0.14, "sine", 0.18);
+    playTone(783.99, now + 0.2, 0.22, "sine", 0.2);
+  }catch(e){}
+}
+
+function playWrongSound(){
+  try{
+    const ctx = getAudioCtx();
+    const now = ctx.currentTime;
+    playTone(220, now, 0.18, "sawtooth", 0.12);
+    playTone(185, now + 0.12, 0.22, "sawtooth", 0.12);
+  }catch(e){}
+}
+
+function selectAnswer(qIndex, optIndex){
+  if(answers[qIndex] !== null) return;
+  answers[qIndex] = optIndex;
+  if(optIndex === questions[qIndex].answer){
+    playCorrectSound();
+  } else {
+    playWrongSound();
+  }
+  render();
+}
+
+function updateProgress(){
+  const answered = answers.filter(a => a !== null).length;
+  const correct = answers.filter((a,i) => a === questions[i].answer).length;
+  const pct = Math.round((answered / questions.length) * 100);
+  progressFill.style.width = pct + "%";
+  scoreText.textContent = `${answered} of ${questions.length} answered · ${correct} correct`;
+
+  if(answered === questions.length){
+    summary.classList.add("show");
+    summaryScore.textContent = `${correct}/${questions.length}`;
+  } else {
+    summary.classList.remove("show");
+  }
+}
+
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    currentFilter = tab.dataset.filter;
+    render();
+  });
+});
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+  answers = new Array(questions.length).fill(null);
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
