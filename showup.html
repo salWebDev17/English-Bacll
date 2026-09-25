@@ -53,6 +53,12 @@
   .log-item:last-child{ border-bottom:none; }
   .log-item .name{ color:var(--text); font-family:'JetBrains Mono',monospace; }
   .log-item .time{ color:var(--muted-2); font-size:12px; }
+  #log{ max-height:280px; overflow-y:auto; }
+  .clear-log{
+    background:transparent; border:1px solid var(--line); color:var(--muted-2);
+    font-size:11px; padding:6px 10px; margin-top:10px; width:auto;
+  }
+  .clear-log:hover{ border-color:#e07a5f; color:#e07a5f; background:transparent; }
   .empty{ color:var(--muted-2); font-size:13px; font-style:italic; }
   .lockbtn{
     background:transparent; border:1px solid var(--line); color:var(--muted-2);
@@ -77,6 +83,14 @@
       <div class="v" id="deviceName">—</div>
     </div>
     <div class="row">
+      <div class="k">Browser / OS / Platform</div>
+      <div class="v" id="deviceDetail" style="font-size:13px;">—</div>
+    </div>
+    <div class="row">
+      <div class="k">Screen &amp; Language</div>
+      <div class="v" id="screenInfo" style="font-size:13px;">—</div>
+    </div>
+    <div class="row">
       <div class="k">Date &amp; Time</div>
       <div class="clock" id="clock">—</div>
     </div>
@@ -87,6 +101,7 @@
     <div class="row">
       <div class="k">Recently Opened (Screen Time)</div>
       <div id="log"></div>
+      <button class="clear-log" onclick="clearLog()">Clear history</button>
     </div>
     <button class="lockbtn" onclick="location.reload()">Lock again</button>
   </div>
@@ -127,8 +142,30 @@
     return `${browser}-${os}`;
   }
 
+  function detectDeviceDetail(){
+    const ua = navigator.userAgent;
+    let browser = 'Unknown';
+    if(/edg/i.test(ua)) browser = 'Edge';
+    else if(/chrome/i.test(ua) && !/edg/i.test(ua)) browser = 'Chrome';
+    else if(/firefox/i.test(ua)) browser = 'Firefox';
+    else if(/safari/i.test(ua) && !/chrome/i.test(ua)) browser = 'Safari';
+    else if(/samsungbrowser/i.test(ua)) browser = 'Samsung Internet';
+
+    let os = 'Unknown';
+    if(/windows/i.test(ua)) os = 'Windows';
+    else if(/android/i.test(ua)) os = 'Android';
+    else if(/iphone|ipad|ipod/i.test(ua)) os = 'iOS';
+    else if(/mac os/i.test(ua)) os = 'macOS';
+    else if(/linux/i.test(ua)) os = 'Linux';
+
+    return `${browser} · ${os} · ${navigator.platform || 'N/A'}`;
+  }
+
   function startDashboard(){
     document.getElementById('deviceName').textContent = detectDeviceName();
+    document.getElementById('deviceDetail').textContent = detectDeviceDetail();
+    document.getElementById('screenInfo').textContent =
+      `${screen.width}×${screen.height} · ${navigator.language} · ${navigator.hardwareConcurrency || '?'} cores`;
 
     function tick(){
       const now = new Date();
@@ -160,12 +197,18 @@
       logEl.innerHTML = '<div class="empty">មិនទាន់មានទិន្នន័យទេ</div>';
       return;
     }
-    entries = entries.slice(-15).reverse();
+    entries = entries.slice().reverse();
     logEl.innerHTML = entries.map(e =>
       `<div class="log-item"><span class="name">${e.page}</span><span class="time">${e.time}</span></div>`
     ).join('');
   }
+
+  function clearLog(){
+    if(confirm('លុបប្រវត្តិទាំងអស់?')){
+      localStorage.removeItem('visitLog');
+      renderLog();
+    }
+  }
 </script>
 </body>
 </html>
-
