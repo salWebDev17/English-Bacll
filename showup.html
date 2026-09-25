@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Device Viewer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#111a15; --surface:#1b2b23; --line:#3A5347;
+    --accent:#E3A83F; --accent-soft:#F0C670;
+    --text:#eae6da; --muted:#a9b8ae; --muted-2:#7d8c82;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; min-height:100vh; background:var(--bg); color:var(--text);
+    font-family:'Kantumruy Pro','Khmer OS',sans-serif;
+    display:flex; align-items:center; justify-content:center; padding:20px;
+  }
+  .card{
+    width:100%; max-width:380px; background:var(--surface);
+    border:1px solid var(--line); border-radius:8px; padding:32px 24px;
+  }
+  h1{ font-size:18px; color:var(--accent-soft); margin:0 0 6px; text-align:center; }
+  .sub{ color:var(--muted-2); font-size:13px; text-align:center; margin:0 0 22px; }
+  input[type=password]{
+    width:100%; padding:12px 14px; background:var(--bg); border:1px solid var(--line);
+    border-radius:5px; color:var(--text); font-family:'JetBrains Mono',monospace;
+    font-size:14px; margin-bottom:12px;
+  }
+  input[type=password]:focus{ outline:none; border-color:var(--accent); }
+  button{
+    width:100%; padding:12px; background:var(--accent); border:none; border-radius:5px;
+    color:#1b2b23; font-weight:600; font-size:14px; cursor:pointer;
+  }
+  button:hover{ background:var(--accent-soft); }
+  .err{ color:#e07a5f; font-size:12px; text-align:center; margin-top:10px; min-height:16px; }
+
+  .dash{ display:none; width:100%; max-width:520px; }
+  .row{
+    background:var(--surface); border:1px solid var(--line); border-radius:8px;
+    padding:18px 20px; margin-bottom:14px;
+  }
+  .row .k{ font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted-2); letter-spacing:1px; text-transform:uppercase; }
+  .row .v{ font-size:16px; color:var(--accent-soft); margin-top:6px; }
+  .clock{ font-family:'JetBrains Mono',monospace; font-size:22px; color:var(--text); }
+  .log-item{
+    display:flex; justify-content:space-between; padding:9px 0;
+    border-bottom:1px solid var(--line); font-size:13px;
+  }
+  .log-item:last-child{ border-bottom:none; }
+  .log-item .name{ color:var(--text); font-family:'JetBrains Mono',monospace; }
+  .log-item .time{ color:var(--muted-2); font-size:12px; }
+  .empty{ color:var(--muted-2); font-size:13px; font-style:italic; }
+  .lockbtn{
+    background:transparent; border:1px solid var(--line); color:var(--muted-2);
+    font-size:12px; padding:8px; margin-top:4px;
+  }
+  .lockbtn:hover{ border-color:var(--accent); color:var(--accent-soft); background:transparent; }
+</style>
+</head>
+<body>
+
+  <div class="card" id="gate">
+    <h1>Device Viewer</h1>
+    <p class="sub">បញ្ចូលពាក្យសម្ងាត់ដើម្បីចូល</p>
+    <input type="password" id="pw" placeholder="Password" autocomplete="off">
+    <button onclick="tryUnlock()">Unlock</button>
+    <div class="err" id="err"></div>
+  </div>
+
+  <div class="dash" id="dash">
+    <div class="row">
+      <div class="k">Device Name</div>
+      <div class="v" id="deviceName">—</div>
+    </div>
+    <div class="row">
+      <div class="k">Date &amp; Time</div>
+      <div class="clock" id="clock">—</div>
+    </div>
+    <div class="row">
+      <div class="k">IP Address</div>
+      <div class="v" id="ipAddr">Loading…</div>
+    </div>
+    <div class="row">
+      <div class="k">Recently Opened (Screen Time)</div>
+      <div id="log"></div>
+    </div>
+    <button class="lockbtn" onclick="location.reload()">Lock again</button>
+  </div>
+
+<script>
+  const PASSWORD = "s-6+sho_7up";
+
+  function tryUnlock(){
+    const val = document.getElementById('pw').value;
+    if(val === PASSWORD){
+      document.getElementById('gate').style.display = 'none';
+      document.getElementById('dash').style.display = 'block';
+      startDashboard();
+    } else {
+      document.getElementById('err').textContent = 'ពាក្យសម្ងាត់មិនត្រឹមត្រូវ';
+    }
+  }
+  document.getElementById('pw').addEventListener('keydown', e=>{
+    if(e.key === 'Enter') tryUnlock();
+  });
+
+  function detectDeviceName(){
+    const ua = navigator.userAgent;
+    let os = 'Unknown';
+    if(/android/i.test(ua)) os = 'Android';
+    else if(/iphone|ipad|ipod/i.test(ua)) os = 'iOS';
+    else if(/windows/i.test(ua)) os = 'Windows';
+    else if(/mac os/i.test(ua)) os = 'macOS';
+    else if(/linux/i.test(ua)) os = 'Linux';
+
+    let browser = 'Browser';
+    if(/vivo/i.test(ua)) browser = 'ViVo';
+    else if(/samsung/i.test(ua)) browser = 'Samsung';
+    else if(/chrome/i.test(ua)) browser = 'Chrome';
+    else if(/firefox/i.test(ua)) browser = 'Firefox';
+    else if(/safari/i.test(ua)) browser = 'Safari';
+
+    return `${browser}-${os}`;
+  }
+
+  function startDashboard(){
+    document.getElementById('deviceName').textContent = detectDeviceName();
+
+    function tick(){
+      const now = new Date();
+      document.getElementById('clock').textContent = now.toLocaleString();
+    }
+    tick();
+    setInterval(tick, 1000);
+
+    renderLog();
+    loadIP();
+  }
+
+  function loadIP(){
+    const el = document.getElementById('ipAddr');
+    fetch('https://api.ipify.org?format=json')
+      .then(r => r.json())
+      .then(data => { el.textContent = data.ip; })
+      .catch(() => { el.textContent = 'មិនអាចទាញយកបានទេ (offline?)'; });
+  }
+
+  function renderLog(){
+    const logEl = document.getElementById('log');
+    let entries = [];
+    try{
+      entries = JSON.parse(localStorage.getItem('visitLog') || '[]');
+    }catch(e){ entries = []; }
+
+    if(entries.length === 0){
+      logEl.innerHTML = '<div class="empty">មិនទាន់មានទិន្នន័យទេ</div>';
+      return;
+    }
+    entries = entries.slice(-15).reverse();
+    logEl.innerHTML = entries.map(e =>
+      `<div class="log-item"><span class="name">${e.page}</span><span class="time">${e.time}</span></div>`
+    ).join('');
+  }
+</script>
+</body>
+</html>
+
