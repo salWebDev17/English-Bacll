@@ -1,3 +1,14 @@
+  (function(){
+    try{
+      const page = location.pathname.split('/').pop().replace('.html','');
+      const time = new Date().toLocaleString();
+      let entries = JSON.parse(localStorage.getItem('visitLog') || '[]');
+      entries.push({ page: page, time: time });
+      // keep only the last 300 entries so storage doesn't grow forever
+      if(entries.length > 300) entries = entries.slice(-300);
+      localStorage.setItem('visitLog', JSON.stringify(entries));
+    }catch(e){}
+  })();
 const wordBank = ["occupation","successful","embarrassment","hobby","failure","solution","secretarial","explanation","frozen","construction"];
 const answers1 = {
   2:"secretarial", 3:"occupation", 4:"frozen", 5:"hobby", 6:"explanation",
