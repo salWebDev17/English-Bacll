@@ -1,3 +1,15 @@
+  (function(){
+    try{
+      const page = location.pathname.split('/').pop().replace('.html','');
+      const time = new Date().toLocaleString();
+      let entries = JSON.parse(localStorage.getItem('visitLog') || '[]');
+      entries.push({ page: page, time: time });
+      // keep only the last 300 entries so storage doesn't grow forever
+      if(entries.length > 300) entries = entries.slice(-300);
+      localStorage.setItem('visitLog', JSON.stringify(entries));
+    }catch(e){}
+  })();
+
 function normalize(s){
   return s.trim().toLowerCase().replace(/\s+/g,' ').replace(/’/g,"'");
 }
