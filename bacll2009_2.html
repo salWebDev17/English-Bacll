@@ -113,9 +113,7 @@ footer.credits{text-align:center; color:var(--chalk-faint); font-size:12px; marg
 </style>
 </head>
 <body>
-  <div class="m-0 p-3 font-sans bg-gray-100">
-  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
-  </div>
+  
 <div class="progress-bar">
   <div class="progress-bar-inner">
     <span id="progressText">0 of 4 parts checked</span>
@@ -231,6 +229,17 @@ footer.credits{text-align:center; color:var(--chalk-faint); font-size:12px; marg
 </div>
 
 <script>
+  (function(){
+    try{
+      const page = location.pathname.split('/').pop().replace('.html','');
+      const time = new Date().toLocaleString();
+      let entries = JSON.parse(localStorage.getItem('visitLog') || '[]');
+      entries.push({ page: page, time: time });
+      // keep only the last 50 entries so storage doesn't grow forever
+      if(entries.length > 50) entries = entries.slice(-50);
+      localStorage.setItem('visitLog', JSON.stringify(entries));
+    }catch(e){}
+  })();
 /* ---------- PART 1: READING ---------- */
 const READING_WORDS = ["pollute","introduced","environment","encourage","stop","reducing","rubbish","recycling"];
 const READING_ANSWERS = {1:"rubbish",2:"environment",3:"pollute",4:"stop",5:"encourage",6:"introduced",7:"recycling",8:"reducing"};
