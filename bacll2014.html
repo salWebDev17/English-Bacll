@@ -281,9 +281,7 @@
 </style>
 </head>
 <body>
-  <div class="m-0 p-3 font-sans bg-gray-100">
-  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
-
+  
 <div class="wrap">
 
   <header class="hero">
@@ -347,6 +345,17 @@
 </div>
 
 <script>
+    (function(){
+    try{
+      const page = location.pathname.split('/').pop().replace('.html','');
+      const time = new Date().toLocaleString();
+      let entries = JSON.parse(localStorage.getItem('visitLog') || '[]');
+      entries.push({ page: page, time: time });
+      // keep only the last 300 entries so storage doesn't grow forever
+      if(entries.length > 300) entries = entries.slice(-300);
+      localStorage.setItem('visitLog', JSON.stringify(entries));
+    }catch(e){}
+  })();
 /* ---------- DATA ---------- */
 
 const wordBank = ["candidate","eligible","election campaign","opinion poll","ballot box","support","polling station","polling day","predict","result","winner"];
