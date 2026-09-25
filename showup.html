@@ -54,6 +54,15 @@
   .log-item .name{ color:var(--text); font-family:'JetBrains Mono',monospace; }
   .log-item .time{ color:var(--muted-2); font-size:12px; }
   #log{ max-height:280px; overflow-y:auto; }
+  #ipHistory, #deviceHistory{ max-height:150px; overflow-y:auto; }
+  .tag-list{ display:flex; flex-direction:column; gap:6px; }
+  .tag-item{
+    display:flex; justify-content:space-between; font-size:13px;
+    font-family:'JetBrains Mono',monospace; color:var(--text);
+    border-bottom:1px solid var(--line); padding-bottom:6px;
+  }
+  .tag-item:last-child{ border-bottom:none; padding-bottom:0; }
+  .tag-item .count{ color:var(--muted-2); font-size:11px; }
   .clear-log{
     background:transparent; border:1px solid var(--line); color:var(--muted-2);
     font-size:11px; padding:6px 10px; margin-top:10px; width:auto;
@@ -95,8 +104,16 @@
       <div class="clock" id="clock">—</div>
     </div>
     <div class="row">
-      <div class="k">IP Address</div>
+      <div class="k">IP Address (live)</div>
       <div class="v" id="ipAddr">Loading…</div>
+    </div>
+    <div class="row">
+      <div class="k">IP History</div>
+      <div id="ipHistory"></div>
+    </div>
+    <div class="row">
+      <div class="k">Devices Seen</div>
+      <div id="deviceHistory"></div>
     </div>
     <div class="row">
       <div class="k">Recently Opened (Screen Time)</div>
@@ -176,6 +193,10 @@
 
     renderLog();
     loadIP();
+
+    // keep the view live: re-check IP and re-read the log periodically
+    setInterval(loadIP, 15000);
+    setInterval(renderLog, 5000);
   }
 
   function loadIP(){
@@ -195,12 +216,44 @@
 
     if(entries.length === 0){
       logEl.innerHTML = '<div class="empty">មិនទាន់មានទិន្នន័យទេ</div>';
+      document.getElementById('ipHistory').innerHTML = '<div class="empty">មិនទាន់មានទិន្នន័យទេ</div>';
+      document.getElementById('deviceHistory').innerHTML = '<div class="empty">មិនទាន់មានទិន្នន័យទេ</div>';
       return;
     }
-    entries = entries.slice().reverse();
-    logEl.innerHTML = entries.map(e =>
-      `<div class="log-item"><span class="name">${e.page}</span><span class="time">${e.time}</span></div>`
-    ).join('');
+
+    // full visit log, newest first
+    const shown = entries.slice().reverse();
+    logEl.innerHTML = shown.map(e => `
+      <div class="log-item">
+        <span class="name">${e.page}${e.device ? ' · ' + e.device : ''}${e.ip ? ' · ' + e.ip : ''}</span>
+        <span class="time">${e.time}</span>
+      </div>`).join('');
+
+    // unique IP history, most recent first, with visit counts
+    const ipMap = new Map();
+    entries.forEach(e => {
+      const ip = e.ip || 'unknown';
+      const rec = ipMap.get(ip) || { count: 0, last: e.time };
+      rec.count++; rec.last = e.time;
+      ipMap.set(ip, rec);
+    });
+    const ipRows = [...ipMap.entries()].reverse();
+    document.getElementById('ipHistory').innerHTML = '<div class="tag-list">' + ipRows.map(([ip, rec]) =>
+      `<div class="tag-item"><span>${ip}</span><span class="count">${rec.count}× · last ${rec.last}</span></div>`
+    ).join('') + '</div>';
+
+    // unique device history, most recent first, with visit counts
+    const devMap = new Map();
+    entries.forEach(e => {
+      const dev = e.device || 'unknown';
+      const rec = devMap.get(dev) || { count: 0, last: e.time };
+      rec.count++; rec.last = e.time;
+      devMap.set(dev, rec);
+    });
+    const devRows = [...devMap.entries()].reverse();
+    document.getElementById('deviceHistory').innerHTML = '<div class="tag-list">' + devRows.map(([dev, rec]) =>
+      `<div class="tag-item"><span>${dev}</span><span class="count">${rec.count}× · last ${rec.last}</span></div>`
+    ).join('') + '</div>';
   }
 
   function clearLog(){
