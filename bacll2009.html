@@ -234,9 +234,7 @@
 </style>
 </head>
 <body>
-  <div class="m-0 p-3 font-sans bg-gray-100">
-  <a href="index.html" class="inline-block text-center bg-white text-gray-800 px-2 py-3 border-2 border-green-500 rounded-xl text-lg font-bold no-underline shadow-md transition-all duration-200 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5">Home</a>
-  </div>
+  
 <header>
   <h1>Bangsak High School — English Exam Practice</h1>
   <p>Semester I · Grade 11 · Full mock version of your printed test</p>
@@ -556,6 +554,17 @@
 <footer>Practice tool generated from your printed exam paper — check your work, then revise anything you got wrong.</footer>
 
 <script>
+  (function(){
+    try{
+      const page = location.pathname.split('/').pop().replace('.html','');
+      const time = new Date().toLocaleString();
+      let entries = JSON.parse(localStorage.getItem('visitLog') || '[]');
+      entries.push({ page: page, time: time });
+      // keep only the last 50 entries so storage doesn't grow forever
+      if(entries.length > 50) entries = entries.slice(-50);
+      localStorage.setItem('visitLog', JSON.stringify(entries));
+    }catch(e){}
+  })();
 // Tab switching
 document.querySelectorAll('#tabs button').forEach(btn=>{
   btn.addEventListener('click',()=>{
