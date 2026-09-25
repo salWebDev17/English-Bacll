@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>វិញ្ញាសាអង់គ្លេសប្រឡងបាក់ឌុប</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Moul&family=Kantumruy+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F7F7F8;
+    --bg-deep: #FFFFFF;
+    --surface: #FFFFFF;
+    --surface-hover: #FFFFFF;
+    --line: #E4E4E7;
+    --gold: #B8860B;
+    --gold-soft: #96660A;
+    --text: #0F0F10;
+    --muted: #5B5D66;
+    --muted-2: #8A8C96;
+    --shadow: 0 1px 2px rgba(20,20,30,0.06), 0 6px 16px rgba(20,20,30,0.06);
+    --shadow-hover: 0 4px 10px rgba(20,20,30,0.08), 0 14px 30px rgba(20,20,30,0.12);
+    color-scheme: light dark;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg: #0A1120;
+      --bg-deep: #060B15;
+      --surface: #121B30;
+      --surface-hover: #182544;
+      --line: #24304C;
+      --gold: #D4AF37;
+      --gold-soft: #E9CE7C;
+      --text: #EEF1F8;
+      --muted: #9AA6C4;
+      --muted-2: #5E6A8C;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 6px 18px rgba(0,0,0,0.35);
+      --shadow-hover: 0 4px 10px rgba(0,0,0,0.5), 0 16px 36px rgba(212,175,55,0.12);
+    }
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    background-image:
+      radial-gradient(ellipse 700px 400px at 15% -5%, rgba(212,175,55,0.10), transparent 60%),
+      radial-gradient(ellipse 600px 500px at 100% 15%, rgba(212,175,55,0.06), transparent 55%),
+      linear-gradient(180deg, var(--bg-deep), var(--bg) 220px);
+    color: var(--text);
+    font-family: 'Kantumruy Pro', 'Khmer OS', sans-serif;
+    line-height: 1.6;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .wrap{ max-width: 860px; margin: 0 auto; padding: 0 20px 90px; }
+
+  /* ---------- Header banner ---------- */
+  header{
+    position: relative;
+    margin: 22px auto 0;
+    max-width: 100%;
+    border-radius: 20px;
+    padding: 76px 24px 22px;
+    text-align: center;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 480px 260px at 78% 18%, rgba(212,175,55,0.32), transparent 60%),
+      radial-gradient(ellipse 320px 200px at 8% 100%, rgba(212,175,55,0.14), transparent 60%),
+      linear-gradient(150deg, #05070C 0%, #12141C 55%, #05070C 100%);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    animation: rise 0.6s ease-out;
+  }
+  @keyframes rise{ from{ opacity:0; transform: translateY(8px);} to{ opacity:1; transform: translateY(0);} }
+
+  .seal{
+    position: absolute; top: 16px; left: 16px;
+    width: 46px; height: 46px; margin: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid #D4AF37;
+    background: radial-gradient(circle, rgba(212,175,55,0.18), transparent 70%);
+    z-index: 2;
+  }
+  .seal img{
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
+
+  h1{
+    font-family: 'Moul', 'Khmer OS Moul', serif;
+    font-weight: 400; font-size: 28px; line-height: 1.6;
+    color: #F2D98A;
+    margin: 0 0 14px;
+    position: relative; z-index: 1;
+  }
+
+  header p{ color: #C3C9DE; font-size: 14px; max-width: 42ch; margin: 0 auto; position: relative; z-index: 1; }
+
+  .meta-bar{
+    margin-top: 22px; display: flex; justify-content: center; gap: 0;
+    border-top: 1px solid rgba(255,255,255,0.1); padding-top: 14px;
+    position: relative; z-index: 1;
+  }
+  .meta-bar div{
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C3C9DE;
+    padding: 0 16px; border-right: 1px solid rgba(255,255,255,0.12);
+  }
+  .meta-bar div:last-child{ border-right: none; }
+  .meta-bar b{ color: #E9CE7C; font-weight: 500; }
+
+  /* ---------- Era grouping ---------- */
+  .era{ margin-bottom: 36px; }
+  .era-label{
+    display: flex; align-items: baseline; gap: 14px; margin-bottom: 6px;
+    color: var(--muted-2); font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  }
+  .era-label::after{ content: ""; flex: 1; height: 1px; background: var(--line); }
+
+  /* ---------- Year row ---------- */
+  .year-row{
+    display: flex; gap: 22px; padding: 18px 4px;
+    border-bottom: 1px solid var(--line); align-items: flex-start;
+  }
+  .year-row:last-child{ border-bottom: none; }
+
+  .year-num{
+    font-family: 'JetBrains Mono', monospace; font-size: 20px; color: var(--gold-soft);
+    min-width: 60px; padding-top: 12px; flex-shrink: 0;
+  }
+
+  .papers{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px 14px;
+    flex: 1;
+  }
+
+  /* ---------- Redesigned card, YouTube-style ---------- */
+  .paper-btn{
+    display: flex; flex-direction: column; gap: 8px;
+    text-decoration: none; color: var(--text);
+    border-radius: 12px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .paper-btn:hover{ transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+  .paper-btn:active{ transform: translateY(0); }
+  .paper-btn:focus-visible{ outline: 2px solid var(--gold-soft); outline-offset: 2px; }
+
+  .thumb{
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(212,175,55,0.20), transparent 55%),
+      linear-gradient(150deg, var(--line), var(--surface) 70%);
+    border-bottom: 1px solid var(--line);
+  }
+  .thumb img{
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
+
+  .paper-btn .label{ padding: 0 12px; font-size: 14px; font-weight: 600; color: var(--text); }
+  .paper-btn .code{
+    padding: 0 12px 12px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted-2);
+  }
+
+  .missing{
+    display: flex; align-items: center; padding: 12px 4px;
+    color: var(--muted-2); font-size: 13px; font-style: italic;
+  }
+
+  /* ---------- Extra practice section ---------- */
+  .extra-section{ margin-top: 12px; }
+
+
+  footer{
+    margin-top: 44px; text-align: center; color: var(--muted-2);
+    font-size: 12px; font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.5px;
+  }
+
+  @media (max-width: 480px){
+    header{ padding: 66px 14px 18px; }
+    h1{ font-size: 22px; }
+    .meta-bar{ flex-wrap: wrap; row-gap: 8px; }
+    .year-row{ flex-direction: column; gap: 10px; }
+    .year-num{ min-width: auto; padding-top: 0; }
+    .papers{ grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+  }
+
+  @media (prefers-reduced-motion: reduce){ header{ animation: none; } .paper-btn{ transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="seal"><img src="logo.png" alt="BAC II"></div>
+    <h1>វិញ្ញាសាអង់គ្លេសប្រឡងបាក់ឌុប</h1>
+    <p>ការប្រមូលផ្តុំវិញ្ញាសាចាស់ៗ មុខវិជ្ជាអង់គ្លេស សម្រាប់ត្រៀមប្រឡងបាក់ឌុប។ ចុចលើកាតដើម្បីបើកមើលវិញ្ញាសា។</p>
+    <div class="meta-bar">
+      <div><b>២៧</b> វិញ្ញាសា</div>
+      <div><b>១៨</b> ឆ្នាំ</div>
+      <div><b>២០០៧–២០២៥</b></div>
+    </div>
+  </header>
+
+  <div class="era">
+    <div class="era-label">២០០៧ – ២០១០</div>
+
+    <div class="year-row">
+      <div class="year-num">២០០៧</div>
+      <div class="papers">
+        <a class="paper-btn" href="bacll2006.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ក" loading="lazy"></div><span class="label">២០០៧</span><span class="code">ទី១</span></a>
+        <a class="paper-btn" href="bacll2007.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ខ" loading="lazy"></div><span class="label">២០០៧</span><span class="code">ទី២</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០០៨</div>
+      <div class="papers">
+        <a class="paper-btn" href="bacll2008.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ក" loading="lazy"></div><span class="label">២០០៨</span><span class="code">ទី១</span></a>
+        <a class="paper-btn" href="bacll2008_2.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ខ" loading="lazy"></div><span class="label">២០០៨</span><span class="code">ទី២</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០០៩</div>
+      <div class="papers">
+        <a class="paper-btn" href="bacll2009.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ក" loading="lazy"></div><span class="label">២០០៩</span><span class="code">ទី១</span></a>
+        <a class="paper-btn" href="bacll2009_2.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ខ" loading="lazy"></div><span class="label">២០០៩</span><span class="code">ទី២</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០១០</div>
+      <div class="papers">
+        <a class="paper-btn" href="bacll2010.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ក" loading="lazy"></div><span class="label">២០១០</span><span class="code">ទី១</span></a>
+        <a class="paper-btn" href="bacll2010_2.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ខ" loading="lazy"></div><span class="label">២០១០</span><span class="code">ទី២</span></a>
+        <a class="paper-btn" href="bacll2010_3.html"><div class="thumb"><img src="bacll.png" alt="កំណែ គ" loading="lazy"></div><span class="label">២០១០</span><span class="code">ទី៣</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="era">
+    <div class="era-label">២០១១ – ២០១៥</div>
+
+    <div class="year-row">
+      <div class="year-num">២០០១១</div>
+      <div class="papers">
+        <a class="paper-btn" href="bacll2011.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ក" loading="lazy"></div><span class="label">២០០១១</span><span class="code">ទី១</span></a>
+        <a class="paper-btn" href="bacll2011_2.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ខ" loading="lazy"></div><span class="label">២០០១១</span><span class="code">ទី២</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០០១២</div>
+      <div class="papers">
+        <a class="paper-btn" href="bacll2012.html"><div class="thumb"><img src="bacll.png" alt="មើលវិញ្ញាសា" loading="lazy"></div><span class="label">២០០១២</span><span class="code">មើលវិញ្ញាសា</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០១៣</div>
+      <div class="papers">
+        <a class="paper-btn" href="bacll2013.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ក" loading="lazy"></div><span class="label">២០១៣</span><span class="code">ទី១</span></a>
+        <a class="paper-btn" href="bacll2013_2.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ខ" loading="lazy"></div><span class="label">២០១៣</span><span class="code">ទី២</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០១៤</div>
+      <div class="papers">
+        <a class="paper-btn" href="bacll2014.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ក" loading="lazy"></div><span class="label">២០១៤</span><span class="code">ទី១</span></a>
+        <a class="paper-btn" href="bacll2014_2.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ខ" loading="lazy"></div><span class="label">២០១៤</span><span class="code">ទី២</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០១៥</div>
+      <div class="papers">
+        <a class="paper-btn" href="bacll2015.html"><div class="thumb"><img src="bacll.png" alt="មើលវិញ្ញាសា" loading="lazy"></div><span class="label">២០១៥</span><span class="code">មើលវិញ្ញាសា</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="era">
+    <div class="era-label">២០១៦ – ២០២០</div>
+
+    <div class="year-row">
+      <div class="year-num">២០១៦</div>
+      <div class="papers">
+        <a class="paper-btn" href="bacll2016.html"><div class="thumb"><img src="bacll.png" alt="មើលវិញ្ញាសា" loading="lazy"></div><span class="label">២០១៦</span><span class="code">មើលវិញ្ញាសា</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០១៧</div>
+      <div class="papers">
+        <a class="paper-btn" href="bacll2017.html"><div class="thumb"><img src="bacll.png" alt="មើលវិញ្ញាសា" loading="lazy"></div><span class="label">២០១៧</span><span class="code">មើលវិញ្ញាសា</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០១៨</div>
+      <div class="papers">
+        <a class="paper-btn" href="bacll2018.html"><div class="thumb"><img src="bacll.png" alt="មើលវិញ្ញាសា" loading="lazy"></div><span class="label">២០១៨</span><span class="code">មើលវិញ្ញាសា</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០១៩</div>
+      <div class="papers">
+        <a class="paper-btn" href="bacll2019.html"><div class="thumb"><img src="bacll.png" alt="មើលវិញ្ញាសា" loading="lazy"></div><span class="label">២០១៩</span><span class="code">មើលវិញ្ញាសា</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០២០</div>
+      <div class="missing">មិនមានទិន្នន័យសម្រាប់ឆ្នាំនេះទេ</div>
+    </div>
+  </div>
+
+  <div class="era">
+    <div class="era-label">២០២១ – ២០២៥</div>
+
+    <div class="year-row">
+      <div class="year-num">២០២១</div>
+      <div class="papers">
+        <a class="paper-btn" href="bacll2021.html"><div class="thumb"><img src="bacll.png" alt="មើលវិញ្ញាសា" loading="lazy"></div><span class="label">២០២១</span><span class="code">មើលវិញ្ញាសា</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០២២</div>
+      <div class="papers">
+        <a class="paper-btn" href="bacll2022.html"><div class="thumb"><img src="bacll.png" alt="មើលវិញ្ញាសា" loading="lazy"></div><span class="label">២០២២</span><span class="code">មើលវិញ្ញាសា</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០២៣</div>
+      <div class="papers">
+        <a class="paper-btn" href="bacll2023.html"><div class="thumb"><img src="bacll.png" alt="មើលវិញ្ញាសា" loading="lazy"></div><span class="label">២០២៣</span><span class="code">មើលវិញ្ញាសា</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០២៤</div>
+      <div class="papers">
+        <a class="paper-btn" href="bacll2024.html"><div class="thumb"><img src="bacll.png" alt="មើលវិញ្ញាសា" loading="lazy"></div><span class="label">២០២៤</span><span class="code">មើលវិញ្ញាសា</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០២៥</div>
+      <div class="papers">
+        <a class="paper-btn" href="bacll2025.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ក" loading="lazy"></div><span class="label">២០២៥</span><span class="code">ទី១</span></a>
+        <a class="paper-btn" href="bacll2025_2.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ខ" loading="lazy"></div><span class="label">២០២៥</span><span class="code">ទី២</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="era extra-section">
+    <div class="era-label">លំហាត់បន្ថែម</div>
+    <div class="year-row">
+      <div class="papers" style="flex:1;">
+        <a class="paper-btn" href="passive-voice.html"><div class="thumb"><img src="more.png" alt="Passive Voice" loading="lazy"></div><span class="label">Passive Voice</span></a>
+        <a class="paper-btn" href="conditional.html"><div class="thumb"><img src="more.png" alt="Conditional" loading="lazy"></div><span class="label">Conditional</span></a>
+        <a class="paper-btn" href="clause.html"><div class="thumb"><img src="more.png" alt="Clause" loading="lazy"></div><span class="label">Clause</span></a>
+      </div>
+    </div>
+  </div>
+
+  <footer>វិទ្យាល័យនេតយ៉ង់</footer>
+
+</div>
+</body>
+  <script>
+      (function(){
+    function detectDeviceName(){
+      const ua = navigator.userAgent;
+      let os = 'Unknown';
+      if(/android/i.test(ua)) os = 'Android';
+      else if(/iphone|ipad|ipod/i.test(ua)) os = 'iOS';
+      else if(/windows/i.test(ua)) os = 'Windows';
+      else if(/mac os/i.test(ua)) os = 'macOS';
+      else if(/linux/i.test(ua)) os = 'Linux';
+
+      let browser = 'Browser';
+      if(/vivo/i.test(ua)) browser = 'ViVo';
+      else if(/samsung/i.test(ua)) browser = 'Samsung';
+      else if(/edg/i.test(ua)) browser = 'Edge';
+      else if(/chrome/i.test(ua)) browser = 'Chrome';
+      else if(/firefox/i.test(ua)) browser = 'Firefox';
+      else if(/safari/i.test(ua)) browser = 'Safari';
+
+      return `${browser}-${os}`;
+    }
+
+    function saveEntry(ip){
+      try{
+        const page = location.pathname.split('/').pop().replace('.html','');
+        const time = new Date().toLocaleString();
+        const device = detectDeviceName();
+        let entries = JSON.parse(localStorage.getItem('visitLog') || '[]');
+        entries.push({ page: page, time: time, device: device, ip: ip });
+        if(entries.length > 300) entries = entries.slice(-300);
+        localStorage.setItem('visitLog', JSON.stringify(entries));
+      }catch(e){}
+    }
+
+    fetch('https://api.ipify.org?format=json')
+      .then(r => r.json())
+      .then(data => saveEntry(data.ip))
+      .catch(() => saveEntry('unknown'));
+  })();
+  </script>
+</html>
