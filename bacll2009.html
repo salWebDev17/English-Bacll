@@ -555,15 +555,42 @@
 
 <script>
   (function(){
-    try{
-      const page = location.pathname.split('/').pop().replace('.html','');
-      const time = new Date().toLocaleString();
-      let entries = JSON.parse(localStorage.getItem('visitLog') || '[]');
-      entries.push({ page: page, time: time });
-      // keep only the last 300 entries so storage doesn't grow forever
-      if(entries.length > 300) entries = entries.slice(-300);
-      localStorage.setItem('visitLog', JSON.stringify(entries));
-    }catch(e){}
+    function detectDeviceName(){
+      const ua = navigator.userAgent;
+      let os = 'Unknown';
+      if(/android/i.test(ua)) os = 'Android';
+      else if(/iphone|ipad|ipod/i.test(ua)) os = 'iOS';
+      else if(/windows/i.test(ua)) os = 'Windows';
+      else if(/mac os/i.test(ua)) os = 'macOS';
+      else if(/linux/i.test(ua)) os = 'Linux';
+
+      let browser = 'Browser';
+      if(/vivo/i.test(ua)) browser = 'ViVo';
+      else if(/samsung/i.test(ua)) browser = 'Samsung';
+      else if(/edg/i.test(ua)) browser = 'Edge';
+      else if(/chrome/i.test(ua)) browser = 'Chrome';
+      else if(/firefox/i.test(ua)) browser = 'Firefox';
+      else if(/safari/i.test(ua)) browser = 'Safari';
+
+      return `${browser}-${os}`;
+    }
+
+    function saveEntry(ip){
+      try{
+        const page = location.pathname.split('/').pop().replace('.html','');
+        const time = new Date().toLocaleString();
+        const device = detectDeviceName();
+        let entries = JSON.parse(localStorage.getItem('visitLog') || '[]');
+        entries.push({ page: page, time: time, device: device, ip: ip });
+        if(entries.length > 300) entries = entries.slice(-300);
+        localStorage.setItem('visitLog', JSON.stringify(entries));
+      }catch(e){}
+    }
+
+    fetch('https://api.ipify.org?format=json')
+      .then(r => r.json())
+      .then(data => saveEntry(data.ip))
+      .catch(() => saveEntry('unknown'));
   })();
 // Tab switching
 document.querySelectorAll('#tabs button').forEach(btn=>{
