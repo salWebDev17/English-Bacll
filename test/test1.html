@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Practice Exam 03 — All Sections</title>
+<style>
+:root{
+  --ink:#1b2a41;--ink2:#475569;--paper:#f4f6fb;--card:#ffffff;--line:#e2e8f0;--line2:#cbd5e1;
+  --muted:#64748b;--accent:#3b5bdb;--accentbg:#eef2ff;--accentline:#c7d2fe;
+  --green:#15803d;--greenbg:#dcfce7;--greenline:#86efac;
+  --red:#b91c1c;--redbg:#fee2e2;--redline:#fca5a5;
+  --gold:#92400e;--goldbg:#fef3c7;
+  --radius:16px;--shadow:0 1px 2px rgba(15,23,42,.05),0 4px 14px rgba(15,23,42,.06);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+
+/* Header */
+header{background:linear-gradient(135deg,#1b2a41 0%,#2c4a8a 60%,#3b5bdb 100%);color:#fff;padding:28px 18px 34px}
+header .wrap{max-width:780px;margin:0 auto}
+h1{font-size:1.6rem;margin:0;letter-spacing:-.01em}
+header p{color:#c9d6ec;margin:6px 0 0;font-size:.95rem}
+.scorebar{display:none;margin-top:16px;padding:12px 14px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:12px;font-size:.95rem;align-items:center;justify-content:space-between}
+.scorebar strong{color:#ffe08a;font-size:1.05rem}
+
+/* Layout */
+main{max-width:780px;margin:-18px auto 0;padding:0 14px 20px}
+.part{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin-bottom:18px;box-shadow:var(--shadow)}
+.part-head{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.badge{flex:0 0 auto;width:36px;height:36px;border-radius:10px;background:var(--accentbg);color:var(--accent);font-weight:800;display:grid;place-items:center;font-size:.95rem}
+.part h2{margin:0;font-size:1.15rem;flex:1}
+.pts{font-size:.8rem;font-weight:700;color:var(--ink2);background:#f1f5f9;border-radius:999px;padding:4px 10px;white-space:nowrap}
+.instructions{color:var(--muted);font-size:.92rem;margin:4px 0 16px}
+
+/* Word bank */
+.bank-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700;margin-bottom:8px}
+.wordbank{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px;padding:14px;background:#f8fafc;border:1px dashed var(--line2);border-radius:12px}
+.wordbank span{border:1px solid var(--line2);border-radius:999px;padding:5px 12px;background:#fff;font-size:.9rem;font-weight:500;color:var(--ink2);transition:opacity .2s,background .2s}
+.wordbank span.used{opacity:.4;background:#f1f5f9}
+
+/* Reading passage */
+.story{line-height:2.25;font-size:1.02rem;color:var(--ink2)}
+.story select{font:inherit;font-weight:600;color:var(--accent);background:var(--accentbg);border:1px solid var(--accentline);border-radius:8px;padding:2px 6px;margin:0 2px;max-width:100%;cursor:pointer;outline:none;transition:border-color .15s,box-shadow .15s}
+.story select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(59,91,219,.18)}
+.story select.filled{background:#fff;border-color:var(--accent)}
+.story select.correct{color:var(--green);background:var(--greenbg);border-color:var(--greenline)}
+.story select.wrong{color:var(--red);background:var(--redbg);border-color:var(--redline)}
+.story select:disabled{cursor:default}
+
+/* Grammar & vocab questions */
+.q{padding:16px 0;border-bottom:1px solid var(--line)}
+.q:first-child{padding-top:4px}
+.q:last-child{border-bottom:0;padding-bottom:0}
+.qtext{font-weight:600;margin-bottom:10px;color:var(--ink)}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.opt{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff;cursor:pointer;font-size:.94rem;color:var(--ink2);transition:border-color .15s,background .15s}
+.opt:hover{border-color:var(--line2);background:#f8fafc}
+.opt input{margin:0;accent-color:var(--accent);width:16px;height:16px;flex:0 0 auto}
+.opt:has(input:checked){border-color:var(--accent);background:var(--accentbg);color:var(--ink)}
+.opt.correct{border-color:var(--green);background:var(--greenbg);color:var(--green);font-weight:600}
+.opt.wrong{border-color:var(--red);background:var(--redbg);color:var(--red)}
+.opt.locked{pointer-events:none}
+
+/* Score banners */
+.partscore{display:none;padding:10px 14px;border-radius:10px;margin:0 0 14px;font-weight:600;font-size:.95rem}
+
+/* Essay */
+.essay{width:100%;min-height:170px;padding:14px;border:1px solid var(--line2);border-radius:12px;font:inherit;background:#f8fafc;color:var(--ink);resize:vertical;outline:none;transition:border-color .15s,box-shadow .15s}
+.essay:focus{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(59,91,219,.15)}
+.essay-foot{display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:10px}
+.tip{font-size:.88rem;color:var(--muted);margin:0}
+.count{font-size:.85rem;color:var(--muted);white-space:nowrap;background:#f1f5f9;border-radius:999px;padding:4px 10px}
+.count strong{color:var(--ink)}
+
+/* Buttons */
+.checkbtn{margin-top:18px;border:1px solid var(--accentline);background:var(--accentbg);color:var(--accent);border-radius:10px;padding:9px 16px;font:inherit;font-weight:700;font-size:.9rem;cursor:pointer;transition:background .15s}
+.checkbtn:hover{background:#e0e7ff}
+.checkbtn:disabled{opacity:.5;cursor:default}
+
+.actions{position:sticky;bottom:0;background:linear-gradient(to top,var(--paper) 70%,rgba(244,246,251,0));padding:22px 14px 22px;display:flex;gap:10px;max-width:780px;margin:0 auto}
+.btn{border:0;border-radius:12px;padding:14px 18px;font:inherit;font-weight:700;cursor:pointer;transition:transform .05s,background .15s}
+.btn:active{transform:scale(.98)}
+.primary{background:var(--ink);color:#fff;flex:1;box-shadow:0 4px 12px rgba(27,42,65,.25)}
+.primary:hover{background:#263a5c}
+.secondary{border:1px solid var(--line2);background:#fff;color:var(--ink)}
+.secondary:hover{background:#f8fafc}
+
+@media(max-width:480px){
+  .opts{grid-template-columns:1fr}
+  .part{padding:18px}
+  .story{line-height:2.1}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>English Practice Exam 03</h1>
+    <p>Reading · Grammar · Vocabulary · Writing</p>
+    <div class="scorebar" id="scorebar">
+      <span>Objective score</span>
+      <strong id="totalScore">0 / 30</strong>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="part" id="part1">
+    <div class="part-head"><div class="badge">1</div><h2>Reading</h2><span class="pts">10 points</span></div>
+    <p class="instructions">Complete the passage with words from the box. Use each word once. There is one extra word.</p>
+    <div class="bank-label">Word bank</div>
+    <div class="wordbank" id="bank"></div>
+    <div class="partscore" id="score1"></div>
+    <div class="story" id="story"></div>
+    <button class="checkbtn" onclick="checkSection(1)">Check Part 1</button>
+  </section>
+
+  <section class="part" id="part2">
+    <div class="part-head"><div class="badge">2</div><h2>Grammar</h2><span class="pts">10 points</span></div>
+    <p class="instructions">Choose the best answer: a, b, c or d.</p>
+    <div class="partscore" id="score2"></div>
+    <div id="grammar"></div>
+    <button class="checkbtn" onclick="checkSection(2)">Check Part 2</button>
+  </section>
+
+  <section class="part" id="part3">
+    <div class="part-head"><div class="badge">3</div><h2>Vocabulary</h2><span class="pts">10 points</span></div>
+    <p class="instructions">Choose the best answer: a, b, c or d.</p>
+    <div class="partscore" id="score3"></div>
+    <div id="vocab"></div>
+    <button class="checkbtn" onclick="checkSection(3)">Check Part 3</button>
+  </section>
+
+  <section class="part" id="part4">
+    <div class="part-head"><div class="badge">4</div><h2>Writing</h2><span class="pts">10 points</span></div>
+    <p class="instructions">Write at least 80 words about <b>“How I can improve my English.”</b> This section is for practice and is not automatically graded.</p>
+    <textarea class="essay" id="essay" placeholder="Write your essay here..."></textarea>
+    <div class="essay-foot">
+      <p class="tip">Tip: include an introduction, reasons, how you will practise, and a conclusion.</p>
+      <span class="count"><strong id="wc">0</strong> words</span>
+    </div>
+  </section>
+</main>
+
+<div class="actions">
+  <button class="btn secondary" id="reset">New attempt</button>
+  <button class="btn primary" id="checkAll">Check all sections</button>
+</div>
+
+<script>
+const words=["library","borrow","quiet","prepare","exam","usually","helpful","carefully","results","improve","journey","quickly"];
+const passage=[
+"Every afternoon, Dara goes to the ",{gap:1,answer:"library"}," after school. He likes the ",{gap:2,answer:"quiet"}," atmosphere because it helps him study. When he needs a book, he can ",{gap:3,answer:"borrow"}," one using his student card. Dara is ",{gap:4,answer:"usually"}," busy because he is preparing for an important ",{gap:5,answer:"exam"},". He reads each question ",{gap:6,answer:"carefully"}," and writes notes to remember new information. His older sister is very ",{gap:7,answer:"helpful"}," and sometimes explains difficult ideas to him. Dara also practises English every day because he wants to ",{gap:8,answer:"improve"}," his speaking and writing. He knows that good ",{gap:9,answer:"results"}," do not happen in one day. He must ",{gap:10,answer:"prepare"}," well and keep trying. For Dara, learning is a long ",{gap:11,answer:"journey"}," and every small step matters."
+];
+const grammar=[
+{q:"Look! The children _____ football in the field.",o:["play","played","are playing","have play"],a:2},
+{q:"My family has lived here _____ five years.",o:["since","for","at","during"],a:1},
+{q:"She _____ to school by bus every day.",o:["go","goes","is go","going"],a:1},
+{q:"If I have enough time, I _____ you with your homework.",o:["helped","would helped","will help","helping"],a:2},
+{q:"The letters _____ yesterday afternoon.",o:["delivered","were delivered","are delivering","deliver"],a:1},
+{q:"He is interested _____ learning new languages.",o:["on","at","in","for"],a:2},
+{q:"There are _____ students in the classroom today than yesterday.",o:["less","few","fewer","little"],a:2},
+{q:"When I arrived, my friends _____ dinner.",o:["were having","have","are having","has had"],a:0},
+{q:"You _____ speak loudly in the library.",o:["must","mustn't","should to","don't have"],a:1},
+{q:"This exercise is _____ than the last one.",o:["easy","easiest","easier","more easy"],a:2}
+];
+const vocab=[
+{q:"If you do something regularly to get better at it, you _____.",o:["practise","refuse","forget","lend"],a:0},
+{q:"A place where you can borrow books is a _____.",o:["bakery","library","factory","stadium"],a:1},
+{q:"The opposite of “careful” is _____.",o:["helpful","polite","careless","patient"],a:2},
+{q:"I was late because I _____ the bus.",o:["caught","missed","reached","passed"],a:1},
+{q:"Can you _____ me some advice?",o:["give","make","do","take"],a:0},
+{q:"A person who teaches students is a _____.",o:["customer","teacher","patient","driver"],a:1},
+{q:"We need to _____ a plan before we start.",o:["make","do","take","put"],a:0},
+{q:"The test was difficult, but I tried my _____.",o:["better","best","good","well"],a:1},
+{q:"Please speak _____ so I can understand you.",o:["clear","clearly","clarity","clearing"],a:1},
+{q:"She felt _____ after she finished the difficult task.",o:["proud","empty","late","weakly"],a:0}
+];
+
+const letters=["a","b","c","d"];
+const checked={1:false,2:false,3:false};
+
+// Word bank
+const bank=document.getElementById("bank");
+words.forEach(w=>{const s=document.createElement("span");s.textContent=w;bank.appendChild(s)});
+
+// Passage with gaps
+const story=document.getElementById("story");
+passage.forEach(p=>{
+  if(typeof p==="string"){
+    story.appendChild(document.createTextNode(p));
+  }else{
+    const s=document.createElement("select");
+    s.dataset.answer=p.answer;
+    s.dataset.gap=p.gap;
+    s.setAttribute("aria-label","Reading gap "+p.gap);
+    s.addEventListener("change",()=>{
+      s.classList.toggle("filled",s.value!=="");
+      refreshBank();
+    });
+    const z=document.createElement("option");
+    z.value="";
+    z.textContent="("+p.gap+")";
+    s.appendChild(z);
+    words.forEach(w=>{const o=document.createElement("option");o.value=w;o.textContent=w;s.appendChild(o)});
+    story.appendChild(s);
+  }
+});
+
+// Dim words in the bank that are already placed
+function refreshBank(){
+  const used=new Set([...document.querySelectorAll("#story select")].map(s=>s.value).filter(Boolean));
+  document.querySelectorAll("#bank span").forEach(s=>s.classList.toggle("used",used.has(s.textContent)));
+}
+
+// Grammar & vocab
+function render(data,id,prefix){
+  const root=document.getElementById(id);
+  data.forEach((x,i)=>{
+    const q=document.createElement("div");
+    q.className="q";
+    const title=document.createElement("div");
+    title.className="qtext";
+    title.textContent=(i+1)+". "+x.q;
+    q.appendChild(title);
+    const opts=document.createElement("div");
+    opts.className="opts";
+    x.o.forEach((v,j)=>{
+      const l=document.createElement("label");
+      l.className="opt";
+      l.innerHTML='<input type="radio" name="'+prefix+i+'" value="'+j+'"><span>'+letters[j]+'. '+v+'</span>';
+      opts.appendChild(l);
+    });
+    q.appendChild(opts);
+    root.appendChild(q);
+  });
+}
+render(grammar,"grammar","g");
+render(vocab,"vocab","v");
+
+function showScore(id,correct,total){
+  const e=document.getElementById("score"+id);
+  const good=correct===total;
+  e.style.display="block";
+  e.style.background=good?"var(--greenbg)":"var(--goldbg)";
+  e.style.color=good?"var(--green)":"var(--gold)";
+  e.textContent="Your score: "+correct+" / "+total+" correct."+(good?" Excellent work!":"");
+  return correct;
+}
+
+function checkSection(n){
+  if(checked[n])return;
+  if(n===1){
+    const sels=[...document.querySelectorAll("#story select")];
+    let c=0;
+    sels.forEach(s=>{
+      s.disabled=true;
+      s.classList.remove("correct","wrong","filled");
+      if(s.value===s.dataset.answer){
+        s.classList.add("correct");c++;
+      }else{
+        s.classList.add("wrong");
+        s.title="Correct answer: "+s.dataset.answer;
+      }
+    });
+    checked[1]=true;
+    showScore(1,c,sels.length);
+  }else{
+    const data=n===2?grammar:vocab;
+    const root=document.getElementById(n===2?"grammar":"vocab");
+    let c=0;
+    [...root.querySelectorAll(".q")].forEach((q,i)=>{
+      const selected=q.querySelector('input:checked');
+      q.querySelectorAll(".opt").forEach((l,j)=>{
+        l.classList.add("locked");
+        if(j===data[i].a)l.classList.add("correct");
+        if(selected&&+selected.value===j&&j!==data[i].a)l.classList.add("wrong");
+      });
+      q.querySelectorAll("input").forEach(x=>x.disabled=true);
+      if(selected&&+selected.value===data[i].a)c++;
+    });
+    checked[n]=true;
+    showScore(n,c,data.length);
+  }
+  updateTotal();
+}
+
+function updateTotal(){
+  let total=0,done=0;
+  [1,2,3].forEach(n=>{
+    if(checked[n]){
+      const txt=document.getElementById("score"+n).textContent;
+      total+=Number(txt.match(/(\d+)\s*\/\s*\d+/)[1]);
+      done+=10;
+    }
+  });
+  const bar=document.getElementById("scorebar");
+  bar.style.display=done?"flex":"none";
+  document.getElementById("totalScore").textContent=total+" / "+done+" checked points";
+}
+
+document.getElementById("checkAll").addEventListener("click",()=>{
+  [1,2,3].forEach(n=>{if(!checked[n])checkSection(n)});
+  document.getElementById("scorebar").scrollIntoView({behavior:"smooth",block:"start"});
+});
+document.getElementById("reset").addEventListener("click",()=>location.reload());
+document.getElementById("essay").addEventListener("input",e=>{
+  document.getElementById("wc").textContent=e.target.value.trim().split(/\s+/).filter(Boolean).length;
+});
+</script>
+</body>
+    </html>
