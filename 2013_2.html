@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Exam Practice — Town &amp; Country</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  :root{
+    --paper:#FBF7ED;
+    --paper-line:#D8CFB8;
+    --ink:#26314A;
+    --ink-soft:#5B6478;
+    --red:#B23A2E;
+    --green:#3F7D4F;
+    --gold:#B98B2A;
+    --blank:#EFE7D4;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:#E9E2CE;
+    font-family: 'Iowan Old Style','Palatino Linotype',Georgia,serif;
+    color:var(--ink);
+    padding:18px 10px 60px;
+  }
+  .sheet{
+    max-width:720px;
+    margin:0 auto;
+    background:var(--paper);
+    border:1px solid var(--paper-line);
+    box-shadow:0 2px 0 var(--paper-line), 0 14px 30px rgba(38,49,74,0.12);
+    padding:26px 20px 34px;
+    position:relative;
+  }
+  .sheet::before{
+    content:"";
+    position:absolute;
+    left:46px; top:0; bottom:0;
+    width:1px;
+    background:var(--red);
+    opacity:0.28;
+  }
+  header{
+    padding-left:26px;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:14px;
+    margin-bottom:20px;
+  }
+  header .kicker{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:11px;
+    letter-spacing:0.08em;
+    color:var(--ink-soft);
+    margin:0 0 4px;
+  }
+  header h1{
+    margin:0;
+    font-size:26px;
+    font-weight:600;
+    line-height:1.2;
+  }
+  header p.sub{
+    margin:6px 0 0;
+    font-size:14px;
+    color:var(--ink-soft);
+    font-style:italic;
+  }
+  .content{padding-left:26px;}
+  section.part{
+    margin-bottom:30px;
+  }
+  section.part h2{
+    font-size:18px;
+    margin:0 0 4px;
+    border-bottom:1px dashed var(--paper-line);
+    padding-bottom:6px;
+  }
+  section.part .points{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:12px;
+    color:var(--ink-soft);
+    font-weight:400;
+  }
+  .instructions{
+    font-size:13.5px;
+    color:var(--ink-soft);
+    margin:6px 0 14px;
+    line-height:1.5;
+  }
+  .wordbank{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 8px;
+    margin:0 0 14px;
+    padding:10px 12px;
+    background:var(--blank);
+    border:1px solid var(--paper-line);
+    font-size:13.5px;
+  }
+  .wordbank span{
+    padding:2px 8px;
+    background:var(--paper);
+    border:1px solid var(--paper-line);
+  }
+  .wordbank span.used{
+    text-decoration:line-through;
+    color:var(--ink-soft);
+    opacity:0.6;
+  }
+  .passage{
+    font-size:15.5px;
+    line-height:1.85;
+  }
+  .passage select{
+    font-family:inherit;
+    font-size:14px;
+    padding:1px 4px;
+    border:none;
+    border-bottom:2px solid var(--ink);
+    background:var(--blank);
+    color:var(--ink);
+    margin:0 2px;
+  }
+  .passage select.correct{ border-bottom-color:var(--green); background:#E4EFE6;}
+  .passage select.wrong{ border-bottom-color:var(--red); background:#F6E4E1;}
+
+  table.match{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+  }
+  table.match td, table.match th{
+    padding:7px 6px;
+    vertical-align:top;
+    border-bottom:1px solid var(--paper-line);
+  }
+  table.match th{
+    text-align:left;
+    font-size:11px;
+    letter-spacing:0.05em;
+    color:var(--ink-soft);
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-weight:600;
+  }
+  table.match .num{width:20px; color:var(--ink-soft);}
+  table.match select{
+    font-family:inherit;
+    font-size:14px;
+    padding:2px 4px;
+    border:1px solid var(--ink);
+    background:var(--paper);
+  }
+  table.match select.correct{border-color:var(--green); background:#E4EFE6;}
+  table.match select.wrong{border-color:var(--red); background:#F6E4E1;}
+  table.match .example{color:var(--ink-soft); font-style:italic;}
+
+  .q{
+    margin-bottom:16px;
+    padding-bottom:14px;
+    border-bottom:1px dashed var(--paper-line);
+  }
+  .q:last-child{border-bottom:none;}
+  .q .stem{
+    font-size:15px;
+    margin-bottom:8px;
+  }
+  .q .stem .qnum{color:var(--red); font-weight:600; margin-right:4px;}
+  .options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:6px 10px;
+  }
+  .opt{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size:14px;
+    padding:6px 8px;
+    border:1px solid var(--paper-line);
+    background:var(--paper);
+    cursor:pointer;
+    transition:background .15s;
+  }
+  .opt:hover{background:var(--blank);}
+  .opt input{accent-color:var(--ink); margin:0;}
+  .opt.correct{border-color:var(--green); background:#E4EFE6;}
+  .opt.wrong{border-color:var(--red); background:#F6E4E1;}
+  .opt.locked{cursor:default;}
+  .example-tag{
+    display:inline-block;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:10.5px;
+    letter-spacing:0.05em;
+    color:var(--gold);
+    border:1px solid var(--gold);
+    padding:1px 6px;
+    margin-bottom:6px;
+  }
+  .writing textarea{
+    width:100%;
+    min-height:170px;
+    font-family:inherit;
+    font-size:14.5px;
+    line-height:1.6;
+    padding:12px;
+    border:1px solid var(--ink);
+    background:var(--blank);
+    color:var(--ink);
+    resize:vertical;
+  }
+  .wc{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-top:6px;
+    text-align:right;
+  }
+  .wc.ok{color:var(--green);}
+
+  .controls{
+    position:sticky;
+    bottom:0;
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    padding:14px 0 4px;
+    margin-top:6px;
+  }
+  button.action{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:14px;
+    font-weight:600;
+    letter-spacing:0.01em;
+    padding:12px 22px;
+    border:none;
+    cursor:pointer;
+  }
+  button.check{background:var(--ink); color:var(--paper);}
+  button.reset{background:transparent; color:var(--ink); border:1px solid var(--ink);}
+
+  .scoreboard{
+    display:none;
+    margin:0 0 20px;
+    padding:14px 16px;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Helvetica Neue',Arial,sans-serif;
+  }
+  .scoreboard.show{display:block;}
+  .scoreboard .big{font-size:28px; font-weight:700;}
+  .scoreboard .label{font-size:12px; color:#C9CEDB;}
+
+  @media (max-width:420px){
+    .options{grid-template-columns:1fr;}
+    .sheet{padding:20px 12px 28px;}
+    .content, header{padding-left:18px;}
+  }
+
+/* ===== Responsive exam improvements ===== */
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body { width: 100%; min-width: 0; overflow-wrap: anywhere; }
+img, video, canvas, iframe { max-width: 100%; }
+main, .wrap, .sheet, .page, .app, .content, .container { width: 100%; min-width: 0; }
+select, input, textarea, button { max-width: 100%; }
+select { min-width: 0; }
+textarea, input[type="text"], input[type="email"] { width: 100%; }
+button { touch-action: manipulation; }
+table { max-width: 100%; }
+@media (max-width: 600px) {
+  body { font-size: 16px; }
+  .wrap, .sheet, .page, .app, main, .content { padding-left: 12px !important; padding-right: 12px !important; }
+  header, header.hero, header.masthead, header.title-block { padding-left: 14px !important; padding-right: 14px !important; }
+  h1, header h1, header.hero h1, header.masthead h1 { font-size: clamp(1.35rem, 6vw, 2rem) !important; line-height: 1.2; }
+  nav, nav.tabs, .tabs, .tabbar { max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  nav button, .tab, .tabs button { flex: 0 0 auto; }
+  .passage, .reading-text, .q, .qblock, .card { overflow-wrap: anywhere; }
+  .passage select, select.blank, select.blank-select, select.gap, select.gap-select, .gap-select { max-width: min(100%, 180px); }
+  .match-row { flex-wrap: wrap; }
+  table.match { display: block; overflow-x: auto; }
+  .options, .opts { flex-wrap: wrap; }
+  button, .checkbtn { min-height: 42px; }
+}
+@media (max-width: 380px) {
+  .wrap, .sheet, .page, .app, main, .content { padding-left: 9px !important; padding-right: 9px !important; }
+  .part-head, .part-title { flex-wrap: wrap; }
+  .passage { padding: 12px !important; }
+}
+/* Completed word-bank entries get a clear strike-through. */
+.wordbank span.used, .word-bank .used, .bank span.used, .chip.used {
+  text-decoration: line-through !important;
+  text-decoration-thickness: 1.5px;
+  text-decoration-color: currentColor;
+  opacity: .55;
+}
+
+</style>
+</head>
+<body>
+  <div class="m-0 p-3 font-sans bg-gray-100">
+  
+
+<div class="sheet">
+  <header>
+    <p class="kicker">GRADE 9 · ENGLISH EXAM PRACTICE</p>
+    <h1>Town &amp; Country</h1>
+    <p class="sub">Reading · Language Use · Grammar · Vocabulary · Writing</p>
+  </header>
+
+  <div class="content">
+
+    <div id="scoreboard" class="scoreboard">
+      <div class="big" id="scoreBig">0 / 0</div>
+      <div class="label" id="scoreLabel">auto-graded items correct</div>
+    </div>
+
+    <!-- PART 1: READING -->
+    <section class="part" id="part1">
+      <h2>Part 1. Reading <span class="points">(10 points)</span></h2>
+      <p class="instructions">Read the text and fill the gaps with words from the box. Gap one has been done as an example.</p>
+      <div class="wordbank" id="wordbank">
+        <span data-w="villages" class="used">villages ✓ (example)</span>
+        <span data-w="department stores">department stores</span>
+        <span data-w="skyscraper">skyscraper</span>
+        <span data-w="district">district</span>
+        <span data-w="services">services</span>
+        <span data-w="hospital">hospital</span>
+        <span data-w="factories">factories</span>
+        <span data-w="reason">reason</span>
+        <span data-w="moment">moment</span>
+        <span data-w="cities">cities</span>
+        <span data-w="offices">offices</span>
+      </div>
+      <div class="passage">
+        Today, people all over the world are moving out of small <strong>villages</strong> in the country to go and live in big noisy
+        <sel data-q="r2" data-ans="cities"></sel>. They are moving from the peaceful hills, mountains, fields, rivers and streams of the countryside to the
+        busy world of streets, buildings, traffic and crowds. This <sel data-q="r3" data-ans="moment"></sel> from rural areas to urban areas has been
+        going on for over two hundred years.
+        <br><br>
+        In many countries the main <sel data-q="r4" data-ans="reason"></sel> people come to live in towns and cities is work. After one or more huge
+        <sel data-q="r5" data-ans="factories"></sel> have been built in or near a town, people come to live there too. And soon, the industrial area
+        begins to grow. The residential area, shops, schools, <sel data-q="r6" data-ans="hospital"></sel> and other <sel data-q="r7" data-ans="services"></sel>
+        have been located so many people come to live there to provide these <sel data-q="r7b" data-ans="services"></sel>, and so the cities grow.
+        <br><br>
+        In the giant cities of the world, there is a business <sel data-q="r8" data-ans="district"></sel> where the big companies have their main
+        <sel data-q="r9" data-ans="offices"></sel>. The area is usually in the city center downtown. You can see the huge
+        <sel data-q="r10" data-ans="skyscraper"></sel> office blocks. The people who are very pleasant have nice houses, big gardens, parks, large
+        <sel data-q="r11" data-ans="department stores"></sel> where they can buy what they need.
+        <br><br>
+        But what is the future of the big city? Will they continue to get bigger and bigger? Perhaps not. Some giant cities have become smaller in the
+        last 10 years, and it is quite possible that one day we will see people moving out of the major cities and back into small towns and villages.
+      </div>
+    </section>
+
+    <!-- PART 2: MATCHING -->
+    <section class="part" id="part2">
+      <h2>Part 2. Language Use <span class="points">(10 points)</span></h2>
+      <p class="instructions">Match the sentence in column A with the best ending in column B.</p>
+      <table class="match">
+        <tr><th>A</th><th></th><th>B (your answer)</th></tr>
+        <tr>
+          <td class="num">1</td>
+          <td>Before the Dutch built their canals,</td>
+          <td class="example">⇒ b <span style="font-size:11px;">(example)</span></td>
+        </tr>
+        <tr>
+          <td class="num">2</td>
+          <td>When natural disasters are regular,</td>
+          <td>⇒ <select data-q="m2" data-ans="d"><option value="">–</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option><option value="g">g</option></select></td>
+        </tr>
+        <tr>
+          <td class="num">3</td>
+          <td>When countries are hit by cyclones,</td>
+          <td>⇒ <select data-q="m3" data-ans="g"><option value="">–</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option><option value="g">g</option></select></td>
+        </tr>
+        <tr>
+          <td class="num">4</td>
+          <td>After trees have been cut down,</td>
+          <td>⇒ <select data-q="m4" data-ans="a"><option value="">–</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option><option value="g">g</option></select></td>
+        </tr>
+        <tr>
+          <td class="num">5</td>
+          <td>After a flood,</td>
+          <td>⇒ <select data-q="m5" data-ans="f"><option value="">–</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option><option value="g">g</option></select></td>
+        </tr>
+        <tr>
+          <td class="num">6</td>
+          <td>When rivers have received soil,</td>
+          <td>⇒ <select data-q="m6" data-ans="c"><option value="">–</option><option value="a">a</option><option value="b">b</option><option value="c">c</option><option value="d">d</option><option value="e">e</option><option value="f">f</option><option value="g">g</option></select></td>
+        </tr>
+      </table>
+      <p class="instructions" style="margin-top:12px;">
+        a. the top soil washed down the rivers &nbsp;·&nbsp; b. Holland was often flooded &nbsp;·&nbsp; c. there is a fresh deposit of rich soil on the land<br>
+        d. they are easier to deal with &nbsp;·&nbsp; e. they flood &nbsp;·&nbsp; f. people lose their homes &nbsp;·&nbsp; g. they are both irregular and powerful
+      </p>
+    </section>
+
+    <!-- PART 3: GRAMMAR -->
+    <section class="part" id="part3">
+      <h2>Part 3. Grammar <span class="points">(10 points)</span></h2>
+      <p class="instructions">There are four answers after each statement. Only one is correct.</p>
+
+      <div id="grammarQs"></div>
+    </section>
+
+    <!-- PART 4: VOCABULARY -->
+    <section class="part" id="part4">
+      <h2>Part 4. Vocabulary <span class="points">(08 points)</span></h2>
+      <p class="instructions">Choose the correct letter a, b, c or d.</p>
+      <div id="vocabQs"></div>
+    </section>
+
+    <!-- PART 5: WRITING -->
+    <section class="part writing" id="part5">
+      <h2>Part 5. Writing <span class="points">(12 points)</span></h2>
+      <p class="instructions">Describe the cause and effect of deforestation. Write at least 150 words.</p>
+      <textarea id="writingBox" placeholder="Start writing here..."></textarea>
+      <div class="wc" id="wc">0 words</div>
+    </section>
+
+    <div class="controls">
+      <button class="action check" id="checkBtn">Check my answers</button>
+      <button class="action reset" id="resetBtn">Reset</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ---------- data ----------
+const grammar = [
+  {q:"When we get to the party, everybody ……………", opts:{a:"are dancing", b:"has danced", c:"will be dancing", d:"dances"}, ans:"c"},
+  {q:"If that jacket ……… so expensive, I would buy it.", opts:{a:"wasn't", b:"isn't", c:"will be not", d:"weren't"}, ans:"d"},
+  {q:"The new bridge ……… before the end of next year.", opts:{a:"will complete", b:"will be completed", c:"is completed", d:"completed"}, ans:"b"},
+  {q:"Thida fell asleep ………… she was watching TV.", opts:{a:"while", b:"before", c:"soon", d:"again"}, ans:"a"},
+  {q:"The woman ………… at the meeting was very interesting.", opts:{a:"is spoke", b:"who spoke", c:"who she spoke", d:"speaks"}, ans:"b"},
+];
+
+const vocab = [
+  {q:"I'm afraid there isn't ………. in the car for everyone.", opts:{a:"space", b:"room", c:"places", d:"seating"}, ans:"b"},
+  {q:"Excuse me. Have you got ………., please? I want to smoke.", opts:{a:"a match", b:"the fire", c:"a light", d:"lighting"}, ans:"c"},
+  {q:"I like your hat, Bopha. It really ………. you.", opts:{a:"suiting", b:"passes", c:"shows", d:"suits"}, ans:"d"},
+  {q:"Is there ………. wine for everyone? We will have a huge drink tonight.", opts:{a:"enough", b:"enough of", c:"many", d:"many of"}, ans:"a"},
+  {q:"Don't go yet. I'm just going to ………. some coffee.", opts:{a:"do", b:"boil", c:"make", d:"cook"}, ans:"c"},
+  {q:"A good way to practice speaking is to tell a story or a ………. to someone.", opts:{a:"joke", b:"fun", c:"laughter", d:"fool"}, ans:"a"},
+  {q:"Tourism suffers from the lack of ………. in that country.", opts:{a:"arrangement", b:"direction", c:"organization", d:"regularity"}, ans:"c"},
+  {q:"After the earthquake, many houses were in danger of ………. .", opts:{a:"destruction", b:"pollutions", c:"collapsing", d:"slipping"}, ans:"c"},
+];
+
+function buildMC(list, container, prefix){
+  list.forEach((item,i)=>{
+    const qid = prefix+i;
+    const div = document.createElement('div');
+    div.className = 'q';
+    div.innerHTML = `<div class="stem"><span class="qnum">${i+1}.</span>${item.q}</div>
+      <div class="options" data-q="${qid}" data-ans="${item.ans}">
+        ${Object.entries(item.opts).map(([k,v])=>`
+          <label class="opt" data-val="${k}">
+            <input type="radio" name="${qid}" value="${k}"> ${k}. ${v}
+          </label>`).join('')}
+      </div>`;
+    container.appendChild(div);
+  });
+}
+buildMC(grammar, document.getElementById('grammarQs'), 'g');
+buildMC(vocab, document.getElementById('vocabQs'), 'v');
+
+// wordbank highlight on use (reading section)
+const selects = document.querySelectorAll('.passage sel');
+selects.forEach(s=>{
+  const sel = document.createElement('select');
+  sel.dataset.q = s.dataset.q;
+  sel.dataset.ans = s.dataset.ans;
+  const words = ["–","department stores","skyscraper","district","services","hospital","factories","reason","moment","cities","offices"];
+  words.forEach(w=>{
+    const o = document.createElement('option');
+    o.value = w==="–"?"":w;
+    o.textContent = w;
+    sel.appendChild(o);
+  });
+  s.replaceWith(sel);
+});
+
+function updateWordbank(){
+  const used = new Set();
+  document.querySelectorAll('.passage select').forEach(sel=>{ if(sel.value) used.add(sel.value); });
+  document.querySelectorAll('#wordbank span').forEach(span=>{
+    if(span.dataset.w==='villages') return;
+    if(used.has(span.dataset.w)) span.classList.add('used'); else span.classList.remove('used');
+  });
+}
+document.querySelectorAll('.passage select').forEach(sel=>sel.addEventListener('change', updateWordbank));
+
+// writing word count
+const wbox = document.getElementById('writingBox');
+const wc = document.getElementById('wc');
+wbox.addEventListener('input', ()=>{
+  const words = wbox.value.trim().split(/\s+/).filter(Boolean).length;
+  wc.textContent = words + ' words' + (words>=150 ? ' — nice, you\'ve reached 150!' : '');
+  wc.classList.toggle('ok', words>=150);
+});
+
+// check answers
+document.getElementById('checkBtn').addEventListener('click', ()=>{
+  let correct = 0, total = 0;
+
+  // reading selects
+  document.querySelectorAll('.passage select').forEach(sel=>{
+    total++;
+    sel.classList.remove('correct','wrong');
+    if(sel.value === sel.dataset.ans){ sel.classList.add('correct'); correct++; }
+    else if(sel.value) sel.classList.add('wrong');
+    else sel.classList.add('wrong');
+  });
+
+  // matching selects
+  document.querySelectorAll('table.match select').forEach(sel=>{
+    total++;
+    sel.classList.remove('correct','wrong');
+    if(sel.value === sel.dataset.ans){ sel.classList.add('correct'); correct++; }
+    else sel.classList.add('wrong');
+  });
+
+  // radio groups
+  document.querySelectorAll('.options').forEach(group=>{
+    total++;
+    const ans = group.dataset.ans;
+    const checked = group.querySelector('input:checked');
+    group.querySelectorAll('.opt').forEach(o=>o.classList.remove('correct','wrong'));
+    const correctLabel = group.querySelector(`.opt[data-val="${ans}"]`);
+    if(checked && checked.value === ans){
+      correctLabel.classList.add('correct');
+      correct++;
+    } else {
+      if(checked) checked.closest('.opt').classList.add('wrong');
+      correctLabel.classList.add('correct');
+    }
+  });
+
+  const board = document.getElementById('scoreboard');
+  board.classList.add('show');
+  document.getElementById('scoreBig').textContent = correct + ' / ' + total;
+  board.scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  document.querySelectorAll('.passage select, table.match select').forEach(s=>{s.value=''; s.classList.remove('correct','wrong');});
+  document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('correct','wrong'));
+  document.getElementById('scoreboard').classList.remove('show');
+  wbox.value=''; wc.textContent='0 words'; wc.classList.remove('ok');
+  updateWordbank();
+});
+</script>
+<style>
+/* ===== Exam helper: responsive + shared UI ===== */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:border-box}
+body{min-width:0;overflow-x:hidden;padding-bottom:calc(86px + env(safe-area-inset-bottom,0px));padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+img,svg,video,canvas,iframe{max-width:100%;height:auto}
+button,select,input,textarea{font-family:inherit;max-width:100%;touch-action:manipulation}
+textarea{width:100%}
+select{min-width:0}
+.wrap,.sheet,.page,.app,main,.content,.container,.passage,.reading-text,.card,.qcard,.qblock,.mcq,.q{min-width:0}
+.passage select,.reading-text select,select.gap,select.blank,select.gap-select,select.blank-select{max-width:100%}
+@media (max-width:820px){
+  select,textarea,input[type=text]{font-size:16px}
+  nav,.tabs,.tabbar{display:flex;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  nav::-webkit-scrollbar,.tabs::-webkit-scrollbar,.tabbar::-webkit-scrollbar{display:none}
+  nav>*,.tabs>*,.tabbar>*{flex:0 0 auto;white-space:nowrap}
+  button,label.opt,.opt,.option,.option-label,.voc-opt,.opt-btn{min-height:44px}
+  textarea{min-height:200px}
+}
+@media (max-width:600px){
+  .options,.opts,.voc-opts,.abcd{grid-template-columns:1fr!important}
+  .options,.opts,.voc-opts,.abcd{flex-wrap:wrap}
+  .match-row,.langitem,.vocab-row{flex-wrap:wrap;gap:6px}
+  table.match,table.grammar,table#table2,table#table3,table#table4{display:block;width:100%}
+  table.match tbody,table.grammar tbody,table#table2 tbody,table#table3 tbody,table#table4 tbody{display:block}
+  table.match tr,table.grammar tr,table#table2 tr,table#table3 tr,table#table4 tr{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,.08)}
+  table.match tr:has(>th),table.match thead,table#table2 thead,table#table4 thead{display:none}
+  table.match td,table.grammar td,table#table2 td,table#table3 td,table#table4 td{display:block;width:auto!important;border:0!important;padding:2px 4px!important}
+  table.match td:empty,table#table2 td:empty,table#table4 td:empty{display:none}
+  table.grammar td.qtext,table#table3 td:nth-child(2){flex:1 1 100%}
+  .controls,.part-check,.section-actions,.btn-row{flex-wrap:wrap}
+  .controls button,.section-actions button,.btn-row button{flex:1 1 140px}
+}
+@media (max-width:380px){ body{font-size:15px} }
+@media print{#exam-final{display:none}}
+
+/* word box: used words get a line through the middle */
+.wordbank span.used,.word-bank span.used,.bank span.used,.chip.used,.exam-chips span.used{position:relative;display:inline-block;text-decoration:none!important;opacity:.6}
+.wordbank span.used::after,.word-bank span.used::after,.bank span.used::after,.chip.used::after,.exam-chips span.used::after{content:"";position:absolute;left:5px;right:5px;top:50%;height:2px;margin-top:-1px;background:currentColor;border-radius:1px;pointer-events:none}
+.exam-chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0;padding:12px;border:1px dashed #cfc8b4;border-radius:6px;background:rgba(255,255,255,.6)}
+.exam-chips span{font-size:14px;padding:3px 11px;border:1px solid #cfc8b4;border-radius:99px;background:#fff;color:#444}
+
+/* per-part check button + reasons */
+.exam-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:22px 0 6px}
+.exam-check-btn{background:#1E6B63;color:#fff;border:0;border-radius:6px;padding:12px 22px;font-size:15px;font-weight:600;cursor:pointer;min-height:44px}
+.exam-check-btn:hover{background:#134A44}
+.exam-result{font-weight:600;font-size:15px}
+.exam-why{margin-top:10px;padding:9px 12px;border-left:4px solid #1E6B63;background:rgba(30,107,99,.09);border-radius:4px;font-size:14px;line-height:1.5;font-weight:400;color:inherit;text-align:left}
+.exam-why-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:1px 8px;border-radius:99px;background:#1E6B63;color:#fff;margin-right:6px}
+tr.exam-why-row>td{padding:0 6px 10px!important}
+.exam-ok{color:#2e7d32;font-weight:600}.exam-bad{color:#b0473a}
+
+/* final score (writing not counted) */
+#exam-final{position:fixed;left:0;right:0;bottom:0;z-index:9999;display:flex;align-items:center;justify-content:space-between;gap:6px 14px;flex-wrap:wrap;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:#134A44;color:#fff;font:600 13px/1.35 system-ui,-apple-system,"Segoe UI",sans-serif;box-shadow:0 -2px 12px rgba(0,0,0,.2)}
+#exam-final .big{font-size:20px;letter-spacing:.01em}
+#exam-final small{font-weight:500;opacity:.85;font-size:12px}
+
+</style>
+<script>
+window.EXAM_CFG={parts:[
+ {id:'p1',name:'Reading',root:'#part1',max:11,check:function(){return EXU.sel('#part1 .passage select');}},
+ {id:'p2',name:'Language use',root:'#part2',max:5,check:function(){return EXU.sel('#part2 table.match select[data-ans]');}},
+ {id:'p3',name:'Grammar',root:'#part3',max:5,why:'#grammarQs .q',check:function(){return EXU.grp('#grammarQs .options');}},
+ {id:'p4',name:'Vocabulary',root:'#part4',max:8,why:'#vocabQs .q',check:function(){return EXU.grp('#vocabQs .options');}}],
+ bank:{bank:'#wordbank',selects:'#part1 select'},hide:['#checkBtn','#scoreboard']};
+</script>
+<script>
+window.EXAM_WHY=[
+// 2009 grammar
+["getting ready to leave the hotel","**received** – past simple: the phone call interrupted the action in progress (was getting ready)."],
+["director for his vacation","**has left** – present perfect: he left earlier and is still away now."],
+["i am tired i will work late","**Even though** – shows contrast: tired, but will still work. Because / So that / Or don't fit."],
+["final report on the project","**as quickly as** – the pattern is as + adverb + as (possible)."],
+["weather were sunny we","**would stay** – 2nd conditional: If + past (were) → would + base verb."],
+["i feel tired because i","**have been working** – present perfect continuous: an action lasting up to now (for hours)."],
+["he were a millionaire he","**would buy** – 2nd conditional: If + were → would + base verb."],
+["savuth does not arrive soon","**will leave** – 1st conditional: If + present simple → will + base verb."],
+["i had a spare ticket","**could take** – 2nd conditional: If + past → could/would + base verb."],
+["we arrived phnom penh","**in** – we arrive IN a city or country, AT a small place (airport, station)."],
+// vocab matching (2009, 2010_3)
+["monolingual","**monolingual** = using or written in only one language (mono = one)."],
+["bear in mind","**bear in mind** = remember; keep a fact in your thoughts."],
+["keep an open mind","**keep an open mind** = don't judge before you know the facts."],
+["maintain","**maintain** = keep something in good condition."],
+["personally","**personally** introduces your own opinion."],
+["my mind went blank","**my mind went blank** = I suddenly forgot."],
+["renovate","**renovate** = repair something old and make it like new."],
+["give up","**give up** = stop doing something."],
+["punctual","**punctual** = never late; arrives at the exact time."],
+// 2010 grammar
+["son has been kidnapped","**whose** – shows possession (Dara's son); who / that / whom can't."],
+["when i arrived at the airport the plane","**had taken off** – past perfect: the plane left before I arrived."],
+["invite anyone she knew","**neither did Sok** – negative agreement: neither + auxiliary (did) + subject, same tense."],
+["wishes she around the country","**travelled** – wish + past simple for an unreal present wish."],
+["all day i wonder when it will stop","**has been snowing** – present perfect continuous: still happening, with 'all day'."],
+["tomorrow we ll cancel the barbecue","**rains** – 1st conditional: If + present simple (never 'will') → will + base."],
+["capable doing better job","**of** – the adjective 'capable' takes 'of' + -ing."],
+["about good news bora","**being excited** – after the preposition 'of' use -ing; passive because Bora feels excited."],
+["rabbit ran across the path","**was walking** – past continuous: the longer background action interrupted by 'ran'."],
+["she said that she the workshop","**had attended** – reported speech: 'said' + past perfect (backshift)."],
+// 2010 vocab
+["meet outside the football","**pitch** – a football pitch is the playing field."],
+["jogging every morning to keep","**fit** – 'keep fit' is a fixed phrase meaning stay healthy."],
+["the match by two goals to nil","**beat** – this is the answer key. (Note: 'won the match' is also natural; beat/defeat usually take the opposing team.)"],
+["isn t large enough for so many","**spectators** – people who watch a sports match."],
+["final result was","**draw** – a draw is a match where the scores are equal."],
+["won first","**prize** – you win a prize in a competition; medal / reward don't fit here."],
+["collecting match boxes","**pastime** – a hobby you do in your free time."],
+// 2010_2 grammar
+["john his report last night","**wrote** – past simple: finished action with 'last night'."],
+["dara the newspaper already","**has read** – present perfect with 'already' (done, with a present result)."],
+["sopha in the same place for 45 years","**has worked** – present perfect with 'for 45 years': still working now."],
+["ratha in phnom penh for one year","**had lived** – past perfect: the state came before his parents' visit."],
+["corrected our papers after","**had taken** – past perfect: taking the quiz happened before correcting."],
+["the letter carefully and put it","**folded** – you fold a letter before putting it in a case."],
+["round to see us the other night","**came** – 'come round' = visit someone."],
+["complex sentence is a compound sentence","**which** – relative pronoun for a thing (the compound sentence); who is for people."],
+["much better today","**than** – comparatives (better) are followed by 'than'."],
+["will he arrive than he will want to leave","**No sooner** – 'No sooner … than' means as soon as; inversion follows."],
+// 2010_2 vocab
+["cremate","**cremate** = burn a dead person's body at a funeral."],
+["charity","**charity** = an organisation that collects money or goods for poor people."],
+["genocide","**genocide** = the deliberate killing of a whole group or race."],
+["heritage","**heritage** = traditions and customs kept by a society for a long time."],
+["starvation","**starvation** = suffering or death caused by lack of food."],
+["poisonous","**poisonous** = containing or producing poison."],
+["proud","**proud** = pleased about something you have or did."],
+["sacrifice","**sacrifice** = give up something important to help someone."],
+// 2010_3 grammar
+["lived here life","**all your** – the fixed phrase is 'all your life'."],
+["do not talk the orchestra is playing","**while** – a conjunction is needed before a clause; 'during' needs a noun."],
+["price of petrol has","**gone** – 'go up' = rise; present perfect needs 'gone'."],
+["anyone who lives alone","**himself** – reflexive pronoun refers back to 'anyone' (he)."],
+["policeman took his notebook","**out** – 'took (it) out of his pocket': 'out' completes the phrasal verb."],
+["man of killing said","**who was accused** – passive relative clause, singular 'man', past tense matches 'said'."],
+["she s from cambodia and","**so am I** – 'so + auxiliary + subject' agrees with a positive 'be' sentence."],
+["told me not to worry","**would help** – reported speech: 'will help' shifts back to 'would help'."],
+["sophia said that there","**were** – reported speech: 'are' shifts back to 'were' (plural 'types')."],
+["apply for a camp","**must be** – 'must be a student' states a requirement; 'must have' needs a participle."],
+// 2011 grammar
+["needed the doctor","**to verify** – need + object + to-infinitive."],
+["mr kim","**will take** – future plan ('after the project is completed') → will + base verb."],
+["restaurant overlooks the river","**that** – relative pronoun for a thing as subject."],
+["for the day when the phone call came","**had already left** – past perfect: he left before the call came."],
+["television advertising costs","**more than** – comparative: more + than."],
+// 2011 vocab
+["perfect view from the plane","**clear** – clear skies have no clouds, so the view is perfect."],
+["path was very","**muddy** – wet weather turns paths to mud."],
+["clothes before you buy","**try** – 'try on' clothes to check the fit."],
+["hate doing the especially cleaning","**housework** – cleaning windows is housework."],
+["town the idea of green and clean city","**support** – 'support an idea' = back it."],
+["too much stress can be","**harmful** – harmful to = damaging to."],
+["baby boy","**nephew** – your sister's son is your nephew."],
+["these shoes do not","**fit** – 'fit' = the right size; these are too big."],
+// 2011_2 grammar
+["no one of our representatives","**has been chosen** – 'no one' is singular; present perfect passive."],
+["if dara had found the wallet","**would have called** – 3rd conditional: If + past perfect → would have + past participle."],
+["the patient examined by the doctor","**is being** – passive continuous: the examination is happening now."],
+["health care have been rising","**costs** – plural noun to match 'have been rising'."],
+["identify the man she","**had seen** – past perfect: she saw him before trying to identify him."],
+// 2011_2 vocab
+["every speech is calculated","**votes** – speeches at election time aim to win votes."],
+["because of the between two groups","**conflict** – a conflict between groups blocks agreement."],
+["give us his dara had broken","**diagnosis** – a doctor's diagnosis names the problem."],
+["preserve our local","**culture** – traditional themes preserve local culture."],
+["prefer the arts such as painting","**visual** – painting and sculpture are visual arts."],
+["on the news that the price of gas","**heard** – 'heard on the news' = learned by hearing it."],
+["get to the center in hour","**rush** – 'rush hour' = the busiest traffic time."],
+["global warming is likely","**flood** – more rainfall causes flooding; droughts come from less rain."],
+// 2012 grammar
+["every time she thinks of her departure","**feels** – present simple for a repeated habit after 'every time'."],
+["since she left her country","**has called** – present perfect with 'since' and 'several times'."],
+["when she gets home she","**will be** – future in the main clause after 'when + present'."],
+["you can stay here you don t make","**so long as** – means 'provided that' (a condition)."],
+["the girl weeps whenever","**hears** – present simple for a habit after 'whenever'."],
+// 2012 vocab
+["coal","**coal** = a kind of mine product used to make power."],
+["receiver","**receiver** = someone who gets something."],
+["pepper","**pepper** = a soup ingredient."],
+["ring","**ring** = jewellery worn on a finger."],
+["wind","**wind** = air blowing in the sky."],
+["boot","**boot** = footwear covering the foot and ankle."],
+["earthworm","**earthworm** = something that lives in the soil."],
+["cobra","**cobra** = a snake that can kill people with poison."],
+// 2013 grammar
+["she hasn t seen him before","**as if** – compares how she looks to a situation (as if she hadn't seen him)."],
+["give up smoking","**because** – gives the reason (two heart attacks)."],
+["walking along the garden","**while** – two actions at once: walking and finding."],
+["my father woke up","**when** – the moment he woke up, he realised."],
+["wear your helmet","**otherwise** – 'or else': if you don't, you may be hurt."],
+// 2013 vocab odd one out
+["jackfruit","**carrot** – a vegetable; the others are fruits."],
+["dolphin","**dolphin** – a sea mammal; the others live on land."],
+["science lab","**school** – the whole place; the others are rooms inside it."],
+["mangosteen","**cucumber** – a vegetable; the others are fruits."],
+["crocodile","**crocodile** – a reptile; the others are birds."],
+["accountant","**accounting** – a subject/field; the others are people (jobs)."],
+["dentist","**clinic** – a place; the others are people."],
+["illustration","**disaster** – not about pictures; the others are drawings."],
+["employer","**employer** – a person; the others describe having a job."],
+// 2013_2 grammar
+["when we get to the party everybody","**will be dancing** – future continuous: in progress at that future time."],
+["that jacket so expensive","**weren't** – 2nd conditional uses 'were' for all subjects."],
+["the new bridge","**will be completed** – future passive."],
+["thida fell asleep","**while** – she slept during the time she watched TV."],
+["the woman at the meeting","**who spoke** – 'who' + verb describes the woman."],
+// 2013_2 vocab
+["afraid there isn t","**room** – uncountable 'room' = free space."],
+["i want to smoke","**a light** – 'Have you got a light?' is the usual request."],
+["like your hat","**suits** – 'suit' = looks good on someone."],
+["is there wine for everyone","**enough** – enough + noun."],
+["just going to some coffee","**make** – we 'make' coffee."],
+["tell a story or a","**joke** – we 'tell a joke'."],
+["lack of in that country","**organization** – 'lack of organization' fits tourism."],
+["houses were in danger of","**collapsing** – danger of + -ing; earthquakes make houses collapse."],
+// 2014_2 grammar
+["prime minister for dinner","**are meeting** – present continuous for a fixed future arrangement."],
+["after the project is completed","**will take** – future plan → will + base verb."],
+["if we keep like this","**working** – 'keep' is followed by -ing."],
+["benefits programme","**will be changed** – future passive."],
+// 2014_2 vocab
+["lived off his","**pension** – money paid after retirement; salary is for working years."],
+["confirm your reservation","**writing** – 'in writing' is the fixed phrase."],
+["had a crime but nobody wanted","**committed** – we 'commit' a crime."],
+["researchers many experiments","**conducted** – we 'conduct' experiments."]
+];
+
+(function(){
+'use strict';
+var CFG=window.EXAM_CFG, WHY=window.EXAM_WHY, state={};
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+function norm(t){return ' '+String(t).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()+' ';}
+var LIB=WHY.map(function(e){return {f:norm(e[0]),t:e[1]}});
+function reasonFor(text){var n=norm(text),best=null;LIB.forEach(function(e){if(n.indexOf(e.f)>-1&&(!best||e.f.length>best.f.length))best=e;});return best&&best.t;}
+function fmt(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');}
+
+/* shared helpers for files that need their own check code */
+window.EXU={
+  sel:function(scope){var c=0;$$(scope).forEach(function(s){s.classList.remove('correct','wrong');if(s.value===s.dataset.ans){s.classList.add('correct');c++;}else s.classList.add('wrong');});return c;},
+  grp:function(scope){var c=0;$$(scope).forEach(function(g){var a=g.dataset.ans,k=g.querySelector('input:checked');$$('.opt',g).forEach(function(o){o.classList.remove('correct','wrong');});var r=g.querySelector('.opt[data-val="'+a+'"]');if(k&&k.value===a){c++;}else if(k){k.closest('.opt').classList.add('wrong');}if(r)r.classList.add('correct');});return c;}
+};
+
+/* ---- word box ---- */
+function clean(t){return String(t).toLowerCase().replace(/\(.*?\)/g,'').replace(/[\u2713\u2714]/g,'').replace(/[^a-z\- ]+/g,'').replace(/\s+/g,' ').trim();}
+function makeBank(){var m=CFG.make;if(!m)return;var el;
+  if(m.target){el=$(m.target);if(!el)return;el.innerHTML='<b>Word box:</b> ';}
+  else{var ref=$(m.before);if(!ref)return;el=document.createElement('div');el.id=m.id||'exam-bank';ref.parentNode.insertBefore(el,ref);}
+  el.classList.add('exam-chips');
+  (m.example?[m.example]:[]).concat(m.words).forEach(function(w,i){var s=document.createElement('span');s.textContent=w;if(m.example&&i===0)s.className='used';el.appendChild(s);});}
+function refreshBank(){var b=CFG.bank;if(!b)return;var root=$(b.bank);if(!root)return;var used={};
+  $$(b.selects).forEach(function(s){if(s.value)used[clean(s.value)]=1;});
+  (b.example||[]).forEach(function(w){used[clean(w)]=1;});
+  $$('span, .chip, li',root).forEach(function(sp){
+    if(sp.dataset.exW===undefined){var raw=sp.textContent;sp.dataset.exW=clean(raw);
+      sp.dataset.exEx=(/[\u2713\u2714]|\bused\b|example/i.test(raw)||sp.classList.contains('used'))?'1':'0';
+      if(/[\u2713\u2714(]/.test(raw))sp.textContent=raw.replace(/\(.*?\)/g,'').replace(/[\u2713\u2714]/g,'').trim();}
+    sp.classList.toggle('used',sp.dataset.exEx==='1'||!!used[sp.dataset.exW]);});}
+
+/* ---- reasons ---- */
+function clearWhy(r){$$('.exam-why-row',r).forEach(function(x){x.remove();});$$('.exam-why',r).forEach(function(x){x.remove();});}
+function addWhy(p,r){clearWhy(r);
+  $$(p.why,r).forEach(function(it){var t=reasonFor(it.innerHTML.replace(/<[^>]*>/g,' '));if(!t)return;
+    var d=document.createElement('div');d.className='exam-why';d.innerHTML='<span class="exam-why-tag">Why</span> '+fmt(t);
+    var host=p.whyAfter==='next'?it.nextElementSibling:it;
+    if(host&&host.tagName==='TR'){var tr=document.createElement('tr');tr.className='exam-why-row';var td=document.createElement('td');td.colSpan=9;td.appendChild(d);tr.appendChild(td);host.parentNode.insertBefore(tr,host.nextSibling);}
+    else it.appendChild(d);});}
+
+/* ---- scoring ---- */
+function afterCheck(p){var r=$(p.root);if(!r)return;var c=null;
+  if(typeof p._c==='number')c=p._c;
+  else if(p.result){var el=$(p.result),m=el&&/\d+/.exec(el.textContent);if(m)c=+m[0];}
+  if(c==null)return;state[p.id]=Math.min(c,p.max);if(p.why)addWhy(p,r);}
+function clearPart(p){var r=$(p.root);delete state[p.id];p._c=undefined;if(!r)return;clearWhy(r);if(p.check){var e=$(p.result);if(e)e.textContent='';}}
+function render(){var bar=$('#exam-final');if(!bar)return;var c=0,m=0,k=0,rows=[];
+  CFG.parts.forEach(function(p){m+=p.max;var v=state[p.id];if(v!=null){c+=v;k++;}rows.push(p.name+' '+(v!=null?v+'/'+p.max:'–'));});
+  var pct=m?Math.round(c/m*100):0;
+  bar.innerHTML='<span><span class="big">Final score: '+c+' / '+m+'</span> <small>('+pct+'%) · writing not counted</small></span><small>'+rows.join(' · ')+(k<CFG.parts.length?' · '+k+' of '+CFG.parts.length+' parts checked':'')+'</small>';}
+
+/* ---- init ---- */
+function init(){
+  if(CFG.hide&&CFG.hide.length){var st=document.createElement('style');st.textContent=CFG.hide.join(',')+'{display:none!important}';document.head.appendChild(st);}
+  $$('a,button').forEach(function(el){var t=(el.textContent||'').trim().toLowerCase(),h=(el.getAttribute('href')||'').toLowerCase();if(/^[\u2302\u2190\s]*(back\s+)?home$/.test(t)||/(^|\/)index\.html$/.test(h))el.remove();});
+  CFG.parts.forEach(function(p,i){p.n=i+1;
+    if(p.check){var r=$(p.root);if(!r)return;var w=document.createElement('div');w.className='exam-actions';
+      w.innerHTML='<button type="button" class="exam-check-btn" data-exam-check="'+p.id+'">Check Part '+p.n+'</button><div class="exam-result" id="exam-res-'+p.id+'" aria-live="polite"></div>';
+      r.appendChild(w);p.result='#exam-res-'+p.id;}});
+  makeBank();refreshBank();
+  var bar=document.createElement('div');bar.id='exam-final';bar.setAttribute('role','status');document.body.appendChild(bar);render();
+  document.addEventListener('change',function(e){if(e.target.matches&&e.target.matches('select'))refreshBank();});
+  document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('button');if(!b)return;
+    if(b.dataset.examCheck){var q=CFG.parts.filter(function(x){return x.id===b.dataset.examCheck})[0];q._c=q.check();$(q.result).textContent='Score: '+q._c+' / '+q.max;afterCheck(q);refreshBank();render();return;}
+    var t=(b.textContent||'').trim().toLowerCase(),chk=/^check/.test(t),rst=/^(reset|try again)/.test(t);if(!chk&&!rst)return;
+    var own=CFG.parts.filter(function(x){var r=$(x.root);return r&&r.contains(b);});
+    setTimeout(function(){var list=own.length?own:CFG.parts;
+      list.forEach(function(x){if(x.check&&chk&&!own.length)return;if(chk)afterCheck(x);else clearPart(x);});
+      refreshBank();render();},40);});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+
+</script>
+</body>
+</html>
