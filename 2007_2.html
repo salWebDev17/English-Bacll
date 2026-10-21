@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>English Practice Exam</title>
+<style>
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;padding:16px 12px 130px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans Khmer",Arial,sans-serif;background:#F4EFE2;color:#2B2620;line-height:1.6;font-size:16px}
+.wrap{max-width:720px;margin:0 auto}
+header{border-bottom:2px solid #2B2620;padding-bottom:14px;margin-bottom:22px}
+h1{font-size:clamp(22px,6vw,30px);margin:0 0 4px;line-height:1.2}
+.sub{color:#5C5347;font-size:15px;margin:0}
+.khmer{font-size:13px;color:#6B6152;margin-bottom:4px}
+.card{background:#FFFDF7;border:1px solid #E3D9BF;border-radius:12px;padding:clamp(14px,4vw,22px);margin-bottom:20px}
+.card h2{font-size:clamp(18px,4.5vw,21px);margin:0}
+.marks{color:#A9822F;font-size:14px;font-weight:700;margin:2px 0 10px}
+.ins{color:#5C5347;font-size:15px;margin:0 0 14px}
+.bank{display:flex;flex-wrap:wrap;gap:8px;padding:12px;background:#F6F1E4;border:1px solid #E3D9BF;border-radius:10px;margin-bottom:16px}
+.bank span{padding:5px 10px;background:#fff;border:1px solid #E3D9BF;border-radius:6px;font-size:15px}
+.bank span.used{text-decoration:line-through;color:#8A8074;opacity:.6}
+.passage{font-size:16px;line-height:2.1}
+.passage p{margin:0 0 12px;text-indent:1.4em}
+select{font:inherit;font-size:15px;max-width:100%;padding:4px 6px;border:none;border-bottom:2px solid #2B2620;background:#FFFDF7;color:#2B2620}
+select.correct{color:#3C6B4F;border-bottom-color:#3C6B4F;background:#DCE7DA}
+select.wrong{color:#B23A22;border-bottom-color:#B23A22;background:#EADAD2}
+.given{font-weight:600;color:#A9822F;border-bottom:2px solid #A9822F}
+.qn{font-weight:700;color:#A9822F;margin-right:4px}
+.mrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #E3D9BF;font-size:15.5px}
+.q{padding:12px 0;border-bottom:1px solid #E3D9BF}
+.q:last-child{border-bottom:none}
+.qt{margin-bottom:8px;font-size:15.5px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opt{display:flex;gap:8px;align-items:flex-start;padding:9px 10px;border:1px solid #E3D9BF;border-radius:8px;background:#F6F1E4;font-size:15px;cursor:pointer;min-height:44px}
+.opt input{margin-top:4px;flex-shrink:0}
+.opt.correct{background:#DCE7DA;border-color:#3C6B4F}
+.opt.wrong{background:#EADAD2;border-color:#B23A22}
+.reason{margin-top:8px;font-size:14.5px;padding:9px 11px;border-radius:8px;background:#F6F1E4;color:#4A4236;border-left:3px solid #A9822F}
+.reason.ok{border-left-color:#3C6B4F}
+.reason.no{border-left-color:#B23A22}
+.btn{margin-top:14px;font:inherit;font-weight:600;font-size:15px;color:#2B2620;background:#A9822F;border:none;border-radius:8px;padding:12px 20px;min-height:44px;cursor:pointer;width:100%}
+.btn:hover{background:#8C6A22;color:#fff}
+@media(min-width:560px){.btn{width:auto}}
+.bar{position:fixed;left:0;right:0;bottom:0;background:#2B2620;color:#F4EFE2;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px calc(12px + env(safe-area-inset-bottom))}
+.bar .lbl{font-size:13px;color:#CFC6B0}
+.bar .score{font-size:22px;font-weight:700}
+@media(max-width:480px){.opts{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="khmer">សម្រង់ លេខ · English Practice Examination</div>
+  <h1>English Practice Exam</h1>
+  <p class="sub">Reading · Grammar · Language Use · Vocabulary · 36 marks total</p>
+</header>
+
+<section class="card">
+  <h2>Section 1: Reading</h2>
+  <div class="marks">10 marks</div>
+  <p class="ins">Read the text and choose the correct word from the box for each blank. Number 1 is done for you.</p>
+  <div class="bank" id="bank-b"></div>
+  <div class="passage">
+    <p>The ability to weep is a uniquely human form of emotional response. We cry from the moment we enter this <span class="given">(1) C. world</span> for a number of reasons. Helpless babies cry to <span class="qn">(2)</span><select id="b2" data-g="b" onchange="strike('b')"></select> their parents that they are ill, hungry or uncomfortable. As they <span class="qn">(3)</span><select id="b3" data-g="b" onchange="strike('b')"></select> they will also cry just to attract parental attention and will often stop when they got it.</p>
+    <p>The idea that <span class="qn">(4)</span><select id="b4" data-g="b" onchange="strike('b')"></select> a good cry can do you good is a very old one and now it has scientific <span class="qn">(5)</span><select id="b5" data-g="b" onchange="strike('b')"></select> since recent research into tears has shown that they <span class="qn">(6)</span><select id="b6" data-g="b" onchange="strike('b')"></select> a natural painkiller called enkephalin. By <span class="qn">(7)</span><select id="b7" data-g="b" onchange="strike('b')"></select> sorrow and pain this chemical helps you to feel better. Weeping can increase the qualities of enkephalin you <span class="qn">(8)</span><select id="b8" data-g="b" onchange="strike('b')"></select>.</p>
+    <p>Unfortunately, some people still regard it as a <span class="qn">(9)</span><select id="b9" data-g="b" onchange="strike('b')"></select> of weakness, especially in men or boys, and it can only increase stress.</p>
+    <p>Tear of emotion also helps the body <span class="qn">(10)</span><select id="b10" data-g="b" onchange="strike('b')"></select> itself of toxic chemical waste, for there is more protein in them than in tears resulting from cold winds or other irritants. Crying comforts, calms and can be very enjoyable <span class="qn">(11)</span><select id="b11" data-g="b" onchange="strike('b')"></select> the popularity of the highly emotional films which are commonly called ‘weepies’. It seems that people enjoy crying together almost as much as laughing together.</p>
+  </div>
+  <button class="btn" onclick="checkReading()">Check Section 1</button>
+</section>
+
+<section class="card">
+  <h2>Section 2: Grammar</h2>
+  <div class="marks">11 marks</div>
+  <p class="ins">Choose the best answer (a, b, or c). Number 1 is done for you. Each answer shows its reason after you check.</p>
+  <div id="grammar-list"></div>
+  <button class="btn" onclick="checkMCQ(GRAM,'g','gram')">Check Section 2</button>
+</section>
+
+<section class="card">
+  <h2>Section 3: Language Use</h2>
+  <div class="marks">8 marks</div>
+  <p class="ins">Match each meaning with its correct word. Number 1 is done for you.</p>
+  <div class="bank" id="bank-m"></div>
+  <div id="match-list"></div>
+  <button class="btn" onclick="checkMatch()">Check Section 3</button>
+</section>
+
+<section class="card">
+  <h2>Section 4: Vocabulary</h2>
+  <div class="marks">7 marks</div>
+  <p class="ins">Choose the word that best fills the gap. Number 1 is done for you. Each answer shows its reason after you check.</p>
+  <div id="vocab-list"></div>
+  <button class="btn" onclick="checkMCQ(VOC,'v','voc')">Check Section 4</button>
+</section>
+</div>
+
+<div class="bar">
+  <div><div class="lbl">Final score</div><div class="score" id="final">0 / 36</div></div>
+</div>
+
+<script>
+const TOTAL = 36;
+const L = ['A','B','C','D','E','F','G','H','I'];
+const GIVEN = { b:['C'], m:['d'] };
+const got = {};
+
+function setPart(key, c, t){
+  got[key] = [c, t];
+  let c2 = 0;
+  for (const k in got) c2 += got[k][0];
+  document.getElementById('final').textContent = c2 + ' / ' + TOTAL;
+}
+
+/* ---------- data ---------- */
+const READ_BANK = [['A','A. develop'],['B','B. rid'],['C','C. world'],['D','D. consider'],['E','E. persuade'],['F','F. sign'],['G','G. having'],['H','H. validity'],['I','I. waste'],['J','J. produce'],['K','K. fighting'],['L','L. contain']];
+const READ_ANS = {2:'E',3:'A',4:'G',5:'H',6:'L',7:'K',8:'J',9:'F',10:'B',11:'D'};
+
+const MATCH_BANK = [['a','a. footstep'],['b','b. peasant'],['c','c. moustache'],['d','d. tractor'],['e','e. museum'],['f','f. sculpture'],['g','g. statue'],['h','h. combine'],['i','i. starvation']];
+const MATCH_ROWS = [
+  {n:1, ex:true, def:'powerful motor vehicle used for pulling farm machinery or other heavy equipment', ans:'d'},
+  {n:2, def:'join or mix together to form a whole', ans:'h'},
+  {n:3, def:'suffering or death caused by lack of food', ans:'i'},
+  {n:4, def:'figure of a person, an animal, etc. in wood, stone, metal, etc. usually with life-size or larger', ans:'g'},
+  {n:5, def:"hair that grows on a man's upper lip", ans:'c'},
+  {n:6, def:'sound or mark of a step taken while walking', ans:'a'},
+  {n:7, def:'art of making figures or objects by carving wood or stone or shaping clay, etc.', ans:'f'},
+  {n:8, def:'building in which objects of artistic, cultural, historical or scientific importance and interest are displayed', ans:'e'},
+  {n:9, def:'farmer owning or renting a piece of land which he cultivates himself', ans:'b'}
+];
+
+const GRAM = [
+  {n:1,ex:true,q:"I look forward ______ you as soon as possible.",o:["seeing","to seeing","to see"],a:1,why:"'Look forward to' is followed by a noun or -ing form, so 'to seeing' is correct."},
+  {n:2,q:"I ______ to America.",o:["have often been","often have been","have been often"],a:0,why:"An adverb of frequency goes between 'have' and the past participle: 'have often been'."},
+  {n:3,q:"You look ______ a teacher.",o:["like","as","the same like"],a:0,why:"'Look like' means resemble. 'As' and 'the same like' do not form this pattern."},
+  {n:4,q:"How many brothers and sisters ______?",o:["has you got","do you have","are you having"],a:1,why:"Questions with 'How many' use do/does + subject + base verb: 'do you have'."},
+  {n:5,q:"I knew that he ______ waiting for somebody.",o:["will","was","is"],a:1,why:"After a past verb ('knew'), the verb in the reported clause moves back to the past: 'was'."},
+  {n:6,q:"We can't live very long without ______.",o:["to eat","eating","eat"],a:1,why:"After a preposition ('without'), use the -ing form: 'without eating'."},
+  {n:7,q:"That's the man ______ took your coat.",o:["which","that","who"],a:2,why:"'Who' is the relative pronoun for people. 'Which' is used for things."},
+  {n:8,q:"My mother ______ my birthday.",o:["always forget","forget always","always forgets"],a:2,why:"Present simple: the adverb 'always' goes before the verb, and third-person singular 'she/he' takes -s: 'always forgets'."},
+  {n:9,q:"______ Sophanna doing this time yesterday?",o:["What was","What is","What are"],a:0,why:"'Yesterday' at a specific time signals the past continuous, so the question is 'What was Sophanna doing…?'"},
+  {n:10,q:"It's ______ if you take the train.",o:["the quicker","quicker","the most quicker"],a:1,why:"Comparative adjectives are not preceded by 'the' here, and 'most quicker' is wrong because 'quicker' is already comparative: 'quicker'."},
+  {n:11,q:"This is the first time I ______ a sports car.",o:["'m driving","drive","'ve driven"],a:2,why:"'This is the first time' is followed by the present perfect: 'I've driven'."},
+  {n:12,q:"My wife will upset ______.",o:["if I don't get back","if I didn't get back","if I hadn't got back"],a:0,why:"In a sentence about the future with 'will', the 'if' clause uses the present simple: 'if I don't get back'."}
+];
+
+const VOC = [
+  {n:1,ex:true,q:"Despite very careful ______, the police have not been able to identify who the murderer is yet.",o:["undertaking","searching","enquiries","surveys"],a:2,why:"'Enquiries' means investigations. 'Careful enquiries' is the natural collocation for police work."},
+  {n:2,q:"Heavy snow ______ the train for several hours.",o:["cancelled","delayed","postponed","changed"],a:1,why:"'Delay' means make late. The train ran, just late for several hours, so 'cancelled' and 'postponed' do not fit."},
+  {n:3,q:"I still really like a cigarette even though I ______ smoking two years ago.",o:["gave in","gave up","gave over","completed"],a:1,why:"'Give up' means stop a habit. 'Gave in' means surrendered, and 'gave over' is not used this way."},
+  {n:4,q:"Most parents find it is difficult to ______ their children nowadays.",o:["foster","bring up","develop","grow up"],a:1,why:"'Bring up' means raise children. 'Grow up' has no object, and 'develop' and 'foster' do not describe raising children."},
+  {n:5,q:"Vutha always arrives on time. He is ______.",o:["careful","boring","punctual","timeless"],a:2,why:"'Punctual' means arriving on time. 'Careful', 'boring' and 'timeless' do not describe timing."},
+  {n:6,q:"Because of the energy crisis, many people claim that there is no ______ to developing nuclear power.",o:["advantage","reason","alteration","alternative"],a:3,why:"'No alternative to' means there is no other option. The sentence says there is no other way to develop power."},
+  {n:7,q:"The restoration of the library was considered a great ______ in view of the difficulty of raising money.",o:["architecture","achievement","building","interest"],a:1,why:"'A great achievement' is a success gained through effort, which fits restoring a library despite money problems."},
+  {n:8,q:"According to the weather ______, there will be rain tomorrow.",o:["programme","forecast","information","survey"],a:1,why:"A weather 'forecast' is a prediction. A programme is a TV show, and a survey is a study of opinions."}
+];
+
+/* ---------- builders ---------- */
+function bank(id, group, items){
+  document.getElementById(id).innerHTML = items.map(([k,label]) => `<span data-bank="${group}" data-k="${k}">${label}</span>`).join('');
+}
+function opts(items){
+  return '<option value="">—</option>' + items.map(([k,label]) => `<option value="${k}">${label}</option>`).join('');
+}
+function strike(group){
+  const used = new Set(GIVEN[group] || []);
+  document.querySelectorAll(`select[data-g="${group}"]`).forEach(s => { if(s.value) used.add(s.value); });
+  document.querySelectorAll(`[data-bank="${group}"]`).forEach(b => b.classList.toggle('used', used.has(b.dataset.k)));
+}
+function checkReading(){
+  let c = 0;
+  for (const n in READ_ANS){
+    const s = document.getElementById('b' + n);
+    s.classList.remove('correct','wrong');
+    if (s.value === READ_ANS[n]) { s.classList.add('correct'); c++; }
+    else s.classList.add('wrong');
+  }
+  setPart('reading', c, Object.keys(READ_ANS).length);
+}
+
+function buildMatch(){
+  document.getElementById('match-list').innerHTML = MATCH_ROWS.map(r => {
+    const rowText = `<span><span class="qn">${r.n}.</span> ${r.def}</span>`;
+    if (r.ex) return `<div class="mrow">${rowText}<span class="given">d. tractor (example)</span></div>`;
+    return `<div class="mrow">${rowText}<select id="m${r.n}" data-g="m" onchange="strike('m')">${opts(MATCH_BANK)}</select></div>`;
+  }).join('');
+}
+function checkMatch(){
+  let c = 0, t = 0;
+  MATCH_ROWS.filter(r => !r.ex).forEach(r => {
+    t++;
+    const s = document.getElementById('m' + r.n);
+    s.classList.remove('correct','wrong');
+    if (s.value === r.ans){ s.classList.add('correct'); c++; }
+    else s.classList.add('wrong');
+  });
+  setPart('match', c, t);
+}
+
+function renderMCQ(id, items, p){
+  document.getElementById(id).innerHTML = items.map((it,i) =>
+    `<div class="q" id="${p}${i}"><div class="qt"><span class="qn">${it.n}.</span>${it.q}${it.ex ? ' <i>(example)</i>' : ''}</div>
+     <div class="opts">${it.o.map((o,j)=>`<label class="opt"><input type="radio" name="${p}${i}" value="${j}"${it.ex ? (j===it.a?' checked':'') + ' disabled' : ''}><span><b>${L[j].toLowerCase()}.</b> ${o}</span></label>`).join('')}</div></div>`
+  ).join('');
+}
+function checkMCQ(items, p, key){
+  let c = 0, t = 0;
+  items.forEach((it,i) => {
+    const box = document.getElementById(p + i);
+    box.querySelectorAll('.opt').forEach(l => l.classList.remove('correct','wrong'));
+    box.querySelectorAll('.reason').forEach(r => r.remove());
+    const labels = box.querySelectorAll('.opt');
+    const chosen = box.querySelector('input:checked');
+    const v = chosen ? +chosen.value : -1;
+    labels[it.a].classList.add('correct');
+    if (!it.ex){
+      t++;
+      if (v === it.a) c++;
+      else if (v >= 0) labels[v].classList.add('wrong');
+    }
+    const r = document.createElement('div');
+    r.className = 'reason ' + (v === it.a ? 'ok' : 'no');
+    r.textContent = (v === it.a ? 'Correct. ' : 'Incorrect. The answer is ' + L[it.a].toLowerCase() + '. ') + it.why;
+    box.appendChild(r);
+  });
+  setPart(key, c, t);
+}
+
+/* ---------- init ---------- */
+bank('bank-b', 'b', READ_BANK);
+bank('bank-m', 'm', MATCH_BANK);
+strike('b'); strike('m');
+buildMatch();
+renderMCQ('grammar-list', GRAM, 'g');
+renderMCQ('vocab-list', VOC, 'v');
+</script>
+</body>
+</html>

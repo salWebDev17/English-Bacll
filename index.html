@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>វិញ្ញាសាអង់គ្លេសប្រឡងបាក់ឌុប</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Moul&family=Kantumruy+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F7F7F8;
+    --bg-deep: #FFFFFF;
+    --surface: #FFFFFF;
+    --surface-hover: #FFFFFF;
+    --line: #E4E4E7;
+    --gold: #B8860B;
+    --gold-soft: #96660A;
+    --text: #0F0F10;
+    --muted: #5B5D66;
+    --muted-2: #8A8C96;
+    --shadow: 0 1px 2px rgba(20,20,30,0.06), 0 6px 16px rgba(20,20,30,0.06);
+    --shadow-hover: 0 4px 10px rgba(20,20,30,0.08), 0 14px 30px rgba(20,20,30,0.12);
+    color-scheme: light dark;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg: #0A1120;
+      --bg-deep: #060B15;
+      --surface: #121B30;
+      --surface-hover: #182544;
+      --line: #24304C;
+      --gold: #D4AF37;
+      --gold-soft: #E9CE7C;
+      --text: #EEF1F8;
+      --muted: #9AA6C4;
+      --muted-2: #5E6A8C;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 6px 18px rgba(0,0,0,0.35);
+      --shadow-hover: 0 4px 10px rgba(0,0,0,0.5), 0 16px 36px rgba(212,175,55,0.12);
+    }
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    background-image:
+      radial-gradient(ellipse 700px 400px at 15% -5%, rgba(212,175,55,0.10), transparent 60%),
+      radial-gradient(ellipse 600px 500px at 100% 15%, rgba(212,175,55,0.06), transparent 55%),
+      linear-gradient(180deg, var(--bg-deep), var(--bg) 220px);
+    color: var(--text);
+    font-family: 'Kantumruy Pro', 'Khmer OS', sans-serif;
+    line-height: 1.6;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .wrap{ max-width: 860px; margin: 0 auto; padding: 0 20px 90px; }
+
+  /* ---------- Header banner ---------- */
+  header{
+    position: relative;
+    margin: 22px auto 0;
+    max-width: 100%;
+    border-radius: 20px;
+    padding: 76px 24px 22px;
+    text-align: center;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 480px 260px at 78% 18%, rgba(212,175,55,0.32), transparent 60%),
+      radial-gradient(ellipse 320px 200px at 8% 100%, rgba(212,175,55,0.14), transparent 60%),
+      linear-gradient(150deg, #05070C 0%, #12141C 55%, #05070C 100%);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    animation: rise 0.6s ease-out;
+  }
+  @keyframes rise{ from{ opacity:0; transform: translateY(8px);} to{ opacity:1; transform: translateY(0);} }
+
+  .seal{
+    position: absolute; top: 16px; left: 16px;
+    width: 46px; height: 46px; margin: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid #D4AF37;
+    background: radial-gradient(circle, rgba(212,175,55,0.18), transparent 70%);
+    z-index: 2;
+  }
+  .seal img{
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
+
+  h1{
+    font-family: 'Moul', 'Khmer OS Moul', serif;
+    font-weight: 400; font-size: 28px; line-height: 1.6;
+    color: #F2D98A;
+    margin: 0 0 14px;
+    position: relative; z-index: 1;
+  }
+
+  header p{ color: #C3C9DE; font-size: 14px; max-width: 42ch; margin: 0 auto; position: relative; z-index: 1; }
+
+  .meta-bar{
+    margin-top: 22px; display: flex; justify-content: center; gap: 0;
+    border-top: 1px solid rgba(255,255,255,0.1); padding-top: 14px;
+    position: relative; z-index: 1;
+  }
+  .meta-bar div{
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C3C9DE;
+    padding: 0 16px; border-right: 1px solid rgba(255,255,255,0.12);
+  }
+  .meta-bar div:last-child{ border-right: none; }
+  .meta-bar b{ color: #E9CE7C; font-weight: 500; }
+
+  /* ---------- Era grouping ---------- */
+  .era{ margin-bottom: 36px; }
+  .era-label{
+    display: flex; align-items: baseline; gap: 14px; margin-bottom: 6px;
+    color: var(--muted-2); font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  }
+  .era-label::after{ content: ""; flex: 1; height: 1px; background: var(--line); }
+
+  /* ---------- Year row ---------- */
+  .year-row{
+    display: flex; gap: 22px; padding: 18px 4px;
+    border-bottom: 1px solid var(--line); align-items: flex-start;
+  }
+  .year-row:last-child{ border-bottom: none; }
+
+  .year-num{
+    font-family: 'JetBrains Mono', monospace; font-size: 20px; color: var(--gold-soft);
+    min-width: 60px; padding-top: 12px; flex-shrink: 0;
+  }
+
+  .papers{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px 14px;
+    flex: 1;
+  }
+
+  /* ---------- Redesigned card, YouTube-style ---------- */
+  .paper-btn{
+    display: flex; flex-direction: column; gap: 8px;
+    height: 100%; min-width: 0;
+    text-decoration: none; color: var(--text);
+    border-radius: 12px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .paper-btn:hover{ transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+  .paper-btn:active{ transform: translateY(0); }
+  .paper-btn:focus-visible{ outline: 2px solid var(--gold-soft); outline-offset: 2px; }
+
+  .thumb{
+    flex-shrink: 0;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(212,175,55,0.20), transparent 55%),
+      linear-gradient(150deg, var(--line), var(--surface) 70%);
+    border-bottom: 1px solid var(--line);
+  }
+  .thumb img{
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
+
+  .paper-btn .label{ flex: 1; padding: 0 12px; font-size: 14px; font-weight: 600; color: var(--text); }
+  .paper-btn .code{
+    margin-top: auto;
+    padding: 0 12px 12px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted-2);
+  }
+
+  .missing{
+    display: flex; align-items: center; padding: 12px 4px;
+    color: var(--muted-2); font-size: 13px; font-style: italic;
+  }
+
+  /* ---------- Extra practice section ---------- */
+  .extra-section{ margin-top: 12px; }
+
+
+  footer{
+    margin-top: 44px; text-align: center; color: var(--muted-2);
+    font-size: 12px; font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.5px;
+  }
+
+  @media (max-width: 480px){
+    header{ padding: 66px 14px 18px; }
+    h1{ font-size: 22px; }
+    .meta-bar{ flex-wrap: wrap; row-gap: 8px; }
+    .year-row{ flex-direction: column; gap: 10px; }
+    .year-num{ min-width: auto; padding-top: 0; }
+    .papers{ grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+  }
+
+  /* ---------- Browse toolbar: sticky era navigator + search ---------- */
+  .toolbar{
+    position: sticky; top: 0; z-index: 20;
+    margin: 18px -20px 26px; padding: 12px 20px;
+    display: flex; flex-direction: column; gap: 10px;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .search{
+    display: flex; align-items: center; gap: 8px;
+    height: 42px; padding: 0 14px;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
+    box-shadow: var(--shadow);
+  }
+  .search:focus-within{ border-color: var(--gold-soft); }
+  .search input{
+    flex: 1; min-width: 0; border: 0; outline: none; background: transparent;
+    color: var(--text); font: inherit; font-size: 14px;
+  }
+  .search input::placeholder{ color: var(--muted-2); }
+  .chips{ display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+  .chips::-webkit-scrollbar{ display: none; }
+  .chip{
+    flex-shrink: 0; cursor: pointer;
+    font: inherit; font-size: 13px; color: var(--muted);
+    padding: 6px 14px; border-radius: 999px;
+    background: var(--surface); border: 1px solid var(--line);
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .chip:hover{ color: var(--text); }
+  .chip[aria-pressed="true"]{ color: #0A0A0B; background: var(--gold-soft); border-color: var(--gold-soft); }
+  .chip:focus-visible{ outline: 2px solid var(--gold-soft); outline-offset: 2px; }
+
+  .badge{
+    position: absolute; top: 8px; right: 8px; z-index: 1;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.4px;
+    padding: 3px 8px; border-radius: 999px;
+    background: var(--gold); color: #0A0A0B;
+  }
+  .paper-btn{ position: relative; }
+
+  .empty{
+    display: none; text-align: center; padding: 40px 0;
+    color: var(--muted-2); font-size: 14px;
+  }
+  .empty.show{ display: block; }
+  .hidden{ display: none !important; }
+
+  html{ scroll-behavior: smooth; }
+
+  @media (prefers-reduced-motion: reduce){ header{ animation: none; } .paper-btn{ transition: none; } html{ scroll-behavior: auto; } }
+</style>
+  
+    <link rel="icon" type="image/png" href="logo.png">
+</head>
+  
+
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="seal"><img src="logo.png" alt="BAC II"></div>
+    <h1>វិញ្ញាសាអង់គ្លេសប្រឡងបាក់ឌុប</h1>
+    <p>ការប្រមូលផ្តុំវិញ្ញាសាចាស់ៗ មុខវិជ្ជាអង់គ្លេស សម្រាប់ត្រៀមប្រឡងបាក់ឌុប។ ចុចលើកាតដើម្បីបើកមើលវិញ្ញាសា។</p>
+    <div class="meta-bar">
+      <div><b>២៧</b> វិញ្ញាសា</div>
+      <div><b>១៨</b> ឆ្នាំ</div>
+      <div><b>២០០៧–២០២៥</b></div>
+    </div>
+  </header>
+
+  <nav class="toolbar" aria-label="ស្វែងរក និងជ្រើសរើសឆ្នាំ">
+    <label class="search">
+      <span aria-hidden="true">⌕</span>
+      <input id="q" type="search" placeholder="ស្វែងរកឆ្នាំ, e.g. 2025" autocomplete="off">
+    </label>
+    <div class="chips" id="chips" role="group" aria-label="ជ្រើសរើសសម័យ"></div>
+  </nav>
+
+  <p class="empty" id="empty">រកមិនឃើញវិញ្ញាសាដែលត្រូវនឹងការស្វែងរកទេ</p>
+
+  <div class="era">
+    <div class="era-label">២០០៧ – ២០១០</div>
+
+    <div class="year-row">
+      <div class="year-num">២០០៧</div>
+      <div class="papers">
+        <a class="paper-btn" href="2007.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ក" loading="lazy"></div><span class="label">២០០៧</span><span class="code">ទី១</span></a>
+        <a class="paper-btn" href="2007_2.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ខ" loading="lazy"></div><span class="label">២០០៧</span><span class="code">ទី២</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០០៨</div>
+      <div class="papers">
+        <a class="paper-btn" href="2008.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ក" loading="lazy"></div><span class="label">២០០៨</span><span class="code">ទី១</span></a>
+        <a class="paper-btn" href="2008_2.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ខ" loading="lazy"></div><span class="label">២០០៨</span><span class="code">ទី២</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០០៩</div>
+      <div class="papers">
+        <a class="paper-btn" href="2009.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ក" loading="lazy"></div><span class="label">២០០៩</span><span class="code">ទី១</span></a>
+        <a class="paper-btn" href="2009_2.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ខ" loading="lazy"></div><span class="label">២០០៩</span><span class="code">ទី២</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០១០</div>
+      <div class="papers">
+        <a class="paper-btn" href="2010.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ក" loading="lazy"></div><span class="label">២០១០</span><span class="code">ទី១</span></a>
+        <a class="paper-btn" href="2010_2.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ខ" loading="lazy"></div><span class="label">២០១០</span><span class="code">ទី២</span></a>
+        <a class="paper-btn" href="2010_3.html"><div class="thumb"><img src="bacll.png" alt="កំណែ គ" loading="lazy"></div><span class="label">២០១០</span><span class="code">ទី៣</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="era">
+    <div class="era-label">២០១១ – ២០១៥</div>
+
+    <div class="year-row">
+      <div class="year-num">២០១១</div>
+      <div class="papers">
+        <a class="paper-btn" href="2011.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ក" loading="lazy"></div><span class="label">២០១១</span><span class="code">ទី១</span></a>
+        <a class="paper-btn" href="2011_2.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ខ" loading="lazy"></div><span class="label">២០១១</span><span class="code">ទី២</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០១២</div>
+      <div class="papers">
+        <a class="paper-btn" href="2012.html"><div class="thumb"><img src="bacll.png" alt="មើលវិញ្ញាសា" loading="lazy"></div><span class="label">២០១២</span><span class="code">មើលវិញ្ញាសា</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០១៣</div>
+      <div class="papers">
+        <a class="paper-btn" href="2013.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ក" loading="lazy"></div><span class="label">២០១៣</span><span class="code">ទី១</span></a>
+        <a class="paper-btn" href="2013_2.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ខ" loading="lazy"></div><span class="label">២០១៣</span><span class="code">ទី២</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០១៤</div>
+      <div class="papers">
+        <a class="paper-btn" href="2014.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ក" loading="lazy"></div><span class="label">២០១៤</span><span class="code">ទី១</span></a>
+        <a class="paper-btn" href="2014_2.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ខ" loading="lazy"></div><span class="label">២០១៤</span><span class="code">ទី២</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០១៥</div>
+      <div class="papers">
+        <a class="paper-btn" href="2015.html"><div class="thumb"><img src="bacll.png" alt="មើលវិញ្ញាសា" loading="lazy"></div><span class="label">២០១៥</span><span class="code">មើលវិញ្ញាសា</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="era">
+    <div class="era-label">២០១៦ – ២០២០</div>
+
+    <div class="year-row">
+      <div class="year-num">២០១៦</div>
+      <div class="papers">
+        <a class="paper-btn" href="2016.html"><div class="thumb"><img src="bacll.png" alt="មើលវិញ្ញាសា" loading="lazy"></div><span class="label">២០១៦</span><span class="code">មើលវិញ្ញាសា</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០១៧</div>
+      <div class="papers">
+        <a class="paper-btn" href="2017.html"><div class="thumb"><img src="bacll.png" alt="មើលវិញ្ញាសា" loading="lazy"></div><span class="label">២០១៧</span><span class="code">មើលវិញ្ញាសា</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០១៨</div>
+      <div class="papers">
+        <a class="paper-btn" href="2018.html"><div class="thumb"><img src="bacll.png" alt="មើលវិញ្ញាសា" loading="lazy"></div><span class="label">២០១៨</span><span class="code">មើលវិញ្ញាសា</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០១៩</div>
+      <div class="papers">
+        <a class="paper-btn" href="2019.html"><div class="thumb"><img src="bacll.png" alt="មើលវិញ្ញាសា" loading="lazy"></div><span class="label">២០១៩</span><span class="code">មើលវិញ្ញាសា</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០២០</div>
+      <div class="missing">មិនមានទិន្នន័យសម្រាប់ឆ្នាំនេះទេ</div>
+    </div>
+  </div>
+
+  <div class="era">
+    <div class="era-label">២០២១ – ២០២៥</div>
+
+    <div class="year-row">
+      <div class="year-num">២០២១</div>
+      <div class="papers">
+        <a class="paper-btn" href="2021.html"><div class="thumb"><img src="bacll.png" alt="មើលវិញ្ញាសា" loading="lazy"></div><span class="label">២០២១</span><span class="code">មើលវិញ្ញាសា</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០២២</div>
+      <div class="papers">
+        <a class="paper-btn" href="2022.html"><div class="thumb"><img src="bacll.png" alt="មើលវិញ្ញាសា" loading="lazy"></div><span class="label">២០២២</span><span class="code">មើលវិញ្ញាសា</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០២៣</div>
+      <div class="papers">
+        <a class="paper-btn" href="2023.html"><div class="thumb"><img src="bacll.png" alt="មើលវិញ្ញាសា" loading="lazy"></div><span class="label">២០២៣</span><span class="code">មើលវិញ្ញាសា</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០២៤</div>
+      <div class="papers">
+        <a class="paper-btn" href="2024.html"><div class="thumb"><img src="bacll.png" alt="មើលវិញ្ញាសា" loading="lazy"></div><span class="label">២០២៤</span><span class="code">មើលវិញ្ញាសា</span></a>
+      </div>
+    </div>
+
+    <div class="year-row">
+      <div class="year-num">២០២៥</div>
+      <div class="papers">
+        <a class="paper-btn" href="2025.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ក" loading="lazy"></div><span class="label">២០២៥</span><span class="code">ទី១</span></a>
+        <a class="paper-btn" href="2025_2.html"><div class="thumb"><img src="bacll.png" alt="កំណែ ខ" loading="lazy"></div><span class="label">២០២៥</span><span class="code">ទី២</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="era extra-section">
+    <div class="era-label">លំហាត់បន្ថែម</div>
+    <div class="year-row">
+      <div class="papers" style="flex:1;">
+        <a class="paper-btn" href="passive-voice.html"><div class="thumb"><img src="more.png" alt="Passive Voice" loading="lazy"></div><span class="label">Passive Voice</span></a>
+        <a class="paper-btn" href="conditional.html"><div class="thumb"><img src="more.png" alt="Conditional" loading="lazy"></div><span class="label">Conditional</span></a>
+        <a class="paper-btn" href="clause.html"><div class="thumb"><img src="more.png" alt="Clause" loading="lazy"></div><span class="label">Clause</span></a>
+      </div>
+    </div>
+  </div>
+
+  <footer>វិទ្យាល័យនេតយ៉ង់</footer>
+
+</div>
+  <script>
+  (function(){
+    const KH = {'0':'០','1':'១','2':'២','3':'៣','4':'៤','5':'៥','6':'៦','7':'៧','8':'៨','9':'៩'};
+    const norm = s => s.trim().toLowerCase().replace(/[0-9]/g, d => KH[d]);
+
+    const eras = [...document.querySelectorAll('.era')];
+    const yearEras = eras.filter(e => !e.classList.contains('extra-section'));
+    const cards = [...document.querySelectorAll('.paper-btn')];
+    const input = document.getElementById('q');
+    const chipsEl = document.getElementById('chips');
+    const empty = document.getElementById('empty');
+    const toolbar = document.querySelector('.toolbar');
+
+    // Mark the newest paper with a badge
+    const rows = yearEras.flatMap(e => [...e.querySelectorAll('.year-row')]).filter(r => r.querySelector('.paper-btn'));
+    const newest = rows[rows.length - 1];
+    if(newest){
+      const badge = document.createElement('span');
+      badge.className = 'badge';
+      badge.textContent = 'ថ្មីបំផុត';
+      newest.querySelector('.paper-btn').appendChild(badge);
+    }
+
+    // Era chips (jump navigation)
+    const chipButtons = [];
+    function addChip(label, onClick){
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip';
+      b.textContent = label;
+      b.setAttribute('aria-pressed', 'false');
+      b.addEventListener('click', onClick);
+      chipsEl.appendChild(b);
+      chipButtons.push(b);
+      return b;
+    }
+    function setActive(btn){
+      chipButtons.forEach(c => c.setAttribute('aria-pressed', c === btn ? 'true' : 'false'));
+    }
+    const allChip = addChip('ទាំងអស់', () => {
+      input.value = '';
+      applyFilter();
+      setActive(allChip);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    setActive(allChip);
+
+    eras.forEach((era, i) => {
+      era.id = 'era-' + i;
+      const label = era.querySelector('.era-label');
+      const chip = addChip(label ? label.textContent.trim() : 'Era', () => {
+        input.value = '';
+        applyFilter();
+        setActive(chip);
+        const top = era.getBoundingClientRect().top + window.scrollY - toolbar.offsetHeight - 12;
+        window.scrollTo({ top, behavior: 'smooth' });
+      });
+      era._chip = chip;
+    });
+
+    // Highlight the era chip currently in view
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting && entry.target._chip){
+          setActive(entry.target._chip);
+        }
+      });
+    }, { rootMargin: '-140px 0px -60% 0px' });
+    eras.forEach(e => observer.observe(e));
+
+    // Live search across year labels, codes and practice names
+    function applyFilter(){
+      const q = norm(input.value);
+      if(!q){
+        cards.forEach(c => c.classList.remove('hidden'));
+        document.querySelectorAll('.year-row, .era').forEach(el => el.classList.remove('hidden'));
+        empty.classList.remove('show');
+        return;
+      }
+      let anyVisible = false;
+      document.querySelectorAll('.year-row').forEach(row => {
+        let rowVisible = false;
+        row.querySelectorAll('.paper-btn').forEach(card => {
+          const match = norm(card.textContent).includes(q);
+          card.classList.toggle('hidden', !match);
+          if(match) rowVisible = true;
+        });
+        row.classList.toggle('hidden', !rowVisible);
+        if(rowVisible) anyVisible = true;
+      });
+      eras.forEach(era => era.classList.toggle('hidden', !era.querySelector('.year-row:not(.hidden)')));
+      empty.classList.toggle('show', !anyVisible);
+    }
+    input.addEventListener('input', applyFilter);
+  })();
+  </script>
+</body>
+  <script>
+      (function(){
+    function detectDeviceName(){
+      const ua = navigator.userAgent;
+      let os = 'Unknown';
+      if(/android/i.test(ua)) os = 'Android';
+      else if(/iphone|ipad|ipod/i.test(ua)) os = 'iOS';
+      else if(/windows/i.test(ua)) os = 'Windows';
+      else if(/mac os/i.test(ua)) os = 'macOS';
+      else if(/linux/i.test(ua)) os = 'Linux';
+
+      let browser = 'Browser';
+      if(/vivo/i.test(ua)) browser = 'ViVo';
+      else if(/samsung/i.test(ua)) browser = 'Samsung';
+      else if(/edg/i.test(ua)) browser = 'Edge';
+      else if(/chrome/i.test(ua)) browser = 'Chrome';
+      else if(/firefox/i.test(ua)) browser = 'Firefox';
+      else if(/safari/i.test(ua)) browser = 'Safari';
+
+      return `${browser}-${os}`;
+    }
+
+    function saveEntry(ip){
+      try{
+        const page = location.pathname.split('/').pop().replace('.html','');
+        const time = new Date().toLocaleString();
+        const device = detectDeviceName();
+        let entries = JSON.parse(localStorage.getItem('visitLog') || '[]');
+        entries.push({ page: page, time: time, device: device, ip: ip });
+        if(entries.length > 300) entries = entries.slice(-300);
+        localStorage.setItem('visitLog', JSON.stringify(entries));
+      }catch(e){}
+    }
+
+    fetch('https://api.ipify.org?format=json')
+      .then(r => r.json())
+      .then(data => saveEntry(data.ip))
+      .catch(() => saveEntry('unknown'));
+  })();
+  </script>
+</html>
+
+      

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>English Practice Exam</title>
+<style>
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;padding:16px 12px 130px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:#EEF2EC;color:#1F2A24;line-height:1.6;font-size:16px}
+.wrap{max-width:760px;margin:0 auto}
+header{margin-bottom:18px}
+h1{font-size:clamp(22px,6vw,32px);margin:0 0 4px;line-height:1.2}
+.sub{color:#4A5A50;font-size:15px;margin:0}
+.card{background:#FFFFFF;border:1px solid #CFDCD1;border-radius:12px;padding:clamp(14px,4vw,24px);margin-bottom:20px}
+.card h2{font-size:clamp(18px,4.5vw,22px);margin:0}
+.marks{color:#2E6B4A;font-size:14px;font-weight:700;margin:2px 0 10px}
+.ins{color:#4A5A50;font-size:15px;margin:0 0 14px}
+.bank{display:flex;flex-wrap:wrap;gap:8px;padding:12px;background:#F2F7F3;border:1px solid #CFDCD1;border-radius:10px;margin-bottom:16px}
+.bank span{padding:5px 10px;background:#fff;border:1px solid #CFDCD1;border-radius:6px;font-size:15px}
+.bank span.used{text-decoration:line-through;color:#8A968E;opacity:.6}
+.passage{font-size:16px;line-height:2.1}
+select{font:inherit;font-size:15px;max-width:100%;padding:4px 6px;border:none;border-bottom:2px solid #1F2A24;background:#FFFFFF;color:#1F2A24}
+select.correct{color:#1E6B3A;border-bottom-color:#1E6B3A;background:#DDF0E3}
+select.wrong{color:#A8322A;border-bottom-color:#A8322A;background:#F8E1DE}
+.given{font-weight:600;color:#2E6B4A;border-bottom:2px solid #2E6B4A}
+.mrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #E1EAE3;font-size:15.5px}
+.q{padding:12px 0;border-bottom:1px solid #E1EAE3}
+.q:last-child{border-bottom:none}
+.qt{margin-bottom:8px;font-size:15.5px}
+.qn{font-weight:700;color:#2E6B4A;margin-right:4px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opt{display:flex;gap:8px;align-items:flex-start;padding:9px 10px;border:1px solid #CFDCD1;border-radius:8px;background:#F2F7F3;font-size:15px;cursor:pointer;min-height:44px}
+.opt input{margin-top:4px;flex-shrink:0}
+.opt.correct{background:#DDF0E3;border-color:#1E6B3A}
+.opt.wrong{background:#F8E1DE;border-color:#A8322A}
+.reason{margin-top:8px;font-size:14.5px;padding:9px 11px;border-radius:8px;background:#F2F7F3;color:#34413A;border-left:3px solid #2E6B4A}
+.reason.ok{border-left-color:#1E6B3A}
+.reason.no{border-left-color:#A8322A}
+.btn{margin-top:14px;font:inherit;font-weight:600;font-size:15px;color:#fff;background:#2E6B4A;border:none;border-radius:8px;padding:12px 20px;min-height:44px;cursor:pointer;width:100%}
+.btn:hover{background:#1E4D33}
+@media(min-width:560px){.btn{width:auto}}
+textarea{width:100%;min-height:280px;font:inherit;font-size:16px;padding:12px;border:1px solid #CFDCD1;border-radius:8px;background:#FAFCFA;resize:vertical;line-height:1.6}
+.wc{font-size:14px;color:#4A5A50;margin-top:6px}
+.wc.ok{color:#1E6B3A;font-weight:600}
+.wc.warn{color:#A8322A}
+.bar{position:fixed;left:0;right:0;bottom:0;background:#1F2A24;color:#EEF2EC;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px calc(12px + env(safe-area-inset-bottom))}
+.bar .lbl{font-size:13px;color:#B9C8BD}
+.bar .score{font-size:22px;font-weight:700}
+@media(max-width:480px){.opts{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>English Practice Exam</h1>
+  <p class="sub">Grade 12 · Duration 60 minutes · Total 50 marks</p>
+</header>
+
+<section class="card">
+  <h2>Part 1 · Reading</h2>
+  <div class="marks">10 marks</div>
+  <p class="ins">Select the words from the box below to fill the gaps in the passage. Gap (1) has been done as an example.</p>
+  <div class="bank" id="bank-p"></div>
+  <div class="passage">
+    <p>We own hotels and holiday centres in Cambodia, <span class="given">Thailand</span> and Singapore. We are looking for a qualified person for the position of Leisure Planner. He or she is responsible <select id="p2" data-g="p" onchange="strike('p')"></select> planning and organizing leisure activities for guests and other clients. The post requires someone <select id="p3" data-g="p" onchange="strike('p')"></select> the age of 25 and 35 with an interest in encouraging people <select id="p4" data-g="p" onchange="strike('p')"></select> all ages to take part <select id="p5" data-g="p" onchange="strike('p')"></select> a wide range of leisure activities at our holiday centres. Fluency <select id="p6" data-g="p" onchange="strike('p')"></select> English, Thai, Cambodian or French is also essential. Although <select id="p7" data-g="p" onchange="strike('p')"></select> not essential, successful candidate for the post will be based in our Phnom Penh headquarter near National Museum, he or she will be required to travel frequently. Candidates must be capable of working <select id="p9" data-g="p" onchange="strike('p')"></select> their own but at the same time be able to cooperate <select id="p10" data-g="p" onchange="strike('p')"></select> other members of a busy team. In addition, the successful candidates must have <select id="p11" data-g="p" onchange="strike('p')"></select> international driving license.</p>
+  </div>
+  <button class="btn" onclick="checkReading()">Check Part 1</button>
+</section>
+
+<section class="card">
+  <h2>Part 2 · Language Use</h2>
+  <div class="marks">14 marks</div>
+  <p class="ins">Match the parts of the sentences in Section A with the most suitable ones in Section B. The first one has been done for you.</p>
+  <div class="mrow"><span><span class="qn">1.</span> Do you know what time it is? <i>(example)</i></span><span class="given">C. Sorry, I haven't got a watch.</span></div>
+  <div id="match-rows"></div>
+  <button class="btn" onclick="checkMatch()">Check Part 2</button>
+</section>
+
+<section class="card">
+  <h2>Part 3 · Grammar</h2>
+  <div class="marks">6 marks</div>
+  <p class="ins">Tick the correct answer. Only one answer is correct. Each answer shows its reason after you check.</p>
+  <div id="grammar-block"></div>
+  <button class="btn" onclick="checkMCQ(GRAM,'g','gram')">Check Part 3</button>
+</section>
+
+<section class="card">
+  <h2>Part 4 · Vocabulary</h2>
+  <div class="marks">5 marks</div>
+  <p class="ins">Tick the correct answer. Only one answer is correct. Each answer shows its reason after you check.</p>
+  <div id="vocab-block"></div>
+  <button class="btn" onclick="checkMCQ(VOC,'v','voc')">Check Part 4</button>
+</section>
+
+<section class="card">
+  <h2>Part 5 · Writing</h2>
+  <div class="marks">15 marks</div>
+  <p class="ins">Write an essay about "A goal in your life". Your essay must be in English and at least 150 words.</p>
+  <textarea id="essay" placeholder="Start writing your essay here..." oninput="wc()"></textarea>
+  <div class="wc" id="wordcount">0 words · minimum 150</div>
+</section>
+</div>
+
+<div class="bar">
+  <div><div class="lbl">Final score (Parts 1–4)</div><div class="score" id="final">0 / 29</div></div>
+  <div class="lbl" style="text-align:right">Writing is not auto-scored</div>
+</div>
+
+<script>
+const TOTAL = 29;
+const L = ['A','B','C','D','E','F','G','H'];
+const GIVEN = { p:['Thailand'], m:[] };
+const got = {};
+
+function setPart(key, c, t){
+  got[key] = [c, t];
+  let c2 = 0;
+  for (const k in got) c2 += got[k][0];
+  document.getElementById('final').textContent = c2 + ' / ' + TOTAL;
+}
+
+/* ---------- data ---------- */
+const PART1_BANK = ['between','in','a','but','the','with','Thailand','an','on','for','of'];
+const PART1_ANS = {2:'for',3:'between',4:'of',5:'in',6:'in',7:'a',9:'on',10:'with',11:'an'};
+
+const MATCH_B = [['A','A. I can give you a lift.'],['B','B. I need to get it cut.'],['C','C. Sorry, I haven\'t got a watch.'],['D','D. They\'re going to fall asleep.'],['E','E. Shall I open the window?'],['F','F. It looked like a castle.'],['G','G. I think they\'re going to win.'],['H','H. Perhaps I can get you something to drink.']];
+const MATCH_ROWS = [
+  {n:2, text:'It was an enormous house.', ans:'F'},
+  {n:3, text:'You look thirsty.', ans:'H'},
+  {n:4, text:"It's a long way to town.", ans:'A'},
+  {n:5, text:'My hair is too long.', ans:'B'},
+  {n:6, text:'The kids are tired out.', ans:'D'},
+  {n:7, text:"It's hot in here.", ans:'E'},
+  {n:8, text:'They are playing really well.', ans:'G'}
+];
+
+const GRAM = [
+  {q:"There was …… money left in my bank account.",o:["more","no","some","any"],a:1,why:"'There was no money left' means none remained. 'Some' would mean a positive amount, and 'more' and 'any' do not fit this meaning."},
+  {q:"Their house is …… near the Unaloam Pagoda.",o:["whereabouts","anywhere","somewhere","anyplace"],a:2,why:"'Somewhere' is used in a positive statement meaning 'in some place'. 'Anywhere' and 'anyplace' are mostly for negatives and questions, and 'whereabouts' is a noun."},
+  {q:"I'm sorry I …… your party. I was away at that time.",o:["missed","failed","passed","lost"],a:0,why:"'Miss' means fail to attend. 'Failed' means did not succeed, 'passed' means went by, and 'lost' means no longer had."},
+  {q:"You are …… who has been there.",o:["the single","the only one","only one","the only"],a:1,why:"'The only one who' is the fixed structure for a single person. 'The single' is not used this way, and 'only one' needs 'the'."},
+  {q:"The reason I left is …… I was bored.",o:["why","for","while","that"],a:3,why:"After 'The reason ... is', the explanation clause begins with 'that'. 'For' and 'while' do not introduce a reason here."},
+  {q:"We are very proud …… our son's success.",o:["for","of","on","at"],a:1,why:"'Proud of' is the fixed preposition for pride in someone's achievement."},
+  {q:"I have learnt all the irregular verbs ……",o:["from memory","by the heart","in the memory","by heart"],a:3,why:"'By heart' means memorised completely. 'By the heart' and 'in the memory' are not correct idioms."}
+];
+
+const VOC = [
+  {q:"He wanted to make a good impression at the …… as he was eager to get a job.",o:["interrogation","meeting","briefing","interview"],a:3,why:"An 'interview' is a formal meeting where a candidate is questioned for a job. An 'interrogation' is a police-style questioning."},
+  {q:"It is a …… for the Chinese to visit their friends and relatives in New Year.",o:["tradition","custom","task","routine"],a:1,why:"'Custom' is the answer key here. 'Tradition' is close in meaning and also possible, while 'task' and 'routine' do not describe a cultural practice."},
+  {q:"Cambodian people follow ……",o:["Hinduism","Buddhism","Islam","Protestantism"],a:1,why:"Most Cambodians follow Buddhism. The other religions are not the majority religion in Cambodia."},
+  {q:"That's the …… who has taken your coat.",o:["dog","men","girls","boy"],a:3,why:"'Who' refers to people, and a singular 'boy' fits 'has taken'. 'Dog' would need 'that', and 'men' and 'girls' do not match the singular verb."},
+  {q:"Example: Ann and Peter phone …… everyday.",o:["them","Themselves","themselves","each other"],a:3,why:"'Each other' shows a mutual action between two people (Ann phones Peter and Peter phones Ann). 'Them' is an object pronoun, and 'themselves' is reflexive."},
+  {q:"Chinda is not only …… but also …… to discuss with.",o:["good, wealth","wealthy, friendly","good, friends","well, friendly"],a:1,why:"'Not only ... but also' needs two parallel adjectives: 'wealthy' and 'friendly'. 'Good' and 'well' do not fit the pattern."}
+];
+
+/* ---------- builders ---------- */
+function opts(items){
+  return '<option value="">—</option>' + items.map(([k,label]) => `<option value="${k}">${label}</option>`).join('');
+}
+function strike(group){
+  const used = new Set(GIVEN[group] || []);
+  document.querySelectorAll(`select[data-g="${group}"]`).forEach(s => { if(s.value) used.add(s.value); });
+  document.querySelectorAll(`[data-bank="${group}"]`).forEach(b => b.classList.toggle('used', used.has(b.dataset.k)));
+}
+function checkReading(){
+  let c = 0;
+  for (const n in PART1_ANS){
+    const s = document.getElementById('p' + n);
+    s.classList.remove('correct','wrong');
+    if (s.value === PART1_ANS[n]) { s.classList.add('correct'); c++; }
+    else s.classList.add('wrong');
+  }
+  setPart('reading', c, Object.keys(PART1_ANS).length);
+}
+
+function buildMatch(){
+  document.getElementById('match-rows').innerHTML = MATCH_ROWS.map(r =>
+    `<div class="mrow"><span><span class="qn">${r.n}.</span> ${r.text}</span><select id="m${r.n}">${opts(MATCH_B)}</select></div>`
+  ).join('');
+}
+function checkMatch(){
+  let c = 0;
+  MATCH_ROWS.forEach(r => {
+    const s = document.getElementById('m' + r.n);
+    s.classList.remove('correct','wrong');
+    if (s.value === r.ans){ s.classList.add('correct'); c++; }
+    else s.classList.add('wrong');
+  });
+  setPart('match', c, MATCH_ROWS.length);
+}
+
+function renderMCQ(id, items, p){
+  document.getElementById(id).innerHTML = items.map((it,i) =>
+    `<div class="q" id="${p}${i}"><div class="qt"><span class="qn">${i+1}.</span>${it.q}</div>
+     <div class="opts">${it.o.map((o,j)=>`<label class="opt"><input type="radio" name="${p}${i}" value="${j}"><span><b>${L[j]}.</b> ${o}</span></label>`).join('')}</div></div>`
+  ).join('');
+}
+function checkMCQ(items, p, key){
+  let c = 0;
+  items.forEach((it,i) => {
+    const box = document.getElementById(p + i);
+    box.querySelectorAll('.opt').forEach(l => l.classList.remove('correct','wrong'));
+    box.querySelectorAll('.reason').forEach(r => r.remove());
+    const labels = box.querySelectorAll('.opt');
+    const chosen = box.querySelector('input:checked');
+    const v = chosen ? +chosen.value : -1;
+    labels[it.a].classList.add('correct');
+    if (v === it.a) c++;
+    else if (v >= 0) labels[v].classList.add('wrong');
+    const r = document.createElement('div');
+    r.className = 'reason ' + (v === it.a ? 'ok' : 'no');
+    r.textContent = (v === it.a ? 'Correct. ' : 'Incorrect. The answer is ' + L[it.a] + '. ') + it.why;
+    box.appendChild(r);
+  });
+  setPart(key, c, items.length);
+}
+
+function wc(){
+  const v = document.getElementById('essay').value.trim();
+  const n = v ? v.split(/\s+/).length : 0;
+  const el = document.getElementById('wordcount');
+  el.textContent = n + ' words · minimum 150';
+  el.className = 'wc ' + (n >= 150 ? 'ok' : (n ? 'warn' : ''));
+}
+
+/* ---------- init ---------- */
+document.getElementById('bank-p').innerHTML = PART1_BANK.map(w => `<span data-bank="p" data-k="${w}">${w}</span>`).join('');
+document.querySelectorAll('select[data-g="p"]').forEach(s => {
+  s.innerHTML = opts(PART1_BANK.map(w => [w, w]));
+});
+strike('p');
+buildMatch();
+renderMCQ('grammar-block', GRAM, 'g');
+renderMCQ('vocab-block', VOC, 'v');
+</script>
+</body>
+</html>

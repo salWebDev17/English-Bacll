@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>English Test 2 — Practice</title>
+<style>
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;padding:16px 12px 130px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans Khmer",Arial,sans-serif;background:#EFE9DB;color:#2B2620;line-height:1.6;font-size:16px}
+.wrap{max-width:760px;margin:0 auto}
+header{margin-bottom:18px}
+h1{font-size:clamp(22px,6vw,32px);margin:0 0 4px;line-height:1.2}
+.sub{color:#5C5347;font-size:15px;margin:0}
+.card{background:#FBF8F0;border:1px solid #D8CDB8;border-radius:12px;padding:clamp(14px,4vw,24px);margin-bottom:20px}
+.card h2{font-size:clamp(18px,4.5vw,22px);margin:0}
+.marks{color:#7C4A29;font-size:14px;font-weight:600;margin:2px 0 10px}
+.ins{color:#5C5347;font-size:15px;margin:0 0 14px}
+.bank{display:flex;flex-wrap:wrap;gap:8px;padding:12px;background:#F3EDE0;border:1px solid #D8CDB8;border-radius:10px;margin-bottom:16px}
+.bank span{padding:5px 10px;background:#fff;border:1px solid #D8CDB8;border-radius:6px;font-size:15px}
+.bank span.used{text-decoration:line-through;color:#8A8074;opacity:.6}
+.passage{font-size:16px;line-height:2.1}
+.passage p{margin:0 0 12px}
+select{font:inherit;font-size:15px;max-width:100%;padding:4px 6px;border:none;border-bottom:2px solid #2B2620;background:#FBF8F0;color:#2B2620}
+select.correct{color:#3C6B4F;border-bottom-color:#3C6B4F;background:#E4EEE1}
+select.wrong{color:#B23A22;border-bottom-color:#B23A22;background:#F4E3DE}
+.given{font-weight:600;color:#7C4A29;border-bottom:2px solid #7C4A29}
+.qn{font-weight:700;color:#7C4A29;margin-right:4px}
+.mrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #E3D9BF;font-size:15.5px}
+.q{padding:12px 0;border-bottom:1px solid #E3D9BF}
+.q:last-child{border-bottom:none}
+.qt{margin-bottom:8px;font-size:15.5px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opt{display:flex;gap:8px;align-items:flex-start;padding:9px 10px;border:1px solid #D8CDB8;border-radius:8px;background:#F3EDE0;font-size:15px;cursor:pointer;min-height:44px}
+.opt input{margin-top:4px;flex-shrink:0}
+.opt.correct{background:#E4EEE1;border-color:#3C6B4F}
+.opt.wrong{background:#F4E3DE;border-color:#B23A22}
+.reason{margin-top:8px;font-size:14.5px;padding:9px 11px;border-radius:8px;background:#F3EDE0;color:#4A4236;border-left:3px solid #A6653B}
+.reason.ok{border-left-color:#3C6B4F}
+.reason.no{border-left-color:#B23A22}
+.btn{margin-top:14px;font:inherit;font-weight:600;font-size:15px;color:#fff;background:#A6653B;border:none;border-radius:8px;padding:12px 20px;min-height:44px;cursor:pointer;width:100%}
+.btn:hover{background:#7C4A29}
+@media(min-width:560px){.btn{width:auto}}
+textarea{width:100%;min-height:260px;font:inherit;font-size:16px;padding:12px;border:1px solid #D8CDB8;border-radius:8px;background:#F8F4EA;resize:vertical;line-height:1.6}
+.wc{font-size:14px;color:#5C5347;margin-top:6px}
+.wc.ok{color:#3C6B4F;font-weight:600}
+.wc.warn{color:#B23A22}
+.bar{position:fixed;left:0;right:0;bottom:0;background:#2B2620;color:#F8F4EA;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px calc(12px + env(safe-area-inset-bottom))}
+.bar .lbl{font-size:13px;color:#D8CDB8}
+.bar .score{font-size:22px;font-weight:700}
+@media(max-width:480px){.opts{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="sub">សម័យប្រឡង ២១ មិថុនា ២០០៧ · Test 2, Grade 8</div>
+  <h1>English Test Practice</h1>
+  <p class="sub">Work through each section and press its Check button. Your final score is shown at the bottom.</p>
+</header>
+
+<section class="card">
+  <h2>Section 1 · Reading</h2>
+  <div class="marks">10 marks</div>
+  <p class="ins">Read the text and fill in the blanks with the appropriate words from the box. The first one has been done for you.</p>
+  <div class="bank" id="bank-b"></div>
+  <div class="passage">
+    <p><b style="display:block;text-align:center;margin-bottom:8px">THE HISTORY OF ANGKOR</b></p>
+    <p>Angkor Wat is (1) <span class="given">D. enormous</span> building and one of the most beautiful classic Khmer architectures. It's one of the largest religious (2) {2} in the world. The outside wall measures 1km from west to east, by 800 metres from north to south. From the main entrance, across the water to the base of the tower is total of 570 metres; and the height of the main tower is 65 metres. The Angkor Wat was (3) {3} by stones, sandstones mostly, which could have been cut from Phnom Kulen. The roof of the inside wall was surrounded by columns made of stone. These walls were (4) {4} with pictures from Ramayana.</p>
+    <p>Under Jayavarman the Seventh, Angkor became more (5) {5} than ever. After that, however, it slowly grew weaker until its final (6) {6}, when it was attacked and (7) {7} by the Siamese. Consequently, it was (8) {8} and, in order to find a safer place, the king (9) {9} from the region and moved south to what is now Phnom Penh. Angkor had been (10) {10} for generations before it was (11) {11} in the nineteenth century.</p>
+  </div>
+  <button class="btn" onclick="checkReading()">Check Section 1</button>
+</section>
+
+<section class="card">
+  <h2>Section 2 · Language Use</h2>
+  <div class="marks">6 marks</div>
+  <p class="ins">Match the statements in A with the most suitable ones in B. Example: 1 is done for you.</p>
+  <div class="mrow"><span><span class="qn">1.</span> He parked his car in the wrong place,</span><span><b>e.</b> so he had to pay a parking fine. <span class="given">1 ⇒ e</span></span></div>
+  <div id="match-rows"></div>
+  <div class="bank" id="bank-m" style="margin-top:14px"></div>
+  <button class="btn" onclick="checkMatch()">Check Section 2</button>
+</section>
+
+<section class="card">
+  <h2>Section 3 · Grammar</h2>
+  <div class="marks">11 marks</div>
+  <p class="ins">Choose the alternative that best fits into the blank. Each answer shows its reason after you check.</p>
+  <div id="grammar-block"></div>
+  <button class="btn" onclick="checkMCQ(GRAM,'g','gram')">Check Section 3</button>
+</section>
+
+<section class="card">
+  <h2>Section 4 · Vocabulary</h2>
+  <div class="marks">7 marks</div>
+  <p class="ins">Choose a word from the alternatives to fill each gap. Each answer shows its reason after you check.</p>
+  <div id="vocab-block"></div>
+  <button class="btn" onclick="checkMCQ(VOC,'v','voc')">Check Section 4</button>
+</section>
+
+<section class="card">
+  <h2>Section 5 · Writing</h2>
+  <div class="marks">16 marks</div>
+  <p class="ins">Write a story about a journey inside Cambodia. It can be about a real trip or one you imagine. (Write between 150–180 words.)</p>
+  <p class="ins" style="margin-bottom:6px">Your writing might include:</p>
+  <ul class="ins" style="padding-left:20px;margin-top:0">
+    <li>Who organized the journey (it can be someone or you, or you with other people)</li>
+    <li>Where the trip was up to</li>
+    <li>What transport they used (bicycle, boat, car, etc.)</li>
+    <li>How long the journey took</li>
+    <li>What difficulties there were along the way</li>
+    <li>What they enjoyed on their journey</li>
+  </ul>
+  <textarea id="essay" placeholder="Start writing your story here..." oninput="wc('essay','wordCount',150,180)"></textarea>
+  <div class="wc" id="wordCount">0 words</div>
+</section>
+</div>
+
+<div class="bar">
+  <div><div class="lbl">Final score</div><div class="score" id="final">0 / 36</div></div>
+  <div class="lbl" style="text-align:right">Writing is not auto-scored</div>
+</div>
+
+<script>
+const TOTAL = 36;
+const L = ['A','B','C','D','E','F','G','H','I','J','K','L'];
+const GIVEN = { b:['D'], m:[] };
+const got = {};
+
+function setPart(key, c, t){
+  got[key] = [c, t];
+  let c2 = 0;
+  for (const k in got) c2 += got[k][0];
+  document.getElementById('final').textContent = c2 + ' / ' + TOTAL;
+}
+
+/* ---------- data ---------- */
+const READ_BANK = [['A','A. defeated'],['B','B. abandoned'],['C','C. constructions'],['D','D. enormous'],['E','E. rediscovered'],['F','F. created'],['G','G. forgotten'],['H','H. powerful'],['I','I. withdrew'],['J','J. collapse'],['K','K. decorated']];
+const READ_ANS = {2:'C',3:'F',4:'K',5:'H',6:'J',7:'A',8:'B',9:'I',10:'G',11:'E'};
+
+const MATCH_BANK = [['a','a. It\'s the third burglary in this area.'],['b','b. because my bike has broken down.'],['c','c. sees a crime being committed.'],['d','d. as he rose to receive the Prize.'],['f','f. she would have fought for women\'s rights.'],['g','g. he was happy to join the party.'],['h','h. commit the crime has risen now.']];
+const MATCH_ROWS = [
+  {n:2, text:'The number of young people who ______ has risen now.', ans:'h'},
+  {n:3, text:'A house was broken into last week.', ans:'a'},
+  {n:4, text:'A witness is someone who ______', ans:'c'},
+  {n:5, text:'I was late for work this morning ______', ans:'b'},
+  {n:6, text:'There was an outburst of clapping ______', ans:'d'},
+  {n:7, text:'If she had become a politician, ______', ans:'f'}
+];
+
+const GRAM = [
+  {n:1,q:"I'm afraid I really couldn't eat any more. I'm ……………",o:["fed up","full","filled up","famished"],a:1,why:"'Full' means you have eaten enough. 'Fed up' means annoyed or bored, and 'famished' means extremely hungry."},
+  {n:2,q:"Don't tell Sokha about Chan and Mom. You know he can't …………… a secret.",o:["hold","save","keep","stop"],a:2,why:"The fixed phrase is 'keep a secret'. We do not 'hold', 'save' or 'stop' a secret."},
+  {n:3,q:"Have you seen a mug anywhere? We seem to be one …………",o:["short","missed","less","under"],a:0,why:"'One short' means one item is missing from the number needed. The other words do not fit this expression."},
+  {n:4,q:"If the animals came when they were called, the men …………… them easily without running.",o:["would have caught","would catch","will catch","catch"],a:1,why:"This is a second conditional. 'If' + past simple (came) is followed by 'would' + base verb (catch)."},
+  {n:5,q:"If people did not die and leave the earth, the earth …………… crowded.",o:["will be","would be","is","would have been"],a:1,why:"This is an unreal present situation (people do not die), so the second conditional result uses 'would be'."},
+  {n:6,q:"This conflict must …………… immediately, because it causes much consequence.",o:["be solved","is solved","are solved","was solved"],a:0,why:"After a modal such as 'must', use the base form. The passive is 'be + past participle', so 'be solved'."},
+  {n:7,q:"Phnom Penh is now spreading west …………… the eye can see.",o:["as long as","as far as","as near as","as good as"],a:1,why:"'As far as the eye can see' is a fixed expression meaning as far as one is able to see."},
+  {n:8,q:"I would have spent my money for charity if I …………… billions of US dollars.",o:["have had","had had","had","have"],a:1,why:"Third conditional for an unreal past: 'if' + past perfect (had had) goes with 'would have spent'."},
+  {n:9,q:"She had seen people who …………… in poverty all their lives.",o:["were living","had been living","are living","have been living"],a:1,why:"'All their lives' describes a state that continued before another past action (had seen), so the past perfect continuous 'had been living' is used."},
+  {n:10,q:"Heavy snow …………… the train for several hours.",o:["cancelled","postponed","stopped","delayed"],a:3,why:"'Delay' means make late. The train still ran, just late, so 'cancelled', 'postponed' and 'stopped' do not fit."},
+  {n:11,q:"We arrived …………… Phnom Penh at 4.30 in the morning.",o:["to","at","for","in"],a:3,why:"We 'arrive in' a city or country (a larger place). 'At' is used for a small point such as a station or building."},
+  {n:12,q:"I didn't see you …………… the party last weekend.",o:["on","by","to","at"],a:3,why:"'At the party' is the correct preposition for an event where people gather."}
+];
+
+const VOC = [
+  {n:1,q:"How …………… is it from here to the city centre?",o:["long","far","distant","near"],a:1,why:"'How far' asks about distance. 'How long' asks about time, and 'distant' is an adjective that does not fit this question."},
+  {n:2,q:"Most countries still maintain system of …………… national service, when all men must serve for a period of time in the armed forces.",o:["voluntary","compulsory","necessary","forced"],a:1,why:"'Compulsory' means required by law. Men must serve, so the service is not voluntary, and 'compulsory national service' is the standard term."},
+  {n:3,q:"When there is a discussion in class, you will only get full value from it if you …………… in an argument.",o:["participate","share","practise","involve"],a:0,why:"'Participate in' means take part in. 'Share' and 'involve' do not fit this structure, and 'practise' means do something repeatedly."},
+  {n:4,q:"It was his …………… to become a doctor but somehow, he ended up as an actor.",o:["intention","confusion","illusion","selection"],a:0,why:"'Intention' means plan or aim. 'Confusion' is a mix-up, 'illusion' is a false impression, and 'selection' is choice."},
+  {n:5,q:"In certain rural areas it is still necessary to …………… the diet of children with certain proteins and vitamins.",o:["prevent","increase","aid","supplement"],a:3,why:"'Supplement' means add something to make a whole more complete, which fits adding proteins and vitamins. 'Prevent' means stop, and 'aid' means help."},
+  {n:6,q:"Large areas of agricultural land were badly …………… by the dust fallout.",o:["involved","collapsed","determined","affected"],a:3,why:"'Affected' means harmed or influenced. 'Badly affected' is the natural phrase for damage from dust."},
+  {n:7,q:"The prediction about the cause of the typhoon was not at all ……………",o:["accurate","assessed","estimated","analysed"],a:0,why:"'Not at all accurate' means the prediction was wrong. The other words are verbs (past forms) and do not describe a prediction."},
+  {n:8,q:"It was several days after the shooting before all the facts were …………… to the press.",o:["released","abandoned","selected","investigated"],a:0,why:"Facts are 'released' to the press, meaning made public. 'Abandoned', 'selected' and 'investigated' do not fit information given to reporters."}
+];
+
+/* ---------- builders ---------- */
+function bank(id, group, items){
+  document.getElementById(id).innerHTML = items.map(([k,label]) => `<span data-bank="${group}" data-k="${k}">${label}</span>`).join('');
+}
+function opts(items){
+  return '<option value="">—</option>' + items.map(([k,label]) => `<option value="${k}">${label}</option>`).join('');
+}
+function strike(group){
+  const used = new Set(GIVEN[group] || []);
+  document.querySelectorAll(`select[data-g="${group}"]`).forEach(s => { if(s.value) used.add(s.value); });
+  document.querySelectorAll(`[data-bank="${group}"]`).forEach(b => b.classList.toggle('used', used.has(b.dataset.k)));
+}
+function fillPassage(){
+  document.querySelectorAll('.passage').forEach(p => {
+    p.innerHTML = p.innerHTML.replace(/\{(\d+)\}/g, (m, n) =>
+      `<select id="b${n}" data-g="b" onchange="strike('b')">${opts(READ_BANK)}</select>`);
+  });
+  strike('b');
+}
+function checkReading(){
+  let c = 0;
+  for (const n in READ_ANS){
+    const s = document.getElementById('b' + n);
+    s.classList.remove('correct','wrong');
+    if (s.value === READ_ANS[n]) { s.classList.add('correct'); c++; }
+    else s.classList.add('wrong');
+  }
+  setPart('reading', c, Object.keys(READ_ANS).length);
+}
+
+function buildMatch(){
+  document.getElementById('match-rows').innerHTML = MATCH_ROWS.map(r =>
+    `<div class="mrow"><span><span class="qn">${r.n}.</span> ${r.text}</span><select id="m${r.n}" data-g="m" onchange="strike('m')">${opts(MATCH_BANK)}</select></div>`
+  ).join('');
+}
+function checkMatch(){
+  let c = 0;
+  MATCH_ROWS.forEach(r => {
+    const s = document.getElementById('m' + r.n);
+    s.classList.remove('correct','wrong');
+    if (s.value === r.ans){ s.classList.add('correct'); c++; }
+    else s.classList.add('wrong');
+  });
+  setPart('match', c, MATCH_ROWS.length);
+}
+
+function renderMCQ(id, items, p){
+  document.getElementById(id).innerHTML = items.map((it,i) =>
+    `<div class="q" id="${p}${i}"><div class="qt"><span class="qn">${it.n}.</span>${it.q}</div>
+     <div class="opts">${it.o.map((o,j)=>`<label class="opt"><input type="radio" name="${p}${i}" value="${j}"><span><b>${L[j]}.</b> ${o}</span></label>`).join('')}</div></div>`
+  ).join('');
+}
+function checkMCQ(items, p, key){
+  let c = 0;
+  items.forEach((it,i) => {
+    const box = document.getElementById(p + i);
+    box.querySelectorAll('.opt').forEach(l => l.classList.remove('correct','wrong'));
+    box.querySelectorAll('.reason').forEach(r => r.remove());
+    const labels = box.querySelectorAll('.opt');
+    const chosen = box.querySelector('input:checked');
+    const v = chosen ? +chosen.value : -1;
+    labels[it.a].classList.add('correct');
+    if (v >= 0 && v !== it.a) labels[v].classList.add('wrong');
+    if (v === it.a) c++;
+    const r = document.createElement('div');
+    r.className = 'reason ' + (v === it.a ? 'ok' : 'no');
+    r.textContent = (v === it.a ? 'Correct. ' : 'Incorrect. The answer is ' + L[it.a] + '. ') + it.why;
+    box.appendChild(r);
+  });
+  setPart(key, c, items.length);
+}
+
+function wc(id, cid, min, max){
+  const v = document.getElementById(id).value.trim();
+  const n = v ? v.split(/\s+/).length : 0;
+  const el = document.getElementById(cid);
+  el.textContent = n + ' words (target ' + min + '–' + max + ')';
+  el.className = 'wc ' + (n >= min && n <= max ? 'ok' : (n ? 'warn' : ''));
+}
+
+/* ---------- init ---------- */
+bank('bank-b', 'b', READ_BANK);
+fillPassage();
+bank('bank-m', 'm', MATCH_BANK);
+buildMatch();
+renderMCQ('grammar-block', GRAM, 'g');
+renderMCQ('vocab-block', VOC, 'v');
+strike('m');
+</script>
+</body>
+</html>

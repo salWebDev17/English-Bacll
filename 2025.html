@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>English Practice — Exam Review</title>
+<style>
+  :root{
+    --paper:#eef1ec;
+    --ink:#233326;
+    --pine:#2f4a3c;
+    --pine-dark:#1d2f26;
+    --gold:#b8873b;
+    --line:#c9d0c5;
+    --right:#3c7a4e;
+    --wrong:#b1483f;
+    --card:#ffffff;
+    --muted:#5f6a5e;
+    --sans:'Helvetica Neue',Arial,system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:12px;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Iowan Old Style',Georgia,'Times New Roman',serif;
+    font-size:clamp(16px,1.2vw + 13px,18px);
+    line-height:1.55;
+    padding:0 0 calc(60px + env(safe-area-inset-bottom));
+    overflow-wrap:break-word;
+  }
+
+  /* Home button */
+  .topbar{
+    padding:calc(12px + env(safe-area-inset-top)) calc(12px + env(safe-area-inset-right)) 12px calc(12px + env(safe-area-inset-left));
+    background:#f3f4f6;
+  }
+  .home{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:44px;
+    padding:8px 18px;
+    font-family:var(--sans);
+    font-size:1.05rem;
+    font-weight:700;
+    text-decoration:none;
+    color:#1f2937;
+    background:#fff;
+    border:2px solid #22c55e;
+    border-radius:12px;
+    box-shadow:0 2px 6px rgba(0,0,0,.12);
+    transition:background .2s,color .2s,transform .2s;
+  }
+  .home:hover,.home:focus-visible{background:#22c55e;color:#fff;transform:translateY(-2px);}
+
+  header{
+    background:var(--pine);
+    color:#f4f1e8;
+    padding:32px calc(18px + env(safe-area-inset-right)) 34px calc(18px + env(safe-area-inset-left));
+    text-align:center;
+    border-bottom:6px solid var(--gold);
+  }
+  header h1{
+    margin:0 0 6px;
+    font-size:clamp(1.3rem,4.5vw,1.9rem);
+    font-weight:600;
+    letter-spacing:.3px;
+    line-height:1.25;
+  }
+  header p{
+    margin:0;
+    font-size:.92rem;
+    color:#d9e2d5;
+    font-family:var(--sans);
+  }
+  .wrap{
+    width:100%;
+    max-width:760px;
+    margin:0 auto;
+    padding:0 clamp(10px,3vw,18px);
+  }
+  nav.toc{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    justify-content:center;
+    margin:-18px auto 28px;
+    max-width:760px;
+    padding:0 clamp(10px,3vw,18px);
+  }
+  nav.toc a{
+    font-family:var(--sans);
+    font-size:.82rem;
+    text-decoration:none;
+    color:var(--pine-dark);
+    background:var(--card);
+    border:1px solid var(--line);
+    padding:10px 14px;
+    min-height:40px;
+    border-radius:3px;
+    display:inline-flex;
+    align-items:center;
+  }
+  nav.toc a:hover{border-color:var(--pine);}
+
+  section.part{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--pine);
+    margin-bottom:24px;
+    padding:clamp(16px,4vw,26px) clamp(14px,4vw,24px) clamp(18px,4vw,28px);
+  }
+  section.part h2{
+    font-size:1.2rem;
+    margin:0 0 4px;
+    color:var(--pine-dark);
+  }
+  .sub{
+    font-family:var(--sans);
+    font-size:.78rem;
+    color:var(--muted);
+    margin:0 0 18px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+  }
+  .passage{
+    font-size:1rem;
+    line-height:1.95;
+    background:#f6f7f3;
+    border:1px solid var(--line);
+    padding:clamp(12px,3.5vw,18px);
+    margin-bottom:16px;
+  }
+
+  /* Word bank — used words get a line through the middle */
+  .bank{
+    font-family:var(--sans);
+    font-size:.9rem;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:16px;
+    padding:10px;
+    border:1px dashed var(--gold);
+    background:#fffaf0;
+  }
+  .bank span{
+    border:1px solid var(--gold);
+    color:var(--pine-dark);
+    padding:4px 12px;
+    border-radius:14px;
+    background:#fbf4e6;
+    transition:opacity .2s,color .2s;
+  }
+  .bank span.used{
+    text-decoration:line-through;
+    text-decoration-thickness:2px;
+    text-decoration-color:var(--wrong);
+    opacity:.55;
+  }
+  @media (min-height:640px) and (max-width:700px){
+    .bank{position:sticky;top:0;z-index:5;box-shadow:0 4px 8px -4px rgba(0,0,0,.25);}
+  }
+
+  select.blank{
+    font-family:inherit;
+    font-size:16px; /* prevents iOS zoom on focus */
+    border:none;
+    border-bottom:2px dotted #8a9384;
+    background:transparent;
+    color:var(--pine-dark);
+    padding:4px 2px;
+    margin:0 2px;
+    max-width:100%;
+    min-height:36px;
+    border-radius:0;
+  }
+  select.blank:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+  select.blank.correct{border-bottom-color:var(--right); color:var(--right); font-weight:600;}
+  select.blank.wrong{border-bottom-color:var(--wrong); color:var(--wrong);}
+  .given{white-space:nowrap;}
+
+  .q{
+    margin-bottom:22px;
+    padding-bottom:20px;
+    border-bottom:1px dashed var(--line);
+  }
+  .q:last-child{border-bottom:none; margin-bottom:0; padding-bottom:0;}
+  .q p.stem{margin:0 0 10px;font-size:1rem;}
+  .opts{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+    font-family:var(--sans);
+    font-size:.92rem;
+  }
+  @media (max-width:480px){
+    .opts{grid-template-columns:1fr;}
+  }
+  label.opt{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    border:1px solid var(--line);
+    padding:10px 12px;
+    min-height:44px;
+    cursor:pointer;
+    background:#fbfbf9;
+    -webkit-tap-highlight-color:transparent;
+  }
+  label.opt:hover{border-color:var(--pine);}
+  label.opt.correct{border-color:var(--right); background:#eaf5ec; color:var(--right);}
+  label.opt.wrong{border-color:var(--wrong); background:#faeceb; color:var(--wrong);}
+  label.opt input{accent-color:var(--pine);width:18px;height:18px;flex:none;margin:0;}
+
+  /* Reason box */
+  .why{
+    font-family:var(--sans);
+    font-size:.86rem;
+    line-height:1.5;
+    margin-top:10px;
+    padding:10px 12px;
+    border-left:4px solid var(--right);
+    background:#eef7f0;
+    color:var(--ink);
+  }
+  .why.bad{border-left-color:var(--wrong);background:#fbeeed;}
+  .why b{display:block;margin-bottom:2px;}
+  .why ul{margin:6px 0 0;padding-left:18px;color:var(--muted);}
+
+  button.check,button.alt{
+    font-family:var(--sans);
+    border:none;
+    padding:12px 22px;
+    min-height:44px;
+    font-size:.9rem;
+    letter-spacing:.03em;
+    cursor:pointer;
+    margin-top:6px;
+    border-radius:2px;
+  }
+  button.check{background:var(--pine);color:#f4f1e8;}
+  button.check:hover{background:var(--pine-dark);}
+  button.alt{background:transparent;color:var(--pine-dark);border:1px solid var(--pine);margin-left:8px;}
+  button:focus-visible,a:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+  @media (max-width:480px){
+    button.check,button.alt{width:100%;margin-left:0;}
+    button.alt{margin-top:8px;}
+  }
+
+  .score{
+    font-family:var(--sans);
+    font-size:.9rem;
+    margin-top:12px;
+    color:var(--pine-dark);
+    min-height:1.2em;
+  }
+  .score .wrongs{display:block;margin-top:4px;color:var(--wrong);}
+
+  textarea{
+    width:100%;
+    min-height:180px;
+    font-family:inherit;
+    font-size:16px;
+    border:1px solid var(--line);
+    padding:14px;
+    resize:vertical;
+    background:#f6f7f3;
+    color:var(--ink);
+    border-radius:0;
+  }
+  .wordcount{
+    font-family:var(--sans);
+    font-size:.8rem;
+    color:var(--muted);
+    text-align:right;
+    margin-top:6px;
+  }
+  .wordcount.ok{color:var(--right);}
+  .prompt-title{font-style:italic;font-weight:600;}
+
+  /* Final score */
+  .final-table{
+    width:100%;
+    border-collapse:collapse;
+    font-family:var(--sans);
+    font-size:.92rem;
+    margin-top:14px;
+  }
+  .final-table th,.final-table td{
+    text-align:left;
+    padding:9px 8px;
+    border-bottom:1px solid var(--line);
+  }
+  .final-table td:last-child,.final-table th:last-child{text-align:right;white-space:nowrap;}
+  .final-table tr.total td{font-weight:700;font-size:1.05rem;border-bottom:none;color:var(--pine-dark);}
+  .final-note{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin:10px 0 0;}
+
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important;scroll-behavior:auto !important;}
+  }
+  @media print{
+    nav.toc,.topbar,button{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>English Practice — Grade 12 Exam Review</h1>
+  <p>Reading · Grammar · Vocabulary · Writing</p>
+</header>
+
+<nav class="toc">
+  <a href="#p1">I. Reading</a>
+  <a href="#p2">II. Grammar</a>
+  <a href="#p3">III. Vocabulary</a>
+  <a href="#p4">IV. Writing</a>
+  <a href="#final">Final score</a>
+</nav>
+
+<div class="wrap">
+
+  <!-- PART I -->
+  <section class="part" id="p1">
+    <h2>Part I — Reading</h2>
+    <p class="sub">Fill each gap with a word from the box · 2 points each</p>
+    <div class="bank" id="bank1"></div>
+    <div class="passage" id="passage1"></div>
+    <button class="check" onclick="checkPart(1)">Check Part I</button>
+    <div class="score" id="score1" aria-live="polite"></div>
+  </section>
+
+  <!-- PART II -->
+  <section class="part" id="p2">
+    <h2>Part II — Grammar</h2>
+    <p class="sub">Choose the correct letter · 2 points each</p>
+    <div id="quiz2"></div>
+    <button class="check" onclick="checkPart(2)">Check Part II</button>
+    <div class="score" id="score2" aria-live="polite"></div>
+  </section>
+
+  <!-- PART III -->
+  <section class="part" id="p3">
+    <h2>Part III — Vocabulary</h2>
+    <p class="sub">Choose the correct letter · 2 points each</p>
+    <div id="quiz3"></div>
+    <button class="check" onclick="checkPart(3)">Check Part III</button>
+    <div class="score" id="score3" aria-live="polite"></div>
+  </section>
+
+  <!-- PART IV -->
+  <section class="part" id="p4">
+    <h2>Part IV — Writing</h2>
+    <p class="sub">10 points · at least 100 words</p>
+    <p>Write an essay about <span class="prompt-title">"Disadvantages of Playing Mobile Games."</span></p>
+    <textarea id="essay" placeholder="Start writing here..." oninput="countWords()"></textarea>
+    <div class="wordcount" id="wc">0 words</div>
+  </section>
+
+  <!-- FINAL SCORE -->
+  <section class="part" id="final">
+    <h2>Final Score</h2>
+    <p class="sub">Parts I–III · writing not included</p>
+    <button class="check" onclick="calcFinal()">Calculate final score</button>
+    <button class="alt" onclick="resetAll()">Try again</button>
+    <div id="finalOut" aria-live="polite"></div>
+  </section>
+
+</div>
+
+<script>
+// ---------- PART I: Reading gap-fill ----------
+const wordBank = ["important","technologies","decisions","age","citizens","throughout","respect","society","history","improve"];
+
+// "important" is the worked example (not scored). "system" in gap-free text.
+const gaps = [
+  {n:1,  answer:"important", given:true},
+  {n:2,  answer:"citizens"},
+  {n:3,  answer:"decisions"},
+  {n:4,  answer:"age"},
+  {n:5,  answer:"history"},
+  {n:6,  answer:"respect"},
+  {n:7,  answer:"technologies"},
+  {n:8,  answer:"throughout"},
+  {n:9,  answer:"improve"},
+  {n:10, answer:"society"}
+];
+
+const bankEl = document.getElementById('bank1');
+bankEl.innerHTML = wordBank.map(w=>`<span data-w="${w}">${w}</span>`).join('');
+
+function makeSelect(n, given){
+  if(given) return `<b class="given">(${n}) important</b>`;
+  const opts = [`<option value="">(${n}) …</option>`].concat(
+    wordBank.map(w=>`<option value="${w}">${w}</option>`)
+  ).join('');
+  return `<select class="blank" id="g${n}" aria-label="Gap ${n}" onchange="updateBank()">${opts}</select>`;
+}
+
+document.getElementById('passage1').innerHTML = `
+Education plays an ${makeSelect(1,true)} role in every person's life. It helps people gain knowledge,
+develop skills, and become responsible ${makeSelect(2)}. With a good education, people can get better jobs,
+solve problems more easily, and make good ${makeSelect(3)}. In many countries, children go to school from
+a young ${makeSelect(4)}. They study subjects like math, science, language and ${makeSelect(5)}. Education not
+only teaches academic knowledge, but also helps students learn how to communicate, work in teams, and
+${makeSelect(6)} others. Today, education is more important than ever. The world is changing quickly, and new
+${makeSelect(7)} are developing every day. People who continue learning ${makeSelect(8)} their lives are better
+prepared to succeed in the future. Governments and communities should work together to ${makeSelect(9)} education
+for everyone. A strong education system can reduce poverty, create jobs, and build a better
+${makeSelect(10)}.`;
+
+// Draw a line through the middle of every word already placed in a blank
+function updateBank(){
+  const used = new Set(['important']); // the example word is already used
+  gaps.forEach(g=>{
+    if(g.given) return;
+    const v = document.getElementById('g'+g.n).value;
+    if(v) used.add(v);
+  });
+  bankEl.querySelectorAll('span').forEach(s=>{
+    s.classList.toggle('used', used.has(s.dataset.w));
+  });
+}
+updateBank();
+
+// ---------- PART II: Grammar ----------
+const part2 = [
+  {q:"Girls, you …………… say those things about your teachers.",
+   opts:["mustn't","haven't to","haven't","mustn't to"], answer:0,
+   why:"“Mustn't” expresses a prohibition (it is forbidden / not allowed). A modal verb is followed directly by the bare infinitive, so “mustn't say” is correct.",
+   wrongNotes:["“haven't to” is not a correct English structure (it would be “don't have to”, which means ‘not necessary’).","“haven't” cannot be followed by “say” here.","“mustn't to” is wrong because modal verbs are never followed by “to”."]},
+  {q:"I'm glad I …………… my plane! I've just heard it's broken down.",
+   opts:["lost","refused","missed","altered"], answer:2,
+   why:"“Miss a plane” means to fail to catch it. The speaker is glad because the plane broke down, so not catching it was lucky.",
+   wrongNotes:["“lost” is used for things you can't find, not for transport.","“refused” and “altered” do not collocate with “plane” in this meaning."]},
+  {q:"I …………… on a bench in the park when they ran past me.",
+   opts:["was sitting","have sat","sat","was sat"], answer:0,
+   why:"The past continuous (was + -ing) shows an action in progress in the past that was interrupted by another past action (“ran past”, past simple).",
+   wrongNotes:["“have sat” (present perfect) does not fit with a past event.","“sat” (past simple) would suggest two separate finished actions, not one in progress.","“was sat” is a wrong passive form."]},
+  {q:"The person …………… my hair usually does a very good job.",
+   opts:["who he cuts","who cuts","cuts","cuts it"], answer:1,
+   why:"This is a relative clause. “Who” refers to “the person” and acts as the subject of “cuts”, so “who cuts my hair” is correct.",
+   wrongNotes:["“who he cuts” repeats the subject (who + he) and breaks the sentence.","“cuts” and “cuts it” have no relative pronoun to link the clause to “the person”."]},
+  {q:"All flights to Phnom Penh …………… cancelled because of the bad weather.",
+   opts:["have been","has been","is been","are been"], answer:0,
+   why:"“Flights” is plural, so we use “have”. The action is passive and has a present result, so we use the present perfect passive: have been + past participle.",
+   wrongNotes:["“has been” is singular and does not agree with “flights”.","“is been” and “are been” do not exist in English."]},
+];
+
+// ---------- PART III: Vocabulary ----------
+const part3 = [
+  {q:"In some countries, smoking in public places is …………… because it badly affects other people.",
+   opts:["prohibited","increased","encouraged","continued"], answer:0,
+   why:"“Prohibited” means officially not allowed. Because smoking harms other people, it makes sense that it is banned in public places.",
+   wrongNotes:["“increased”, “encouraged” and “continued” would suggest smoking is promoted or kept going, which does not fit the harm described."]},
+  {q:"My driving license …………… at the end of this month.",
+   opts:["retires","expires","passes out","concludes"], answer:1,
+   why:"“Expire” means to reach the end of its valid period. It is the verb used for licenses, passports, tickets and contracts.",
+   wrongNotes:["“retires” is for people who stop working.","“passes out” means to faint.","“concludes” is used for talks, speeches or events, not documents."]},
+  {q:"I …………… to inform you that your daughter died half an hour ago.",
+   opts:["apologize","sorry","pity","regret"], answer:3,
+   why:"“I regret to inform you…” is a fixed formal phrase used to give bad news.",
+   wrongNotes:["“apologize” is for saying sorry for a mistake you made.","“sorry” is an adjective and needs “am” (“I am sorry to…”).","“pity” is not used in this structure."]},
+  {q:"Too much stress can be …………… to your health.",
+   opts:["painful","harmful","graceful","careful"], answer:1,
+   why:"“Harmful to” means causing damage. Too much stress damages your health.",
+   wrongNotes:["“painful” means causing pain.","“graceful” describes elegant movement.","“careful” means taking care; none of these fit with “to your health”."]},
+  {q:"We were unable to reach an agreement because of the …………… between the two groups.",
+   opts:["contact","concern","contract","conflict"], answer:3,
+   why:"“Conflict” means a serious disagreement. A disagreement between two groups explains why they could not reach an agreement.",
+   wrongNotes:["“contact” is communication, “concern” is worry, and “contract” is a written agreement; none of them explain why an agreement failed."]},
+];
+
+const letters = ['a','b','c','d'];
+
+function renderQuiz(list, containerId, namePrefix){
+  document.getElementById(containerId).innerHTML = list.map((item, i)=>`
+    <div class="q" data-idx="${i}">
+      <p class="stem"><b>${i+1}.</b> ${item.q}</p>
+      <div class="opts">
+        ${item.opts.map((o, j)=>`
+          <label class="opt" id="${namePrefix}-${i}-${j}">
+            <input type="radio" name="${namePrefix}-${i}" value="${j}">
+            <span>${letters[j]}. ${o}</span>
+          </label>
+        `).join('')}
+      </div>
+      <div class="why-slot" id="${namePrefix}-why-${i}"></div>
+    </div>
+  `).join('');
+}
+renderQuiz(part2, 'quiz2', 'q2');
+renderQuiz(part3, 'quiz3', 'q3');
+
+// ---------- Scoring ----------
+const POINTS = 2;
+const results = {1:null, 2:null, 3:null};
+
+function checkPart(n){
+  if(n===1) return checkReading();
+  const list = n===2 ? part2 : part3;
+  const prefix = n===2 ? 'q2' : 'q3';
+  let correct = 0;
+
+  list.forEach((item, i)=>{
+    const chosen = document.querySelector(`input[name="${prefix}-${i}"]:checked`);
+    for(let j=0;j<item.opts.length;j++){
+      document.getElementById(`${prefix}-${i}-${j}`).classList.remove('correct','wrong');
+    }
+    const ansLabel = `${letters[item.answer]}. ${item.opts[item.answer]}`;
+    const slot = document.getElementById(`${prefix}-why-${i}`);
+    let isRight = false, head;
+
+    if(chosen){
+      const val = parseInt(chosen.value);
+      if(val === item.answer){
+        isRight = true; correct++;
+        document.getElementById(`${prefix}-${i}-${val}`).classList.add('correct');
+        head = `✓ Correct — ${ansLabel}`;
+      } else {
+        document.getElementById(`${prefix}-${i}-${val}`).classList.add('wrong');
+        document.getElementById(`${prefix}-${i}-${item.answer}`).classList.add('correct');
+        head = `✗ Not quite — the answer is ${ansLabel}`;
+      }
+    } else {
+      document.getElementById(`${prefix}-${i}-${item.answer}`).classList.add('correct');
+      head = `No answer chosen — the answer is ${ansLabel}`;
+    }
+
+    slot.innerHTML = `<div class="why ${isRight?'':'bad'}">
+      <b>${head}</b>
+      <div>${item.why}</div>
+      ${isRight ? '' : `<ul>${item.wrongNotes.map(t=>`<li>${t}</li>`).join('')}</ul>`}
+    </div>`;
+  });
+
+  results[n] = {correct, total:list.length};
+  document.getElementById('score'+n).textContent =
+    `Score: ${correct} / ${list.length} correct · ${correct*POINTS} / ${list.length*POINTS} points`;
+}
+
+function checkReading(){
+  const scored = gaps.filter(g=>!g.given);
+  let correct = 0;
+  const wrongs = [];
+  scored.forEach(g=>{
+    const sel = document.getElementById('g'+g.n);
+    sel.classList.remove('correct','wrong');
+    if(sel.value === g.answer){
+      sel.classList.add('correct');
+      correct++;
+    } else {
+      sel.classList.add('wrong');
+      wrongs.push(`(${g.n}) → ${g.answer}`);
+    }
+  });
+  results[1] = {correct, total:scored.length};
+  document.getElementById('score1').innerHTML =
+    `Score: ${correct} / ${scored.length} correct · ${correct*POINTS} / ${scored.length*POINTS} points` +
+    (wrongs.length ? `<span class="wrongs">Correct answers for the red gaps: ${wrongs.join(', ')}</span>` : '');
+}
+
+function calcFinal(){
+  [1,2,3].forEach(checkPart);
+  const names = {1:'Part I — Reading', 2:'Part II — Grammar', 3:'Part III — Vocabulary'};
+  let got = 0, max = 0;
+  const rows = [1,2,3].map(n=>{
+    const r = results[n];
+    const pts = r.correct*POINTS, mx = r.total*POINTS;
+    got += pts; max += mx;
+    return `<tr><td>${names[n]}</td><td>${pts} / ${mx}</td></tr>`;
+  }).join('');
+  const pct = Math.round(got/max*100);
+  document.getElementById('finalOut').innerHTML = `
+    <table class="final-table">
+      <tr><th>Part</th><th>Points</th></tr>
+      ${rows}
+      <tr class="total"><td>Final score</td><td>${got} / ${max} (${pct}%)</td></tr>
+    </table>
+    <p class="final-note">Part IV (writing, 10 points) is not included — it needs to be marked by a teacher.</p>`;
+}
+
+function resetAll(){
+  gaps.forEach(g=>{
+    if(g.given) return;
+    const s = document.getElementById('g'+g.n);
+    s.value=''; s.classList.remove('correct','wrong');
+  });
+  updateBank();
+  document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
+  document.querySelectorAll('label.opt').forEach(l=>l.classList.remove('correct','wrong'));
+  document.querySelectorAll('.why-slot').forEach(s=>s.innerHTML='');
+  [1,2,3].forEach(n=>{document.getElementById('score'+n).textContent=''; results[n]=null;});
+  document.getElementById('finalOut').innerHTML='';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ---------- PART IV: word count ----------
+function countWords(){
+  const text = document.getElementById('essay').value.trim();
+  const count = text.length ? text.split(/\s+/).length : 0;
+  const wc = document.getElementById('wc');
+  wc.textContent = `${count} words`;
+  wc.classList.toggle('ok', count >= 100);
+}
+</script>
+</body>
+</html>
